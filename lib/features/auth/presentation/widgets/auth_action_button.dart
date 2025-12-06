@@ -32,7 +32,7 @@ class AuthActionButton extends StatelessWidget {
   final String label;
 
   /// タップ時に呼ばれるコールバック。
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   /// 塗りつぶし色。未指定の場合はスタイルに応じて自動決定します。
   final Color? backgroundColor;
