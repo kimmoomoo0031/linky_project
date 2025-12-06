@@ -58,7 +58,7 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/images/
+    - assets/images/common/
 flutter_native_splash:
   color: "#E6F7FF"
   image: "assets/images/common/start_linky_logo.png"
