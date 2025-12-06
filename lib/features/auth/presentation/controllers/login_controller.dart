@@ -35,16 +35,16 @@ class LoginController extends StateNotifier<LoginState> {
     state = state.copyWith(isLoading: true);
 
     try {
-      // 실제 login API 호출 (현재는 FakeAuthRepository が応答)
+      // 実際API呼び出し (現在は FakeAuthRepository が応答)
       //
       // TODO(api): LoginUseCase が AuthResult (success/invalidCredentials/...)
-      //            を返すようになったら、ここで result.when(...) で分岐する。
+      //を返すようになったら、ここで result.when(...) で分岐する。
       await _loginUseCase(
         email: state.email.trim(),
         password: state.password,
       );
     } catch (e) {
-      // API 실패 시에는 共通エラー (パスワード欄の下に出す例)
+      //API失敗時共通エラー (パスワード欄の下に出す例)
       // TODO(error): エラー種別ごとに文言を変えたい場合は、ドメイン例外 or Result 型に置き換える。
       state = state.copyWith(
         emailError: null,
