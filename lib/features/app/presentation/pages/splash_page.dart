@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:linky_project_0318/core/theme/app_colors.dart';
 import 'package:linky_project_0318/core/widgets/gradient_text.dart';
-import 'package:linky_project_0318/features/auth/presentation/pages/login_page.dart';
-
 import '../../../../core/theme/app_typography.dart';
 
 /// アプリ起動時に最初に表示されるスプラッシュ画面。
@@ -31,16 +30,13 @@ class _SplashPageState extends State<SplashPage> {
 
   Future<void> _checkAuthAndNavigate() async {
     // TODO: ここでトークンチェックや自動ログイン処理を行う。
-    // 仮で 1.5 秒待ってからログイン画面へ遷移させる。
+    // 仮で 2.5 秒待ってからログイン画面へ遷移させる。
     await Future.delayed(const Duration(milliseconds: 2500));
 
     if (!mounted) return;
 
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute<void>(
-        builder: (_) => const LoginPage(),
-      ),
-    );
+    //ログイン画面へ遷移。
+    context.go('/login');
   }
 
   @override
