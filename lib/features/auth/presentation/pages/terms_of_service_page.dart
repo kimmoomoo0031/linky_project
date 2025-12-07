@@ -85,8 +85,7 @@ class _TermsOfServicePageState extends State<TermsOfServicePage> {
                 label: '同意する',
                 onPressed: canAgree
                     ? () {
-                        // 呼び出し元に「同意した」という結果を返して閉じる想定。
-                        context.pop(true);
+                        context.push('/signUp');
                       }
                     : null,
                 backgroundColor: AppColors.primaryActionBlue,
@@ -97,7 +96,6 @@ class _TermsOfServicePageState extends State<TermsOfServicePage> {
               AuthActionButton(
                 label: '同意しない',
                 onPressed: () {
-                  // 呼び出し元に false を返して閉じる。
                   context.pop(false);
                 },
                 backgroundColor: AppColors.primaryWhite,

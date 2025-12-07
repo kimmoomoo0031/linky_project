@@ -27,4 +27,30 @@ class Validators {
     }
     return null;
   }
+
+  ///ニックネームバリデーション
+  static String? validateNickname(String value) {
+    if (value.isEmpty) {
+      return 'ニックネームを入力してください';
+    }
+    if (!RegexPatterns.nickName.hasMatch(value)) {
+      return 'ニックネームは2〜12文字で入力してください';
+    }
+    // 必要になれば、文字数や使用可能文字などのルールをここに追加する。
+    return null;
+  }
+
+  ///パスワード再確認バリデーション
+  static String? validatePasswordConfirmation({
+    required String password,
+    required String confirmation,
+  }) {
+    if (confirmation.isEmpty) {
+      return 'パスワード（再確認）を入力してください';
+    }
+    if (confirmation != password) {
+      return 'パスワードが一致しません';
+    }
+    return null;
+  }
 }
