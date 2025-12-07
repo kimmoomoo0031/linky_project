@@ -42,13 +42,13 @@ Future<void> showLinkyDialog({
     builder: (ctx) {
       return Center(
         child: Material(
-          color: Colors.transparent,
+          color: AppColors.dialogBackground,
           child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 32),
-            padding: const EdgeInsets.fromLTRB(24, 32, 24, 24),
+            margin: const EdgeInsets.symmetric(horizontal: 24),
+            padding: const EdgeInsets.fromLTRB(20, 24, 20, 32),
             decoration: BoxDecoration(
               color: AppColors.backgroundBlue,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(18),
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -61,17 +61,17 @@ Future<void> showLinkyDialog({
                       color: AppColors.primaryBlack,
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 24),
                 ],
                 Text(
                   message,
-                  textAlign: TextAlign.center,
+                  textAlign: TextAlign.left,
                   style: AppTextStyles.body16.copyWith(
                     color: textColor,
-                    height: 1.4,
+                    height: 1.5
                   ),
                 ),
-                const SizedBox(height: 32),
+                const SizedBox(height: 24),
                 SizedBox(
                   width: double.infinity,
                   child: OutlinedButton(
