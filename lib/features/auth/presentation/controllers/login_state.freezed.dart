@@ -23,6 +23,12 @@ mixin _$LoginState {
   String? get emailError => throw _privateConstructorUsedError;
   String? get passwordError => throw _privateConstructorUsedError;
 
+  /// フィールド単位ではなく、ダイアログなどで表示したい全体エラー文言。
+  String? get generalErrorMessage => throw _privateConstructorUsedError;
+
+  /// 全体エラー文言に対応するダイアログのタイプ。
+  LinkyDialogType? get generalErrorType => throw _privateConstructorUsedError;
+
   /// Create a copy of LoginState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -43,6 +49,8 @@ abstract class $LoginStateCopyWith<$Res> {
     bool isLoading,
     String? emailError,
     String? passwordError,
+    String? generalErrorMessage,
+    LinkyDialogType? generalErrorType,
   });
 }
 
@@ -66,6 +74,8 @@ class _$LoginStateCopyWithImpl<$Res, $Val extends LoginState>
     Object? isLoading = null,
     Object? emailError = freezed,
     Object? passwordError = freezed,
+    Object? generalErrorMessage = freezed,
+    Object? generalErrorType = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -89,6 +99,14 @@ class _$LoginStateCopyWithImpl<$Res, $Val extends LoginState>
                 ? _value.passwordError
                 : passwordError // ignore: cast_nullable_to_non_nullable
                       as String?,
+            generalErrorMessage: freezed == generalErrorMessage
+                ? _value.generalErrorMessage
+                : generalErrorMessage // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            generalErrorType: freezed == generalErrorType
+                ? _value.generalErrorType
+                : generalErrorType // ignore: cast_nullable_to_non_nullable
+                      as LinkyDialogType?,
           )
           as $Val,
     );
@@ -110,6 +128,8 @@ abstract class _$$LoginStateImplCopyWith<$Res>
     bool isLoading,
     String? emailError,
     String? passwordError,
+    String? generalErrorMessage,
+    LinkyDialogType? generalErrorType,
   });
 }
 
@@ -132,6 +152,8 @@ class __$$LoginStateImplCopyWithImpl<$Res>
     Object? isLoading = null,
     Object? emailError = freezed,
     Object? passwordError = freezed,
+    Object? generalErrorMessage = freezed,
+    Object? generalErrorType = freezed,
   }) {
     return _then(
       _$LoginStateImpl(
@@ -155,6 +177,14 @@ class __$$LoginStateImplCopyWithImpl<$Res>
             ? _value.passwordError
             : passwordError // ignore: cast_nullable_to_non_nullable
                   as String?,
+        generalErrorMessage: freezed == generalErrorMessage
+            ? _value.generalErrorMessage
+            : generalErrorMessage // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        generalErrorType: freezed == generalErrorType
+            ? _value.generalErrorType
+            : generalErrorType // ignore: cast_nullable_to_non_nullable
+                  as LinkyDialogType?,
       ),
     );
   }
@@ -169,6 +199,8 @@ class _$LoginStateImpl implements _LoginState {
     this.isLoading = false,
     this.emailError,
     this.passwordError,
+    this.generalErrorMessage,
+    this.generalErrorType,
   });
 
   @override
@@ -185,9 +217,17 @@ class _$LoginStateImpl implements _LoginState {
   @override
   final String? passwordError;
 
+  /// フィールド単位ではなく、ダイアログなどで表示したい全体エラー文言。
+  @override
+  final String? generalErrorMessage;
+
+  /// 全体エラー文言に対応するダイアログのタイプ。
+  @override
+  final LinkyDialogType? generalErrorType;
+
   @override
   String toString() {
-    return 'LoginState(email: $email, password: $password, isLoading: $isLoading, emailError: $emailError, passwordError: $passwordError)';
+    return 'LoginState(email: $email, password: $password, isLoading: $isLoading, emailError: $emailError, passwordError: $passwordError, generalErrorMessage: $generalErrorMessage, generalErrorType: $generalErrorType)';
   }
 
   @override
@@ -203,7 +243,11 @@ class _$LoginStateImpl implements _LoginState {
             (identical(other.emailError, emailError) ||
                 other.emailError == emailError) &&
             (identical(other.passwordError, passwordError) ||
-                other.passwordError == passwordError));
+                other.passwordError == passwordError) &&
+            (identical(other.generalErrorMessage, generalErrorMessage) ||
+                other.generalErrorMessage == generalErrorMessage) &&
+            (identical(other.generalErrorType, generalErrorType) ||
+                other.generalErrorType == generalErrorType));
   }
 
   @override
@@ -214,6 +258,8 @@ class _$LoginStateImpl implements _LoginState {
     isLoading,
     emailError,
     passwordError,
+    generalErrorMessage,
+    generalErrorType,
   );
 
   /// Create a copy of LoginState
@@ -232,6 +278,8 @@ abstract class _LoginState implements LoginState {
     final bool isLoading,
     final String? emailError,
     final String? passwordError,
+    final String? generalErrorMessage,
+    final LinkyDialogType? generalErrorType,
   }) = _$LoginStateImpl;
 
   @override
@@ -244,6 +292,14 @@ abstract class _LoginState implements LoginState {
   String? get emailError;
   @override
   String? get passwordError;
+
+  /// フィールド単位ではなく、ダイアログなどで表示したい全体エラー文言。
+  @override
+  String? get generalErrorMessage;
+
+  /// 全体エラー文言に対応するダイアログのタイプ。
+  @override
+  LinkyDialogType? get generalErrorType;
 
   /// Create a copy of LoginState
   /// with the given fields replaced by the non-null parameter values.

@@ -1,8 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'login_state.dart';
+import 'package:linky_project_0318/core/constants/dialog_type.dart';
 import 'package:linky_project_0318/core/utils/validators.dart';
 import 'package:linky_project_0318/features/auth/domain/usecases/login_usecase.dart';
+import 'package:linky_project_0318/features/auth/domain/usecases/login_result.dart';
 
 class LoginController extends StateNotifier<LoginState> {
   LoginController(this._loginUseCase) : super(const LoginState());
@@ -15,6 +17,24 @@ class LoginController extends StateNotifier<LoginState> {
 
   void onPasswordChanged(String value) {
     state = state.copyWith(password: value, passwordError: null);
+  }
+
+  /// ダイアログ表示後などに全体エラーをリセットするためのヘルパー。
+  void clearGeneralError() {
+    state = state.copyWith(
+      generalErrorMessage: null,
+      generalErrorType: null,
+    );
+  }
+
+  /// 全てのエラーメッセージをクリアする
+  void _clearErrors() {
+    state = state.copyWith(
+      emailError: null,
+      passwordError: null,
+      generalErrorMessage: null,
+      generalErrorType: null,
+    );
   }
 
   Future<void> submit() async {
@@ -36,19 +56,48 @@ class LoginController extends StateNotifier<LoginState> {
 
     try {
       // 実際API呼び出し (現在は FakeAuthRepository が応答)
-      //
-      // TODO(api): LoginUseCase が AuthResult (success/invalidCredentials/...)
-      //を返すようになったら、ここで result.when(...) で分岐する。
-      await _loginUseCase(
-        email: state.email.trim(),
+      final LoginResult result = await _loginUseCase(
+        email: state.email,
         password: state.password,
       );
-    } catch (e) {
-      //API失敗時共通エラー (パスワード欄の下に出す例)
-      // TODO(error): エラー種別ごとに文言を変えたい場合は、ドメイン例外 or Result 型に置き換える。
+
+      result.when(
+        success: (user) {
+          // TODO: 成功時 user をグローバルな AuthState などに保存し、画面遷移する。
+          // この Controller ではとりあえずエラーをクリアするだけにしておく。
+          _clearErrors();
+        },
+        invalidCredentials: () {
+          // ユーザーが入力を修正できる種類のエラーはフィールド下に表示。
+          state = state.copyWith(
+            emailError: null,
+            passwordError: 'メールアドレスまたはパスワードが正しくありません',
+            generalErrorMessage: null,
+            generalErrorType: null,
+          );
+        },
+        networkError: () {
+          // 入力を変えても解決しないエラーはダイアログ用のメッセージに載せる。
+          state = state.copyWith(
+            generalErrorMessage:
+                'ネットワークエラーが発生しました。\n通信状況を確認してから、もう一度お試しください',
+            generalErrorType: LinkyDialogType.error,
+          );
+        },
+        serverError: () {
+          state = state.copyWith(
+            generalErrorMessage:
+                'サーバーエラーが発生しました。\nしばらく時間をおいて再度お試しください',
+            generalErrorType: LinkyDialogType.error,
+          );
+        },
+      );
+    } catch (_) {
+      // 想定外の例外は一律「予期せぬエラー」としてダイアログ表示用メッセージに流す。
       state = state.copyWith(
-        emailError: null,
-        passwordError: 'メールアドレスまたはパスワードが正しくありません',
+        generalErrorMessage:
+            '予期せぬエラーが発生しました。\nしばらく時間をおいて再度お試しください',
+        generalErrorType: LinkyDialogType.error,
       );
     } finally {
       state = state.copyWith(isLoading: false);
