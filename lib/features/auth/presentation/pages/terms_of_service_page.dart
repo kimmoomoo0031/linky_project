@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
-import 'package:linky_project_0318/core/constants/terms_texts.dart';
 import 'package:linky_project_0318/core/theme/app_colors.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/auth_action_button.dart';
 
-/// 利用規約画面。
-/// 共通ヘッダー + スクロール可能な規約テキスト + 「同意する / 同意しない」ボタン構成。
+/// 利用規約画面（WebView 版）。
+///
+/// - 上部に共通ヘッダー
+/// - 中央に WebView（ローカル HTML 資産を表示）
+/// - 最下部に「同意する / 同意しない」ボタン
+///
+/// WebView 内の JavaScript から ScrollChannel.postMessage('bottom') が呼ばれたら、
+/// 「同意する」ボタンを有効化する。
 class TermsOfServicePage extends StatefulWidget {
   const TermsOfServicePage({super.key});
 
@@ -17,33 +23,26 @@ class TermsOfServicePage extends StatefulWidget {
 }
 
 class _TermsOfServicePageState extends State<TermsOfServicePage> {
-  final ScrollController _scrollController = ScrollController();
+  late final WebViewController _webViewController;
   bool _hasReachedBottom = false;
 
   @override
   void initState() {
     super.initState();
-    _scrollController.addListener(_onScroll);
-  }
 
-  void _onScroll() {
-    if (!_scrollController.hasClients) return;
-    final position = _scrollController.position;
-
-    // 最下部（maxScrollExtent）に到達したタイミングでのみ true にする。
-    if (!_hasReachedBottom && position.pixels >= position.maxScrollExtent) {
-      setState(() {
-        _hasReachedBottom = true;
-      });
-    }
-  }
-
-  @override
-  void dispose() {
-    _scrollController
-      ..removeListener(_onScroll)
-      ..dispose();
-    super.dispose();
+    _webViewController = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..addJavaScriptChannel(
+        'ScrollChannel',
+        onMessageReceived: (JavaScriptMessage message) {
+          if (message.message == 'bottom' && !_hasReachedBottom) {
+            setState(() {
+              _hasReachedBottom = true;
+            });
+          }
+        },
+      )
+      ..loadFlutterAsset('assets/html/terms_of_service_ja.html');
   }
 
   @override
@@ -62,21 +61,12 @@ class _TermsOfServicePageState extends State<TermsOfServicePage> {
           child: Column(
             children: [
               Expanded(
-                child: SingleChildScrollView(
-                  controller: _scrollController,
-                  child: Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryWhite,
-                    ),
-                    child: Text(
-                      TermsTexts.termsOfServiceJa,
-                      style: AppTextStyles.body14.copyWith(
-                        color: AppColors.primaryBlack,
-                        height: 1.5,
-                      ),
-                    ),
+                child: Container(
+                  decoration: const BoxDecoration(
+                    color: AppColors.primaryWhite,
+                  ),
+                  child: WebViewWidget(
+                    controller: _webViewController,
                   ),
                 ),
               ),
