@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'login_state.dart';
+part of 'register_state.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -16,12 +16,16 @@ final _privateConstructorUsedError = UnsupportedError(
 );
 
 /// @nodoc
-mixin _$LoginState {
+mixin _$RegisterState {
   String get email => throw _privateConstructorUsedError;
+  String get nickname => throw _privateConstructorUsedError;
   String get password => throw _privateConstructorUsedError;
+  String get passwordConfirm => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
   String? get emailError => throw _privateConstructorUsedError;
+  String? get nicknameError => throw _privateConstructorUsedError;
   String? get passwordError => throw _privateConstructorUsedError;
+  String? get passwordConfirmError => throw _privateConstructorUsedError;
 
   /// フィールド単位ではなく、ダイアログなどで表示したい全体エラー文言。
   String? get generalErrorMessage => throw _privateConstructorUsedError;
@@ -29,51 +33,59 @@ mixin _$LoginState {
   /// 全体エラー文言に対応するダイアログのタイプ。
   LinkyDialogType? get generalErrorType => throw _privateConstructorUsedError;
 
-  /// Create a copy of LoginState
+  /// Create a copy of RegisterState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $LoginStateCopyWith<LoginState> get copyWith =>
+  $RegisterStateCopyWith<RegisterState> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $LoginStateCopyWith<$Res> {
-  factory $LoginStateCopyWith(
-    LoginState value,
-    $Res Function(LoginState) then,
-  ) = _$LoginStateCopyWithImpl<$Res, LoginState>;
+abstract class $RegisterStateCopyWith<$Res> {
+  factory $RegisterStateCopyWith(
+    RegisterState value,
+    $Res Function(RegisterState) then,
+  ) = _$RegisterStateCopyWithImpl<$Res, RegisterState>;
   @useResult
   $Res call({
     String email,
+    String nickname,
     String password,
+    String passwordConfirm,
     bool isLoading,
     String? emailError,
+    String? nicknameError,
     String? passwordError,
+    String? passwordConfirmError,
     String? generalErrorMessage,
     LinkyDialogType? generalErrorType,
   });
 }
 
 /// @nodoc
-class _$LoginStateCopyWithImpl<$Res, $Val extends LoginState>
-    implements $LoginStateCopyWith<$Res> {
-  _$LoginStateCopyWithImpl(this._value, this._then);
+class _$RegisterStateCopyWithImpl<$Res, $Val extends RegisterState>
+    implements $RegisterStateCopyWith<$Res> {
+  _$RegisterStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of LoginState
+  /// Create a copy of RegisterState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? email = null,
+    Object? nickname = null,
     Object? password = null,
+    Object? passwordConfirm = null,
     Object? isLoading = null,
     Object? emailError = freezed,
+    Object? nicknameError = freezed,
     Object? passwordError = freezed,
+    Object? passwordConfirmError = freezed,
     Object? generalErrorMessage = freezed,
     Object? generalErrorType = freezed,
   }) {
@@ -83,9 +95,17 @@ class _$LoginStateCopyWithImpl<$Res, $Val extends LoginState>
                 ? _value.email
                 : email // ignore: cast_nullable_to_non_nullable
                       as String,
+            nickname: null == nickname
+                ? _value.nickname
+                : nickname // ignore: cast_nullable_to_non_nullable
+                      as String,
             password: null == password
                 ? _value.password
                 : password // ignore: cast_nullable_to_non_nullable
+                      as String,
+            passwordConfirm: null == passwordConfirm
+                ? _value.passwordConfirm
+                : passwordConfirm // ignore: cast_nullable_to_non_nullable
                       as String,
             isLoading: null == isLoading
                 ? _value.isLoading
@@ -95,9 +115,17 @@ class _$LoginStateCopyWithImpl<$Res, $Val extends LoginState>
                 ? _value.emailError
                 : emailError // ignore: cast_nullable_to_non_nullable
                       as String?,
+            nicknameError: freezed == nicknameError
+                ? _value.nicknameError
+                : nicknameError // ignore: cast_nullable_to_non_nullable
+                      as String?,
             passwordError: freezed == passwordError
                 ? _value.passwordError
                 : passwordError // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            passwordConfirmError: freezed == passwordConfirmError
+                ? _value.passwordConfirmError
+                : passwordConfirmError // ignore: cast_nullable_to_non_nullable
                       as String?,
             generalErrorMessage: freezed == generalErrorMessage
                 ? _value.generalErrorMessage
@@ -114,56 +142,72 @@ class _$LoginStateCopyWithImpl<$Res, $Val extends LoginState>
 }
 
 /// @nodoc
-abstract class _$$LoginStateImplCopyWith<$Res>
-    implements $LoginStateCopyWith<$Res> {
-  factory _$$LoginStateImplCopyWith(
-    _$LoginStateImpl value,
-    $Res Function(_$LoginStateImpl) then,
-  ) = __$$LoginStateImplCopyWithImpl<$Res>;
+abstract class _$$RegisterStateImplCopyWith<$Res>
+    implements $RegisterStateCopyWith<$Res> {
+  factory _$$RegisterStateImplCopyWith(
+    _$RegisterStateImpl value,
+    $Res Function(_$RegisterStateImpl) then,
+  ) = __$$RegisterStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({
     String email,
+    String nickname,
     String password,
+    String passwordConfirm,
     bool isLoading,
     String? emailError,
+    String? nicknameError,
     String? passwordError,
+    String? passwordConfirmError,
     String? generalErrorMessage,
     LinkyDialogType? generalErrorType,
   });
 }
 
 /// @nodoc
-class __$$LoginStateImplCopyWithImpl<$Res>
-    extends _$LoginStateCopyWithImpl<$Res, _$LoginStateImpl>
-    implements _$$LoginStateImplCopyWith<$Res> {
-  __$$LoginStateImplCopyWithImpl(
-    _$LoginStateImpl _value,
-    $Res Function(_$LoginStateImpl) _then,
+class __$$RegisterStateImplCopyWithImpl<$Res>
+    extends _$RegisterStateCopyWithImpl<$Res, _$RegisterStateImpl>
+    implements _$$RegisterStateImplCopyWith<$Res> {
+  __$$RegisterStateImplCopyWithImpl(
+    _$RegisterStateImpl _value,
+    $Res Function(_$RegisterStateImpl) _then,
   ) : super(_value, _then);
 
-  /// Create a copy of LoginState
+  /// Create a copy of RegisterState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? email = null,
+    Object? nickname = null,
     Object? password = null,
+    Object? passwordConfirm = null,
     Object? isLoading = null,
     Object? emailError = freezed,
+    Object? nicknameError = freezed,
     Object? passwordError = freezed,
+    Object? passwordConfirmError = freezed,
     Object? generalErrorMessage = freezed,
     Object? generalErrorType = freezed,
   }) {
     return _then(
-      _$LoginStateImpl(
+      _$RegisterStateImpl(
         email: null == email
             ? _value.email
             : email // ignore: cast_nullable_to_non_nullable
                   as String,
+        nickname: null == nickname
+            ? _value.nickname
+            : nickname // ignore: cast_nullable_to_non_nullable
+                  as String,
         password: null == password
             ? _value.password
             : password // ignore: cast_nullable_to_non_nullable
+                  as String,
+        passwordConfirm: null == passwordConfirm
+            ? _value.passwordConfirm
+            : passwordConfirm // ignore: cast_nullable_to_non_nullable
                   as String,
         isLoading: null == isLoading
             ? _value.isLoading
@@ -173,9 +217,17 @@ class __$$LoginStateImplCopyWithImpl<$Res>
             ? _value.emailError
             : emailError // ignore: cast_nullable_to_non_nullable
                   as String?,
+        nicknameError: freezed == nicknameError
+            ? _value.nicknameError
+            : nicknameError // ignore: cast_nullable_to_non_nullable
+                  as String?,
         passwordError: freezed == passwordError
             ? _value.passwordError
             : passwordError // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        passwordConfirmError: freezed == passwordConfirmError
+            ? _value.passwordConfirmError
+            : passwordConfirmError // ignore: cast_nullable_to_non_nullable
                   as String?,
         generalErrorMessage: freezed == generalErrorMessage
             ? _value.generalErrorMessage
@@ -192,13 +244,17 @@ class __$$LoginStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$LoginStateImpl implements _LoginState {
-  const _$LoginStateImpl({
+class _$RegisterStateImpl implements _RegisterState {
+  const _$RegisterStateImpl({
     this.email = '',
+    this.nickname = '',
     this.password = '',
+    this.passwordConfirm = '',
     this.isLoading = false,
     this.emailError,
+    this.nicknameError,
     this.passwordError,
+    this.passwordConfirmError,
     this.generalErrorMessage,
     this.generalErrorType,
   });
@@ -208,14 +264,24 @@ class _$LoginStateImpl implements _LoginState {
   final String email;
   @override
   @JsonKey()
+  final String nickname;
+  @override
+  @JsonKey()
   final String password;
+  @override
+  @JsonKey()
+  final String passwordConfirm;
   @override
   @JsonKey()
   final bool isLoading;
   @override
   final String? emailError;
   @override
+  final String? nicknameError;
+  @override
   final String? passwordError;
+  @override
+  final String? passwordConfirmError;
 
   /// フィールド単位ではなく、ダイアログなどで表示したい全体エラー文言。
   @override
@@ -227,23 +293,31 @@ class _$LoginStateImpl implements _LoginState {
 
   @override
   String toString() {
-    return 'LoginState(email: $email, password: $password, isLoading: $isLoading, emailError: $emailError, passwordError: $passwordError, generalErrorMessage: $generalErrorMessage, generalErrorType: $generalErrorType)';
+    return 'RegisterState(email: $email, nickname: $nickname, password: $password, passwordConfirm: $passwordConfirm, isLoading: $isLoading, emailError: $emailError, nicknameError: $nicknameError, passwordError: $passwordError, passwordConfirmError: $passwordConfirmError, generalErrorMessage: $generalErrorMessage, generalErrorType: $generalErrorType)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$LoginStateImpl &&
+            other is _$RegisterStateImpl &&
             (identical(other.email, email) || other.email == email) &&
+            (identical(other.nickname, nickname) ||
+                other.nickname == nickname) &&
             (identical(other.password, password) ||
                 other.password == password) &&
+            (identical(other.passwordConfirm, passwordConfirm) ||
+                other.passwordConfirm == passwordConfirm) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
             (identical(other.emailError, emailError) ||
                 other.emailError == emailError) &&
+            (identical(other.nicknameError, nicknameError) ||
+                other.nicknameError == nicknameError) &&
             (identical(other.passwordError, passwordError) ||
                 other.passwordError == passwordError) &&
+            (identical(other.passwordConfirmError, passwordConfirmError) ||
+                other.passwordConfirmError == passwordConfirmError) &&
             (identical(other.generalErrorMessage, generalErrorMessage) ||
                 other.generalErrorMessage == generalErrorMessage) &&
             (identical(other.generalErrorType, generalErrorType) ||
@@ -254,44 +328,60 @@ class _$LoginStateImpl implements _LoginState {
   int get hashCode => Object.hash(
     runtimeType,
     email,
+    nickname,
     password,
+    passwordConfirm,
     isLoading,
     emailError,
+    nicknameError,
     passwordError,
+    passwordConfirmError,
     generalErrorMessage,
     generalErrorType,
   );
 
-  /// Create a copy of LoginState
+  /// Create a copy of RegisterState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$LoginStateImplCopyWith<_$LoginStateImpl> get copyWith =>
-      __$$LoginStateImplCopyWithImpl<_$LoginStateImpl>(this, _$identity);
+  _$$RegisterStateImplCopyWith<_$RegisterStateImpl> get copyWith =>
+      __$$RegisterStateImplCopyWithImpl<_$RegisterStateImpl>(this, _$identity);
 }
 
-abstract class _LoginState implements LoginState {
-  const factory _LoginState({
+abstract class _RegisterState implements RegisterState {
+  const factory _RegisterState({
     final String email,
+    final String nickname,
     final String password,
+    final String passwordConfirm,
     final bool isLoading,
     final String? emailError,
+    final String? nicknameError,
     final String? passwordError,
+    final String? passwordConfirmError,
     final String? generalErrorMessage,
     final LinkyDialogType? generalErrorType,
-  }) = _$LoginStateImpl;
+  }) = _$RegisterStateImpl;
 
   @override
   String get email;
   @override
+  String get nickname;
+  @override
   String get password;
+  @override
+  String get passwordConfirm;
   @override
   bool get isLoading;
   @override
   String? get emailError;
   @override
+  String? get nicknameError;
+  @override
   String? get passwordError;
+  @override
+  String? get passwordConfirmError;
 
   /// フィールド単位ではなく、ダイアログなどで表示したい全体エラー文言。
   @override
@@ -301,10 +391,10 @@ abstract class _LoginState implements LoginState {
   @override
   LinkyDialogType? get generalErrorType;
 
-  /// Create a copy of LoginState
+  /// Create a copy of RegisterState
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$LoginStateImplCopyWith<_$LoginStateImpl> get copyWith =>
+  _$$RegisterStateImplCopyWith<_$RegisterStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

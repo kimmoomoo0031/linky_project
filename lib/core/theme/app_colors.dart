@@ -38,6 +38,9 @@ class AppColors {
   /// アウトラインや仕切り線に使用するグレー (#BCBCBC)。
   static const Color outlineGray = Color(0xFFBCBCBC);
 
+  /// ダイアログ透明背景 (#000000)。
+  static const Color dialogBackground = Color(0x00000000);
+
   /// 左下から右上（45度方向）に向かって #4A90E2 から #50E3C2 に変化するグラデーション。
   static const LinearGradient linky45degGradient = LinearGradient(
     begin: Alignment.bottomLeft,

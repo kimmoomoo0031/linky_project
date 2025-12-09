@@ -6,6 +6,8 @@ import 'package:linky_project_0318/core/theme/app_colors.dart';
 import 'package:linky_project_0318/core/widgets/gradient_text.dart';
 import '../../../../core/theme/app_typography.dart';
 
+///TODO 後ほど全画面のコメントを細かく書くようにする
+
 /// アプリ起動時に最初に表示されるスプラッシュ画面。
 ///
 /// 背景色は #E6F7FF、中央に SVG ロゴとローディングインジケーターを表示します。

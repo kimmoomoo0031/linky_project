@@ -1,4 +1,6 @@
 import '../entities/auth_user.dart';
+import '../usecases/login_result.dart';
+import '../usecases/register_result.dart';
 
 /// 認証系のドメインロジックが依存する抽象リポジトリ。
 ///
@@ -8,8 +10,15 @@ import '../entities/auth_user.dart';
 ///                必要なメソッドをここに追加する。
 abstract class AuthRepository {
   /// メールアドレス + パスワードでログイン。
-  Future<AuthUser> login({
+  Future<LoginResult> login({
     required String email,
+    required String password,
+  });
+
+  /// 新規登録。
+  Future<RegisterResult> register({
+    required String email,
+    required String nickname,
     required String password,
   });
 

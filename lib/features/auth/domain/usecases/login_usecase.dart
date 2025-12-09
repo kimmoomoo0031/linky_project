@@ -1,5 +1,5 @@
-import '../entities/auth_user.dart';
 import '../repositories/auth_repository.dart';
+import 'login_result.dart';
 
 /// ログイン用ユースケース。
 ///
@@ -12,12 +12,31 @@ class LoginUseCase {
 
   final AuthRepository _repository;
 
-  Future<AuthUser> call({
+  Future<LoginResult> call({
     required String email,
     required String password,
   }) {
-    return _repository.login(email: email, password: password);
+    /// TODO ステータスコードが決まったら以下のようにする
+    return _repository.login(email: email.trim(), password: password.trim());
   }
 }
+/*
+ try {
+      final response = await _repository.login(email: email.trim(), password: password.trim());
+
+      switch (response.statusCode) {
+        case 200:
+          return LoginResult.success(response.data);
+        case 401:
+          return LoginResult.invalidCredentials();
+        case 500:
+          return LoginResult.serverError();
+        default:
+          return LoginResult.unknownError();
+      }
+    } catch (e) {
+      return LoginResult.networkError();
+    }
+ */
 
 

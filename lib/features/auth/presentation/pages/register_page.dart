@@ -1,91 +1,98 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:linky_project_0318/core/constants/dialog_type.dart';
 import 'package:linky_project_0318/core/theme/app_colors.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
-import 'package:linky_project_0318/core/widgets/gradient_text.dart';
+import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
 import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
 import 'package:linky_project_0318/features/auth/auth_providers.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/auth_action_button.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/auth_input_decorations.dart';
 
-/// Linky ログイン画面。
-class LoginPage extends ConsumerWidget {
-  const LoginPage({super.key});
+import '../../../../core/constants/dialog_messages.dart';
+
+/// Linky 新規登録画面。
+///
+/// ログイン画面と同じく、Riverpod の StateNotifier + State を使って
+/// 入力値とエラーメッセージを一元管理する。
+class RegisterPage extends ConsumerWidget {
+  const RegisterPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(loginControllerProvider);
-    final controller = ref.read(loginControllerProvider.notifier);
+    final state = ref.watch(registerControllerProvider);
+    final controller = ref.read(registerControllerProvider.notifier);
 
     // generalErrorMessage がセットされたときにだけダイアログを出す。
-    ref.listen(loginControllerProvider, (previous, next) async {
+    ref.listen(registerControllerProvider, (previous, next) async {
       final message = next.generalErrorMessage;
       if (message == null || message.isEmpty) {
         return;
       }
 
-      // ダイアログを表示して、閉じたタイミングでエラーをクリアする。
       final type = next.generalErrorType ?? LinkyDialogType.info;
-      showLinkyDialog(
-        context: context,
-        message: message,
-        type: type,
-      ).then((_) {
-        ref.read(loginControllerProvider.notifier).clearGeneralError();
-      });
+      await showLinkyDialog(context: context, message: message, type: type);
+      ref.read(registerControllerProvider.notifier).clearGeneralError();
     });
 
     return Scaffold(
       backgroundColor: AppColors.backgroundBlue,
+      appBar: const LinkyAppBar(title: '新規登録', showBackButton: true),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 18),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const SizedBox(height: 40),
-              const _LoginHeader(),
-              const SizedBox(height: 40),
+              Container(
+                alignment: Alignment.topRight,
+                child: GestureDetector(
+                  onTap: () {
+                    showLinkyDialog(
+                        context: context,
+                        title: AuthDialogMessages.registerInputRuleTitle,
+                        message: AuthDialogMessages.registerInputRuleBody,
+                        type: LinkyDialogType.info,
+                    );
+                  },
+                  child: SvgPicture.asset(
+                    'assets/images/common/helpcircle_logo.svg',
+                    width: 28,
+                    height: 28,
+                  ),
+                ),
+              ),
               _EmailField(
                 onChanged: controller.onEmailChanged,
                 errorText: state.emailError,
+              ),
+              const SizedBox(height: 16),
+              _NicknameField(
+                onChanged: controller.onNicknameChanged,
+                errorText: state.nicknameError,
               ),
               const SizedBox(height: 16),
               _PasswordField(
                 onChanged: controller.onPasswordChanged,
                 errorText: state.passwordError,
               ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  onPressed: () {
-                    // TODO: パスワードリセット画面へ遷移
-                  },
-                  child: Text(
-                    'パスワードを忘れた方はこちら',
-                    style: AppTextStyles.body12.copyWith(
-                      color: AppColors.primaryGray,
-                      decoration: TextDecoration.underline,
-                    ),
-                  ),
-                ),
-              ),
               const SizedBox(height: 16),
+              _PasswordConfirmField(
+                onChanged: controller.onPasswordConfirmChanged,
+                errorText: state.passwordConfirmError,
+              ),
+              const SizedBox(height: 32),
               AuthActionButton(
-                label: 'ログイン',
+                label: '登録する',
                 onPressed: controller.submit,
                 backgroundColor: AppColors.loginButton,
                 textColor: AppColors.primaryWhite,
-                borderColor: Colors.transparent,
                 style: AuthActionButtonStyle.filled,
                 isLoading: state.isLoading,
               ),
-              const SizedBox(height: 32),
-              const _OrDivider(),
-              const SizedBox(height: 32),
+              const SizedBox(height: 20),
               _LineLoginButton(
                 onPressed: () {
                   // TODO: LINE ログイン
@@ -98,26 +105,21 @@ class LoginPage extends ConsumerWidget {
                 },
               ),
               const SizedBox(height: 20),
-              _GuestLoginButton(
-                onPressed: () {
-                  // TODO: ゲストでログイン
-                },
-              ),
-              const SizedBox(height: 20),
               Center(
                 child: TextButton(
                   onPressed: () {
-                    context.push('/terms');
+                    // TODO: ログイン画面へ戻る
+                    context.pop();
                   },
                   child: Text(
-                    '新規登録はこちらから',
+                    '登録なしでログインする',
                     style: AppTextStyles.body12.copyWith(
-                      color: AppColors.primaryActionBlue
+                      color: AppColors.primaryActionBlue,
+                      decoration: TextDecoration.underline,
                     ),
                   ),
                 ),
               ),
-              const SizedBox(height: 16),
             ],
           ),
         ),
@@ -126,19 +128,27 @@ class LoginPage extends ConsumerWidget {
   }
 }
 
-class _LoginHeader extends StatelessWidget {
-  const _LoginHeader();
+/// ラベル + 必須アスタリスクをまとめた共通ウィジェット。
+class _RequiredLabel extends StatelessWidget {
+  const _RequiredLabel(this.label);
+
+  final String label;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
+    return Row(
       children: [
-        GradientText(
-          'つながる・見つける・楽しむ',
-          gradient: AppColors.linky45degGradient,
-          // ログイン画面ではやや小さめの本文スタイルでタグラインを表示する。
-          style: AppTextStyles.heading24,
+        Text(
+          label,
+          style: AppTextStyles.body14.copyWith(color: AppColors.primaryGray),
+        ),
+        const SizedBox(width: 4),
+        // デザインで使用している「必須マーク」のアスタリスクアイコン。
+        // 実際のパス / 形式に合わせて拡張子は調整してください。
+        SvgPicture.asset(
+          'assets/images/common/asterisk_logo.svg',
+          width: 8,
+          height: 8,
         ),
       ],
     );
@@ -156,16 +166,38 @@ class _EmailField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'メールアドレス',
-          style: AppTextStyles.body14.copyWith(color: AppColors.primaryGray),
-        ),
+        const _RequiredLabel('メールアドレス'),
         const SizedBox(height: 8),
         TextField(
           keyboardType: TextInputType.emailAddress,
           onChanged: onChanged,
           decoration: AuthInputDecorations.textField(
             hintText: 'yamada@example.com',
+            errorText: errorText,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _NicknameField extends StatelessWidget {
+  const _NicknameField({required this.onChanged, this.errorText});
+
+  final ValueChanged<String> onChanged;
+  final String? errorText;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const _RequiredLabel('ニックネーム'),
+        const SizedBox(height: 8),
+        TextField(
+          onChanged: onChanged,
+          decoration: AuthInputDecorations.textField(
+            hintText: 'リンゴ',
             errorText: errorText,
           ),
         ),
@@ -192,10 +224,7 @@ class _PasswordFieldState extends State<_PasswordField> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'パスワード',
-          style: AppTextStyles.body14.copyWith(color: AppColors.primaryGray),
-        ),
+        const _RequiredLabel('パスワード'),
         const SizedBox(height: 8),
         TextField(
           obscureText: _obscure,
@@ -218,22 +247,42 @@ class _PasswordFieldState extends State<_PasswordField> {
   }
 }
 
-class _OrDivider extends StatelessWidget {
-  const _OrDivider();
+class _PasswordConfirmField extends StatefulWidget {
+  const _PasswordConfirmField({required this.onChanged, this.errorText});
+
+  final ValueChanged<String> onChanged;
+  final String? errorText;
+
+  @override
+  State<_PasswordConfirmField> createState() => _PasswordConfirmFieldState();
+}
+
+class _PasswordConfirmFieldState extends State<_PasswordConfirmField> {
+  bool _obscure = true;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Expanded(child: Divider(thickness: 1)),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: Text(
-            'または',
-            style: AppTextStyles.body16.copyWith(color: AppColors.primaryGray),
+        const _RequiredLabel('パスワード再確認'),
+        const SizedBox(height: 8),
+        TextField(
+          obscureText: _obscure,
+          onChanged: widget.onChanged,
+          decoration: AuthInputDecorations.textField(
+            hintText: '********',
+            errorText: widget.errorText,
+            suffixIcon: IconButton(
+              onPressed: () {
+                setState(() {
+                  _obscure = !_obscure;
+                });
+              },
+              icon: Icon(_obscure ? Icons.visibility_off : Icons.visibility),
+            ),
           ),
         ),
-        const Expanded(child: Divider(thickness: 1)),
       ],
     );
   }
@@ -248,7 +297,11 @@ class _LineLoginButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return AuthActionButton(
       label: 'LINEでログイン',
-      icon: SvgPicture.asset('assets/images/common/line_logo.svg', width: 20, height: 20,),
+      icon: SvgPicture.asset(
+        'assets/images/common/line_logo.svg',
+        width: 20,
+        height: 20,
+      ),
       onPressed: onPressed,
       backgroundColor: AppColors.lineButton,
       textColor: AppColors.primaryWhite,
@@ -266,26 +319,11 @@ class _GoogleLoginButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return AuthActionButton(
       label: 'Googleでログイン',
-      icon: SvgPicture.asset('assets/images/common/google_logo.svg', width: 20, height: 20,),
-      onPressed: onPressed,
-      backgroundColor: AppColors.primaryWhite,
-      textColor: AppColors.primaryBlack,
-      borderColor: AppColors.outlineGray,
-      style: AuthActionButtonStyle.outlined,
-    );
-  }
-}
-
-class _GuestLoginButton extends StatelessWidget {
-  const _GuestLoginButton({required this.onPressed});
-
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return AuthActionButton(
-      label: 'ゲストでログイン',
-      icon: SvgPicture.asset('assets/images/common/user_logo.svg', width: 20, height: 20,),
+      icon: SvgPicture.asset(
+        'assets/images/common/google_logo.svg',
+        width: 20,
+        height: 20,
+      ),
       onPressed: onPressed,
       backgroundColor: AppColors.primaryWhite,
       textColor: AppColors.primaryBlack,
