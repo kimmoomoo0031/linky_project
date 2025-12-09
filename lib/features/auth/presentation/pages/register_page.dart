@@ -25,16 +25,21 @@ class RegisterPage extends ConsumerWidget {
     final state = ref.watch(registerControllerProvider);
     final controller = ref.read(registerControllerProvider.notifier);
 
-    // generalErrorMessage がセットされたときにだけダイアログを出す。
+    // generalErrorMessage がセットされたときにだけダイアログを出し、
+    // 登録成功（isSuccess == true）になったタイミングで成功画面へ遷移する。
     ref.listen(registerControllerProvider, (previous, next) async {
       final message = next.generalErrorMessage;
-      if (message == null || message.isEmpty) {
-        return;
+
+      if (message != null && message.isNotEmpty) {
+        final type = next.generalErrorType ?? LinkyDialogType.info;
+        await showLinkyDialog(context: context, message: message, type: type);
+        ref.read(registerControllerProvider.notifier).clearGeneralError();
       }
 
-      final type = next.generalErrorType ?? LinkyDialogType.info;
-      await showLinkyDialog(context: context, message: message, type: type);
-      ref.read(registerControllerProvider.notifier).clearGeneralError();
+      // 登録成功を検知して成功画面へ遷移
+      if (previous?.isSuccess != true && next.isSuccess) {
+        context.go('/signUpSuccess');
+      }
     });
 
     return Scaffold(

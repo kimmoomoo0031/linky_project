@@ -22,6 +22,7 @@ mixin _$RegisterState {
   String get password => throw _privateConstructorUsedError;
   String get passwordConfirm => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
+  bool get isSuccess => throw _privateConstructorUsedError;
   String? get emailError => throw _privateConstructorUsedError;
   String? get nicknameError => throw _privateConstructorUsedError;
   String? get passwordError => throw _privateConstructorUsedError;
@@ -53,6 +54,7 @@ abstract class $RegisterStateCopyWith<$Res> {
     String password,
     String passwordConfirm,
     bool isLoading,
+    bool isSuccess,
     String? emailError,
     String? nicknameError,
     String? passwordError,
@@ -82,6 +84,7 @@ class _$RegisterStateCopyWithImpl<$Res, $Val extends RegisterState>
     Object? password = null,
     Object? passwordConfirm = null,
     Object? isLoading = null,
+    Object? isSuccess = null,
     Object? emailError = freezed,
     Object? nicknameError = freezed,
     Object? passwordError = freezed,
@@ -110,6 +113,10 @@ class _$RegisterStateCopyWithImpl<$Res, $Val extends RegisterState>
             isLoading: null == isLoading
                 ? _value.isLoading
                 : isLoading // ignore: cast_nullable_to_non_nullable
+                      as bool,
+            isSuccess: null == isSuccess
+                ? _value.isSuccess
+                : isSuccess // ignore: cast_nullable_to_non_nullable
                       as bool,
             emailError: freezed == emailError
                 ? _value.emailError
@@ -156,6 +163,7 @@ abstract class _$$RegisterStateImplCopyWith<$Res>
     String password,
     String passwordConfirm,
     bool isLoading,
+    bool isSuccess,
     String? emailError,
     String? nicknameError,
     String? passwordError,
@@ -184,6 +192,7 @@ class __$$RegisterStateImplCopyWithImpl<$Res>
     Object? password = null,
     Object? passwordConfirm = null,
     Object? isLoading = null,
+    Object? isSuccess = null,
     Object? emailError = freezed,
     Object? nicknameError = freezed,
     Object? passwordError = freezed,
@@ -212,6 +221,10 @@ class __$$RegisterStateImplCopyWithImpl<$Res>
         isLoading: null == isLoading
             ? _value.isLoading
             : isLoading // ignore: cast_nullable_to_non_nullable
+                  as bool,
+        isSuccess: null == isSuccess
+            ? _value.isSuccess
+            : isSuccess // ignore: cast_nullable_to_non_nullable
                   as bool,
         emailError: freezed == emailError
             ? _value.emailError
@@ -251,6 +264,7 @@ class _$RegisterStateImpl implements _RegisterState {
     this.password = '',
     this.passwordConfirm = '',
     this.isLoading = false,
+    this.isSuccess = false,
     this.emailError,
     this.nicknameError,
     this.passwordError,
@@ -275,6 +289,9 @@ class _$RegisterStateImpl implements _RegisterState {
   @JsonKey()
   final bool isLoading;
   @override
+  @JsonKey()
+  final bool isSuccess;
+  @override
   final String? emailError;
   @override
   final String? nicknameError;
@@ -293,7 +310,7 @@ class _$RegisterStateImpl implements _RegisterState {
 
   @override
   String toString() {
-    return 'RegisterState(email: $email, nickname: $nickname, password: $password, passwordConfirm: $passwordConfirm, isLoading: $isLoading, emailError: $emailError, nicknameError: $nicknameError, passwordError: $passwordError, passwordConfirmError: $passwordConfirmError, generalErrorMessage: $generalErrorMessage, generalErrorType: $generalErrorType)';
+    return 'RegisterState(email: $email, nickname: $nickname, password: $password, passwordConfirm: $passwordConfirm, isLoading: $isLoading, isSuccess: $isSuccess, emailError: $emailError, nicknameError: $nicknameError, passwordError: $passwordError, passwordConfirmError: $passwordConfirmError, generalErrorMessage: $generalErrorMessage, generalErrorType: $generalErrorType)';
   }
 
   @override
@@ -310,6 +327,8 @@ class _$RegisterStateImpl implements _RegisterState {
                 other.passwordConfirm == passwordConfirm) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
+            (identical(other.isSuccess, isSuccess) ||
+                other.isSuccess == isSuccess) &&
             (identical(other.emailError, emailError) ||
                 other.emailError == emailError) &&
             (identical(other.nicknameError, nicknameError) ||
@@ -332,6 +351,7 @@ class _$RegisterStateImpl implements _RegisterState {
     password,
     passwordConfirm,
     isLoading,
+    isSuccess,
     emailError,
     nicknameError,
     passwordError,
@@ -356,6 +376,7 @@ abstract class _RegisterState implements RegisterState {
     final String password,
     final String passwordConfirm,
     final bool isLoading,
+    final bool isSuccess,
     final String? emailError,
     final String? nicknameError,
     final String? passwordError,
@@ -374,6 +395,8 @@ abstract class _RegisterState implements RegisterState {
   String get passwordConfirm;
   @override
   bool get isLoading;
+  @override
+  bool get isSuccess;
   @override
   String? get emailError;
   @override

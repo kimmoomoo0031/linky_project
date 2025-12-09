@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:linky_project_0318/features/app/presentation/pages/splash_page.dart';
 import 'package:linky_project_0318/features/auth/presentation/pages/login_page.dart';
 import 'package:linky_project_0318/features/auth/presentation/pages/register_page.dart';
+import 'package:linky_project_0318/features/auth/presentation/pages/register_success_page.dart';
 
 import '../../features/auth/presentation/pages/terms_of_service_page.dart';
 
@@ -36,6 +37,12 @@ final GoRouter appRouter = GoRouter(
       name: 'signUp',
       builder: (BuildContext context, GoRouterState state) =>
       const RegisterPage(),
+    ),
+    GoRoute(
+      path: '/signUpSuccess',
+      name: 'signUpSuccess',
+      builder: (BuildContext context, GoRouterState state) =>
+      const RegisterSuccessPage(),
     ),
   ],
 );

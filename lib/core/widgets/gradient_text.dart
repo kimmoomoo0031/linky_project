@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../theme/app_colors.dart';
+
 /// グラデーションカラーでテキストを描画するための共通ウィジェット。
 ///
 /// [gradient] には `AppColors.linky45degGradient` などを渡して使用します。
@@ -9,11 +11,15 @@ class GradientText extends StatelessWidget {
     super.key,
     required this.gradient,
     this.style,
+    this.textAlign,
+    this.fontSize
   });
 
   final String text;
   final Gradient gradient;
   final TextStyle? style;
+  final TextAlign? textAlign;
+  final double? fontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +31,10 @@ class GradientText extends StatelessWidget {
       },
       child: Text(
         text,
+        textAlign: textAlign,
         style: baseStyle.copyWith(
-          // ShaderMask で上書きされるので、ここでは単色を指定しておく
-          color: Colors.white,
+          fontSize: fontSize,
+          color: AppColors.primaryWhite,
         ),
       ),
     );
