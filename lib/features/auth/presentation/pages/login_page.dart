@@ -62,7 +62,7 @@ class LoginPage extends ConsumerWidget {
                 alignment: Alignment.centerRight,
                 child: TextButton(
                   onPressed: () {
-                    // TODO: パスワードリセット画面へ遷移
+                    context.push('/passwordReset');
                   },
                   child: Text(
                     'パスワードを忘れた方はこちら',
