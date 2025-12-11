@@ -51,6 +51,12 @@ final GoRouter appRouter = GoRouter(
       builder: (BuildContext context, GoRouterState state) =>
       const PasswordResetPage(),
     ),
+    GoRoute(
+      path: '/passwordResetCode',
+      name: 'passwordResetCode',
+      builder: (BuildContext context, GoRouterState state) =>
+      const PasswordResetPage(),
+    ),
   ],
 );
 
