@@ -39,7 +39,10 @@ class PasswordResetPage extends ConsumerWidget {
       }
 
       if (previous?.isSuccess != true && next.isSuccess) {
-        context.go('/passwordResetCode');
+        context.push(
+          '/passwordResetCode',
+          extra: next.email,
+        );
       }
     });
 
