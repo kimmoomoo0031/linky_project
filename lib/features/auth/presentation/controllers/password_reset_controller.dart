@@ -37,7 +37,9 @@ class PasswordResetController extends StateNotifier<PasswordResetState> {
 
     if (!_validateEmail()) return;
 
-    state = state.copyWith(isLoading: true);
+    // 連続で再送信するケースに備え、成功フラグは毎回リセットしてから開始する。
+    // これにより、画面側の `previous?.isSuccess != true && next.isSuccess` が再度成立する。
+    state = state.copyWith(isLoading: true, isSuccess: false);
 
     try {
       // TODO(api): パスワード再設定メール送信 UseCase を呼び出す。
@@ -48,7 +50,7 @@ class PasswordResetController extends StateNotifier<PasswordResetState> {
         isLoading: false,
         isSuccess: true,
         generalErrorMessage:
-            'パスワード再設定用のリンクをメールアドレス宛に送信しました。\nメールボックスを確認してください。',
+            'パスワード再設定用のコードを送信しました。',
         generalErrorType: LinkyDialogType.info,
       );
     } catch (_) {

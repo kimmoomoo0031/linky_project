@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:linky_project_0318/features/auth/presentation/controllers/login_state.dart';
 import 'package:linky_project_0318/features/auth/presentation/controllers/register_state.dart';
 import 'package:linky_project_0318/features/auth/presentation/controllers/password_reset_state.dart';
+import 'package:linky_project_0318/features/auth/presentation/controllers/password_reset_code_state.dart';
 
 import 'data/repositories/fake_auth_repository.dart';
 import 'domain/repositories/auth_repository.dart';
@@ -10,6 +11,8 @@ import 'domain/usecases/register_usecase.dart';
 import 'presentation/controllers/login_controller.dart';
 import 'presentation/controllers/register_controller.dart';
 import 'presentation/controllers/password_reset_controller.dart';
+import 'presentation/controllers/password_reset_code_controller.dart';
+import 'package:linky_project_0318/core/ui/linky_dialog_event.dart';
 
 /// Auth 機能全体の DI（依存関係のつなぎ込み）を行う Provider 群。
 /// data / domain / presentation をまたいで依存を組み立てる「コンポジションルート」的な役割。
@@ -54,3 +57,13 @@ final passwordResetControllerProvider =
     StateNotifierProvider.autoDispose<PasswordResetController, PasswordResetState>((ref) {
       return PasswordResetController();
     });
+
+/// 認証コード入力画面用 StateNotifierProvider。
+final passwordResetCodeControllerProvider =
+    StateNotifierProvider.autoDispose<PasswordResetCodeController, PasswordResetCodeState>((ref) {
+      return PasswordResetCodeController(ref);
+    });
+
+/// 認証コード画面のダイアログ表示イベント（1回限り）
+final passwordResetCodeDialogEventProvider =
+    StateProvider.autoDispose<LinkyDialogEvent?>((ref) => null);
