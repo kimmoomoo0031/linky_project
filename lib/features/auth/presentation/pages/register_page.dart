@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:linky_project_0318/core/constants/dialog_type.dart';
+import 'package:linky_project_0318/core/constants/app_assets.dart';
 import 'package:linky_project_0318/core/theme/app_colors.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
@@ -152,7 +153,7 @@ class _HelpIconButton extends StatelessWidget {
       child: GestureDetector(
         onTap: onPressed,
         child: SvgPicture.asset(
-          'assets/images/common/helpcircle_logo.svg',
+          AppAssets.helpCircleLogoSvg,
           width: 28,
           height: 28,
         ),
@@ -225,7 +226,7 @@ class _RequiredLabel extends StatelessWidget {
         // デザインで使用している「必須マーク」のアスタリスクアイコン。
         // 実際のパス / 形式に合わせて拡張子は調整してください。
         SvgPicture.asset(
-          'assets/images/common/asterisk_logo.svg',
+          AppAssets.asteriskLogoSvg,
           width: 8,
           height: 8,
         ),
@@ -382,7 +383,7 @@ class _LineLoginButton extends StatelessWidget {
     return AuthActionButton(
       label: 'LINEでログイン',
       icon: SvgPicture.asset(
-        'assets/images/common/line_logo.svg',
+        AppAssets.lineLogoSvg,
         width: 20,
         height: 20,
       ),
@@ -405,7 +406,7 @@ class _GoogleLoginButton extends StatelessWidget {
     return AuthActionButton(
       label: 'Googleでログイン',
       icon: SvgPicture.asset(
-        'assets/images/common/google_logo.svg',
+        AppAssets.googleLogoSvg,
         width: 20,
         height: 20,
       ),
