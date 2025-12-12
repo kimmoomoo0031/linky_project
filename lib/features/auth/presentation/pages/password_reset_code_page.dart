@@ -12,6 +12,9 @@ import 'package:linky_project_0318/features/auth/auth_providers.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/auth_action_button.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/otp_code_input.dart';
 
+import '../controllers/password_reset_code_controller.dart';
+import '../controllers/password_reset_code_state.dart';
+
 /// パスワード再設定の認証コード入力画面。
 ///
 /// 前画面で入力したメールアドレス宛に送信された4桁コードを入力する。
@@ -61,107 +64,233 @@ class _PasswordResetCodePageState extends ConsumerState<PasswordResetCodePage> {
       body: SafeArea(
         child: Stack(
           children: [
-            SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Column(
-                children: [
-                  const SizedBox(height: 32),
-                  Text(
-                    '入力したメールアドレス ${widget.email}\n宛に認証コードを送信しました。',
-                    style: AppTextStyles.body14.copyWith(
-                      color: AppColors.primaryGray,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 32),
-                  OtpCodeInput(
-                    key: _otpKey,
-                    length: 4,
-                    onChanged: controller.onCodeChanged,
-                    hasError: state.codeError != null,
-                  ),
-                  const SizedBox(height: 8),
-                  if (state.codeError != null) ...[
-                    Text(
-                      state.codeError!,
-                      style: AppTextStyles.body12.copyWith(
-                        color: AppColors.error,
-                      ),
-                    ),
-                  ],
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: TextButton(
-                      onPressed: (_isResending || state.isLoading)
-                          ? null
-                          : () async {
-                              setState(() => _isResending = true);
-                              final ok = await controller.resendEmail(
-                                email: widget.email,
-                              );
-                              if (ok) {
-                                _otpKey.currentState?.clear();
-                                _otpKey.currentState?.focusFirst();
-                              }
-                              if (mounted) {
-                                setState(() => _isResending = false);
-                              }
-                            },
-                      child: Text(
-                        'メールを再送信する',
-                        style: AppTextStyles.body12.copyWith(
-                          color: AppColors.primaryActionBlue,
-                          decoration: TextDecoration.underline,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Center(
-                    child: RichText(
-                      text: TextSpan(
-                        style: AppTextStyles.body12.copyWith(
-                          color: AppColors.primaryGray,
-                        ),
-                        children: [
-                          const TextSpan(text: 'メールが届かない場合は'),
-                          TextSpan(
-                            text: 'こちら',
-                            style: AppTextStyles.body12.copyWith(
-                              color: AppColors.primaryActionBlue,
-                              decoration: TextDecoration.underline,
-                            ),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                context.pop();
-                              },
-                          ),
-                          const TextSpan(text: 'をクリック'),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  AuthActionButton(
-                    label: '送信する',
-                    onPressed: () => controller.submit(email: widget.email),
-                    backgroundColor: AppColors.loginButton,
-                    textColor: AppColors.primaryWhite,
-                    style: AuthActionButtonStyle.filled,
-                    isLoading: state.isLoading,
-                  ),
-                ],
-              ),
+            _PasswordResetCodeScrollContent(
+              email: widget.email,
+              state: state,
+              controller: controller,
+              otpKey: _otpKey,
+              isResending: _isResending,
+              onPressedResend: () async {
+                setState(() => _isResending = true);
+                final ok = await controller.resendEmail(email: widget.email);
+                if (ok) {
+                  _otpKey.currentState?.clear();
+                  _otpKey.currentState?.focusFirst();
+                }
+                if (mounted) {
+                  setState(() => _isResending = false);
+                }
+              },
+              onTapBackToEmail: () => context.pop(),
+              onPressedSubmit: () => controller.submit(email: widget.email),
             ),
-            if (_isResending) ...[
-              const ModalBarrier(dismissible: false, color: AppColors.indicatorBackground),
-              const Center(
-                child: CircularProgressIndicator(),
-              ),
-            ],
+            _CenterLoadingOverlay(isVisible: _isResending),
           ],
         ),
       ),
+    );
+  }
+}
+
+/// 認証コード入力画面のスクロール領域（本文）をまとめるクラス。
+///
+/// 画面内の各セクション（説明文、OTP入力、再送信、ヘルプリンク、送信ボタン）を配置する。
+class _PasswordResetCodeScrollContent extends StatelessWidget {
+  const _PasswordResetCodeScrollContent({
+    required this.email,
+    required this.state,
+    required this.controller,
+    required this.otpKey,
+    required this.isResending,
+    required this.onPressedResend,
+    required this.onTapBackToEmail,
+    required this.onPressedSubmit,
+  });
+
+  final String email;
+  final PasswordResetCodeState state;
+  final PasswordResetCodeController controller;
+  final GlobalKey<OtpCodeInputState> otpKey;
+  final bool isResending;
+  final Future<void> Function() onPressedResend;
+  final VoidCallback onTapBackToEmail;
+  final VoidCallback onPressedSubmit;
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: Column(
+        children: [
+          const SizedBox(height: 32),
+          _ResetCodeNoticeText(email: email),
+          const SizedBox(height: 32),
+          _OtpInputSection(
+            otpKey: otpKey,
+            onChanged: controller.onCodeChanged,
+            codeError: state.codeError,
+          ),
+          _ResendEmailButton(
+            isDisabled: isResending || state.isLoading,
+            onPressed: onPressedResend,
+          ),
+          const SizedBox(height: 8),
+          _NoEmailHelpLink(onTapHere: onTapBackToEmail),
+          const SizedBox(height: 24),
+          AuthActionButton(
+            label: '送信する',
+            onPressed: onPressedSubmit,
+            backgroundColor: AppColors.loginButton,
+            textColor: AppColors.primaryWhite,
+            style: AuthActionButtonStyle.filled,
+            isLoading: state.isLoading,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// 「入力したメール宛に認証コードを送信した」旨を表示する説明テキスト用クラス。
+class _ResetCodeNoticeText extends StatelessWidget {
+  const _ResetCodeNoticeText({required this.email});
+
+  final String email;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      '入力したメールアドレス $email\n宛に認証コードを送信しました。',
+      style: AppTextStyles.body14.copyWith(
+        color: AppColors.primaryGray,
+      ),
+      textAlign: TextAlign.center,
+    );
+  }
+}
+
+/// 4桁のOTP入力欄と、入力エラー文言（赤文字）を表示するセクション用クラス。
+///
+/// エラーがある場合は、OTP入力欄の枠線もエラー色で表示する。
+class _OtpInputSection extends StatelessWidget {
+  const _OtpInputSection({
+    required this.otpKey,
+    required this.onChanged,
+    required this.codeError,
+  });
+
+  final GlobalKey<OtpCodeInputState> otpKey;
+  final void Function(int index, String value) onChanged;
+  final String? codeError;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        OtpCodeInput(
+          key: otpKey,
+          length: 4,
+          onChanged: onChanged,
+          hasError: codeError != null,
+        ),
+        const SizedBox(height: 8),
+        if (codeError != null) ...[
+          Text(
+            codeError!,
+            style: AppTextStyles.body12.copyWith(color: AppColors.error),
+          ),
+        ],
+      ],
+    );
+  }
+}
+
+/// 「メールを再送信する」ボタンを表示するクラス。
+///
+/// 再送信中や送信中など、[isDisabled] が true の場合は押せない状態にする。
+class _ResendEmailButton extends StatelessWidget {
+  const _ResendEmailButton({
+    required this.isDisabled,
+    required this.onPressed,
+  });
+
+  final bool isDisabled;
+  final Future<void> Function() onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.centerRight,
+      child: TextButton(
+        onPressed: isDisabled ? null : () => onPressed(),
+        child: Text(
+          'メールを再送信する',
+          style: AppTextStyles.body12.copyWith(
+            color: AppColors.primaryActionBlue,
+            decoration: TextDecoration.underline,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// 「メールが届かない場合は こちら をクリック」のヘルプリンク表示用クラス。
+///
+/// [onTapHere] で「こちら」タップ時の遷移（例：前画面へ戻る）を実行する。
+class _NoEmailHelpLink extends StatelessWidget {
+  const _NoEmailHelpLink({required this.onTapHere});
+
+  final VoidCallback onTapHere;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: RichText(
+        text: TextSpan(
+          style: AppTextStyles.body12.copyWith(
+            color: AppColors.primaryGray,
+          ),
+          children: [
+            const TextSpan(text: 'メールが届かない場合は'),
+            TextSpan(
+              text: 'こちら',
+              style: AppTextStyles.body12.copyWith(
+                color: AppColors.primaryActionBlue,
+                decoration: TextDecoration.underline,
+              ),
+              recognizer: TapGestureRecognizer()..onTap = onTapHere,
+            ),
+            const TextSpan(text: 'をクリック'),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// 画面中央にローディングを表示し、背後の操作を無効化するオーバーレイ用クラス。
+///
+/// 例：メール再送信中など、画面全体をブロックしたい場合に使用する。
+class _CenterLoadingOverlay extends StatelessWidget {
+  const _CenterLoadingOverlay({required this.isVisible});
+
+  final bool isVisible;
+
+  @override
+  Widget build(BuildContext context) {
+    if (!isVisible) return const SizedBox.shrink();
+
+    return const Stack(
+      children: [
+        ModalBarrier(
+          dismissible: false,
+          color: AppColors.indicatorBackground,
+        ),
+        Center(
+          child: CircularProgressIndicator(),
+        ),
+      ],
     );
   }
 }
