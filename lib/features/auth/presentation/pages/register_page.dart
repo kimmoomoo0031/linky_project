@@ -8,6 +8,8 @@ import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
 import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
 import 'package:linky_project_0318/features/auth/auth_providers.dart';
+import 'package:linky_project_0318/features/auth/presentation/controllers/register_controller.dart';
+import 'package:linky_project_0318/features/auth/presentation/controllers/register_state.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/auth_action_button.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/auth_input_decorations.dart';
 
@@ -46,86 +48,158 @@ class RegisterPage extends ConsumerWidget {
       backgroundColor: AppColors.backgroundBlue,
       appBar: const LinkyAppBar(title: '新規登録', showBackButton: true),
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 18),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Container(
-                alignment: Alignment.topRight,
-                child: GestureDetector(
-                  onTap: () {
-                    showLinkyDialog(
-                        context: context,
-                        title: AuthDialogMessages.registerInputRuleTitle,
-                        message: AuthDialogMessages.registerInputRuleBody,
-                        type: LinkyDialogType.info,
-                    );
-                  },
-                  child: SvgPicture.asset(
-                    'assets/images/common/helpcircle_logo.svg',
-                    width: 28,
-                    height: 28,
-                  ),
-                ),
-              ),
-              _EmailField(
-                onChanged: controller.onEmailChanged,
-                errorText: state.emailError,
-              ),
-              const SizedBox(height: 16),
-              _NicknameField(
-                onChanged: controller.onNicknameChanged,
-                errorText: state.nicknameError,
-              ),
-              const SizedBox(height: 16),
-              _PasswordField(
-                onChanged: controller.onPasswordChanged,
-                errorText: state.passwordError,
-              ),
-              const SizedBox(height: 16),
-              _PasswordConfirmField(
-                onChanged: controller.onPasswordConfirmChanged,
-                errorText: state.passwordConfirmError,
-              ),
-              const SizedBox(height: 32),
-              AuthActionButton(
-                label: '登録する',
-                onPressed: controller.submit,
-                backgroundColor: AppColors.loginButton,
-                textColor: AppColors.primaryWhite,
-                style: AuthActionButtonStyle.filled,
-                isLoading: state.isLoading,
-              ),
-              const SizedBox(height: 20),
-              _LineLoginButton(
-                onPressed: () {
-                  // TODO: LINE ログイン
-                },
-              ),
-              const SizedBox(height: 20),
-              _GoogleLoginButton(
-                onPressed: () {
-                  // TODO: Google ログイン
-                },
-              ),
-              const SizedBox(height: 20),
-              Center(
-                child: TextButton(
-                  onPressed: () {
-                    // TODO: ログイン画面へ戻る
-                    context.pop();
-                  },
-                  child: Text(
-                    '登録なしでログインする',
-                    style: AppTextStyles.body12.copyWith(
-                      color: AppColors.primaryActionBlue,
-                      decoration: TextDecoration.underline,
-                    ),
-                  ),
-                ),
-              ),
-            ],
+        child: _RegisterScrollContent(
+          state: state,
+          controller: controller,
+          onPressedHelp: () {
+            showLinkyDialog(
+              context: context,
+              title: AuthDialogMessages.registerInputRuleTitle,
+              message: AuthDialogMessages.registerInputRuleBody,
+              type: LinkyDialogType.info,
+            );
+          },
+          onPressedSubmit: controller.submit,
+          onPressedLineLogin: () {
+            // TODO: LINE ログイン
+          },
+          onPressedGoogleLogin: () {
+            // TODO: Google ログイン
+          },
+          onPressedLoginWithoutRegister: () => context.pop(),
+        ),
+      ),
+    );
+  }
+}
+
+/// 新規登録画面のスクロール領域（本文）をまとめるクラス。
+///
+/// 画面内の各セクション（ヘルプ、入力フォーム、登録ボタン、SNSログイン、導線）を配置する。
+class _RegisterScrollContent extends StatelessWidget {
+  const _RegisterScrollContent({
+    required this.state,
+    required this.controller,
+    required this.onPressedHelp,
+    required this.onPressedSubmit,
+    required this.onPressedLineLogin,
+    required this.onPressedGoogleLogin,
+    required this.onPressedLoginWithoutRegister,
+  });
+
+  final RegisterState state;
+  final RegisterController controller;
+  final VoidCallback onPressedHelp;
+  final VoidCallback onPressedSubmit;
+  final VoidCallback onPressedLineLogin;
+  final VoidCallback onPressedGoogleLogin;
+  final VoidCallback onPressedLoginWithoutRegister;
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 18),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _HelpIconButton(onPressed: onPressedHelp),
+          _EmailField(
+            onChanged: controller.onEmailChanged,
+            errorText: state.emailError,
+          ),
+          const SizedBox(height: 16),
+          _NicknameField(
+            onChanged: controller.onNicknameChanged,
+            errorText: state.nicknameError,
+          ),
+          const SizedBox(height: 16),
+          _PasswordField(
+            onChanged: controller.onPasswordChanged,
+            errorText: state.passwordError,
+          ),
+          const SizedBox(height: 16),
+          _PasswordConfirmField(
+            onChanged: controller.onPasswordConfirmChanged,
+            errorText: state.passwordConfirmError,
+          ),
+          const SizedBox(height: 32),
+          _RegisterButton(
+            isLoading: state.isLoading,
+            onPressed: onPressedSubmit,
+          ),
+          const SizedBox(height: 20),
+          _LineLoginButton(onPressed: onPressedLineLogin),
+          const SizedBox(height: 20),
+          _GoogleLoginButton(onPressed: onPressedGoogleLogin),
+          const SizedBox(height: 20),
+          _LoginWithoutRegisterLink(onPressed: onPressedLoginWithoutRegister),
+        ],
+      ),
+    );
+  }
+}
+
+/// 入力ルールなどのヘルプダイアログを開くアイコンボタンを表示するクラス。
+class _HelpIconButton extends StatelessWidget {
+  const _HelpIconButton({required this.onPressed});
+
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.topRight,
+      child: GestureDetector(
+        onTap: onPressed,
+        child: SvgPicture.asset(
+          'assets/images/common/helpcircle_logo.svg',
+          width: 28,
+          height: 28,
+        ),
+      ),
+    );
+  }
+}
+
+/// 「登録する」ボタンを表示するクラス。
+class _RegisterButton extends StatelessWidget {
+  const _RegisterButton({
+    required this.isLoading,
+    required this.onPressed,
+  });
+
+  final bool isLoading;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return AuthActionButton(
+      label: '登録する',
+      onPressed: onPressed,
+      backgroundColor: AppColors.loginButton,
+      textColor: AppColors.primaryWhite,
+      style: AuthActionButtonStyle.filled,
+      isLoading: isLoading,
+    );
+  }
+}
+
+/// 「登録なしでログインする」リンクを表示するクラス。
+class _LoginWithoutRegisterLink extends StatelessWidget {
+  const _LoginWithoutRegisterLink({required this.onPressed});
+
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: TextButton(
+        onPressed: onPressed,
+        child: Text(
+          '登録なしでログインする',
+          style: AppTextStyles.body12.copyWith(
+            color: AppColors.primaryActionBlue,
+            decoration: TextDecoration.underline,
           ),
         ),
       ),
@@ -160,6 +234,7 @@ class _RequiredLabel extends StatelessWidget {
   }
 }
 
+/// メールアドレス入力欄（ラベル + 必須 + TextField）を表示するセクション用クラス。
 class _EmailField extends StatelessWidget {
   const _EmailField({required this.onChanged, this.errorText});
 
@@ -186,6 +261,7 @@ class _EmailField extends StatelessWidget {
   }
 }
 
+/// ニックネーム入力欄（ラベル + 必須 + TextField）を表示するセクション用クラス。
 class _NicknameField extends StatelessWidget {
   const _NicknameField({required this.onChanged, this.errorText});
 
@@ -211,6 +287,7 @@ class _NicknameField extends StatelessWidget {
   }
 }
 
+/// パスワード入力欄（必須 + 表示切替）を表示するセクション用クラス。
 class _PasswordField extends StatefulWidget {
   const _PasswordField({required this.onChanged, this.errorText});
 
@@ -252,6 +329,7 @@ class _PasswordFieldState extends State<_PasswordField> {
   }
 }
 
+/// パスワード再確認入力欄（必須 + 表示切替）を表示するセクション用クラス。
 class _PasswordConfirmField extends StatefulWidget {
   const _PasswordConfirmField({required this.onChanged, this.errorText});
 
@@ -293,6 +371,7 @@ class _PasswordConfirmFieldState extends State<_PasswordConfirmField> {
   }
 }
 
+/// LINEログインボタンを表示するクラス。
 class _LineLoginButton extends StatelessWidget {
   const _LineLoginButton({required this.onPressed});
 
@@ -315,6 +394,7 @@ class _LineLoginButton extends StatelessWidget {
   }
 }
 
+/// Googleログインボタンを表示するクラス。
 class _GoogleLoginButton extends StatelessWidget {
   const _GoogleLoginButton({required this.onPressed});
 
