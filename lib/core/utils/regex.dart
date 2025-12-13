@@ -12,8 +12,14 @@ class RegexPatterns {
     r'^[A-Za-z0-9\uFF10-\uFF19\uFF21-\uFF3A\uFF41-\uFF5A\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF]{2,12}$'
   );
 
-  ///認証番号数字のみ4桁
-  static final otpCode = RegExp(
-    r'^\\d{$length}\$'
-  );
+  /// OTP 1桁（数字のみ）
+  static final otpDigit = RegExp(r'^\d$');
+
+  /// OTP（数字のみ）N桁
+  ///
+  /// `length` は 4 をデフォルトにする。
+  static RegExp otpCode({int length = 4}) {
+    // 例: length=4 -> ^\d{4}$
+    return RegExp('^\\d{$length}\$');
+  }
 }

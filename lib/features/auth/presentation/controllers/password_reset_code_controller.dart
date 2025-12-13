@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:linky_project_0318/core/utils/validators.dart';
 
+import '../../../../core/utils/regex.dart';
 import 'password_reset_code_state.dart';
 import 'package:linky_project_0318/core/constants/dialog_type.dart';
 import 'package:linky_project_0318/core/ui/linky_dialog_event.dart';
@@ -21,7 +22,7 @@ class PasswordResetCodeController extends StateNotifier<PasswordResetCodeState> 
     if (trimmed.length > 1) {
       trimmed = trimmed.substring(trimmed.length - 1);
     }
-    if (trimmed.isNotEmpty && !RegExp(r'^\d$').hasMatch(trimmed)) {
+    if (trimmed.isNotEmpty && !RegexPatterns.otpDigit.hasMatch(trimmed)) {
       trimmed = '';
     }
 
@@ -81,34 +82,25 @@ class PasswordResetCodeController extends StateNotifier<PasswordResetCodeState> 
 
     if (!_validateCode()) return;
 
-    state = state.copyWith(isLoading: true);
+    // 連続で試すケースに備え、成功フラグは毎回リセットしてから開始する。
+    state = state.copyWith(isLoading: true, isSuccess: false);
 
     try {
       // TODO(api): 認証コード検証用の UseCase を呼び出す。
       await Future.delayed(const Duration(seconds: 1));
 
-      state = state.copyWith(
-        isLoading: false,
-        isSuccess: true,
-      );
-      _emitDialog(
-        const LinkyDialogEvent(
-          type: LinkyDialogType.info,
-          message:
-              '認証コードを確認しました。\nこのあと新しいパスワードを設定する画面へ進みます。（仮実装）',
-        ),
-      );
+      state = state.copyWith(isSuccess: true);
     } catch (_) {
-      state = state.copyWith(
-        isLoading: false,
-        isSuccess: false,
-      );
+      state = state.copyWith(isSuccess: false);
       _emitDialog(
         const LinkyDialogEvent(
           type: LinkyDialogType.error,
           message: '認証コードの確認に失敗しました。\n時間をおいて再度お試しください。',
         ),
       );
+    } finally {
+      // 成功/失敗どちらでも必ずローディングを解除する。
+      state = state.copyWith(isLoading: false);
     }
   }
 

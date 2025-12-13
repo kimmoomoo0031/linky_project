@@ -66,7 +66,7 @@ class Validators {
       return '認証コードを入力してください。';
     }
 
-    if (!RegexPatterns.otpCode.hasMatch(trimmed)) {
+    if (!RegexPatterns.otpCode(length: length).hasMatch(trimmed)) {
       return '${length}桁の認証コードを入力してください。';
     }
     return null;

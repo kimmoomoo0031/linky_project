@@ -11,6 +11,7 @@ import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
 import 'package:linky_project_0318/features/auth/auth_providers.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/auth_action_button.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/otp_code_input.dart';
+import 'package:linky_project_0318/features/auth/presentation/pages/password_reset_new_password_page.dart';
 
 import '../controllers/password_reset_code_controller.dart';
 import '../controllers/password_reset_code_state.dart';
@@ -53,6 +54,19 @@ class _PasswordResetCodePageState extends ConsumerState<PasswordResetCodePage> {
         type: event.type,
       );
       controller.clearDialogEvent();
+    });
+
+    // 認証コード検証が成功したら「新しいパスワード設定」画面へ遷移する。
+    ref.listen(passwordResetCodeControllerProvider, (previous, next) {
+      if (previous?.isSuccess != true && next.isSuccess) {
+        context.push(
+          '/passwordResetNewPassword',
+          extra: PasswordResetNewPasswordArgs(
+            email: widget.email,
+            code: next.combinedCode,
+          ),
+        );
+      }
     });
 
     return Scaffold(
@@ -121,6 +135,7 @@ class _PasswordResetCodeScrollContent extends StatelessWidget {
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const SizedBox(height: 32),
           _ResetCodeNoticeText(email: email),

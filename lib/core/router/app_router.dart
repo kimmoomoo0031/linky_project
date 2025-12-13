@@ -7,6 +7,7 @@ import 'package:linky_project_0318/features/auth/presentation/pages/register_pag
 import 'package:linky_project_0318/features/auth/presentation/pages/register_success_page.dart';
 import 'package:linky_project_0318/features/auth/presentation/pages/password_reset_page.dart';
 import 'package:linky_project_0318/features/auth/presentation/pages/password_reset_code_page.dart';
+import 'package:linky_project_0318/features/auth/presentation/pages/password_reset_new_password_page.dart';
 
 import '../../features/auth/presentation/pages/terms_of_service_page.dart';
 
@@ -59,6 +60,17 @@ final GoRouter appRouter = GoRouter(
           PasswordResetCodePage(
         email: (state.extra as String?) ?? '',
       ),
+    ),
+    GoRoute(
+      path: '/passwordResetNewPassword',
+      name: 'passwordResetNewPassword',
+      builder: (BuildContext context, GoRouterState state) {
+        final args = state.extra as PasswordResetNewPasswordArgs?;
+        return PasswordResetNewPasswordPage(
+          email: args?.email ?? '',
+          code: args?.code ?? '',
+        );
+      },
     ),
   ],
 );

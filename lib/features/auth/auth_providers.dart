@@ -3,15 +3,18 @@ import 'package:linky_project_0318/features/auth/presentation/controllers/login_
 import 'package:linky_project_0318/features/auth/presentation/controllers/register_state.dart';
 import 'package:linky_project_0318/features/auth/presentation/controllers/password_reset_state.dart';
 import 'package:linky_project_0318/features/auth/presentation/controllers/password_reset_code_state.dart';
+import 'package:linky_project_0318/features/auth/presentation/controllers/password_reset_new_password_state.dart';
 
 import 'data/repositories/fake_auth_repository.dart';
 import 'domain/repositories/auth_repository.dart';
 import 'domain/usecases/login_usecase.dart';
 import 'domain/usecases/register_usecase.dart';
+import 'domain/usecases/reset_password_usecase.dart';
 import 'presentation/controllers/login_controller.dart';
 import 'presentation/controllers/register_controller.dart';
 import 'presentation/controllers/password_reset_controller.dart';
 import 'presentation/controllers/password_reset_code_controller.dart';
+import 'presentation/controllers/password_reset_new_password_controller.dart';
 import 'package:linky_project_0318/core/ui/linky_dialog_event.dart';
 
 /// Auth 機能全体の DI（依存関係のつなぎ込み）を行う Provider 群。
@@ -44,6 +47,12 @@ final registerUseCaseProvider = Provider<RegisterUseCase>((ref) {
   return RegisterUseCase(repo);
 });
 
+/// 新パスワード設定ユースケース。
+final resetPasswordUseCaseProvider = Provider<ResetPasswordUseCase>((ref) {
+  final repo = ref.watch(authRepositoryProvider);
+  return ResetPasswordUseCase(repo);
+});
+
 /// 新規登録画面用 StateNotifierProvider。
 /// autoDisposeを書くことでバリデーションエラー時、画面から離れたらエラーがリセット
 final registerControllerProvider =
@@ -63,6 +72,14 @@ final passwordResetCodeControllerProvider =
     StateNotifierProvider.autoDispose<PasswordResetCodeController, PasswordResetCodeState>((ref) {
       return PasswordResetCodeController(ref);
     });
+
+/// 新しいパスワード設定画面用 StateNotifierProvider。
+final passwordResetNewPasswordControllerProvider =
+    StateNotifierProvider.autoDispose<
+        PasswordResetNewPasswordController, PasswordResetNewPasswordState>((ref) {
+  final useCase = ref.watch(resetPasswordUseCaseProvider);
+  return PasswordResetNewPasswordController(useCase);
+});
 
 /// 認証コード画面のダイアログ表示イベント（1回限り）
 final passwordResetCodeDialogEventProvider =
