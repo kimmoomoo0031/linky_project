@@ -1,0 +1,27 @@
+/// アセットパスを一箇所に集約するための定義。
+///
+/// - パス変更（フォルダ移動）や差し替え（リブランディング）時に修正箇所を1箇所にする
+/// - タイポ（文字列の打ち間違い）を減らす
+class AppAssets {
+  AppAssets._();
+
+  static const _common = 'assets/images/common';
+  static const _html = 'assets/html';
+
+  // ---- common (svg) ----
+  static const linkyLogoSvg = '$_common/linky_logo.svg';
+  static const backLogoSvg = '$_common/back_logo.svg';
+  static const helpCircleLogoSvg = '$_common/helpcircle_logo.svg';
+  static const asteriskLogoSvg = '$_common/asterisk_logo.svg';
+  static const lineLogoSvg = '$_common/line_logo.svg';
+  static const googleLogoSvg = '$_common/google_logo.svg';
+  static const userLogoSvg = '$_common/user_logo.svg';
+
+  // ---- common (png) ----
+  static const passwordResetLogoPng = '$_common/password_reset_logo.png';
+
+  // ---- html ----
+  static const termsOfServiceJaHtml = '$_html/terms_of_service_ja.html';
+}
+
+
