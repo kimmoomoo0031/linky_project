@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:linky_project_0318/core/utils/regex.dart';
 
 class Validators {
@@ -50,6 +51,23 @@ class Validators {
     }
     if (confirmation != password) {
       return 'パスワードが一致しません';
+    }
+    return null;
+  }
+
+  ///認証番号4桁確認バリデーション
+  static String? validateOtpCode(
+      String code, {
+        int length = 4,
+      }) {
+    final trimmed = code.trim();
+
+    if (trimmed.isEmpty) {
+      return '認証コードを入力してください。';
+    }
+
+    if (!RegexPatterns.otpCode.hasMatch(trimmed)) {
+      return '${length}桁の認証コードを入力してください。';
     }
     return null;
   }

@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:linky_project_0318/core/utils/validators.dart';
 
 import 'password_reset_code_state.dart';
 import 'package:linky_project_0318/core/constants/dialog_type.dart';
@@ -63,13 +64,9 @@ class PasswordResetCodeController extends StateNotifier<PasswordResetCodeState> 
   }
 
   bool _validateCode() {
-    final code = state.combinedCode;
-
-    if (code.length != 4 || !RegExp(r'^\d{4}$').hasMatch(code)) {
-      state = state.copyWith(
-        isSuccess: false,
-        codeError: '4桁の認証コードを入力してください。',
-      );
+    final error = Validators.validateOtpCode(state.combinedCode, length: 4);
+    if (error != null) {
+      state = state.copyWith(isSuccess: false, codeError: error);
       return false;
     }
     return true;
