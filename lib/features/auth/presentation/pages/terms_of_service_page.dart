@@ -88,8 +88,6 @@ class _TermsBody extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 18),
       child: Column(
         children: [
-          const _TermsWebViewTitleHint(),
-          const SizedBox(height: 12),
           Expanded(
             child: _TermsWebViewSection(controller: webViewController),
           ),
@@ -104,20 +102,6 @@ class _TermsBody extends StatelessWidget {
           const _TermsFooterHintText(),
         ],
       ),
-    );
-  }
-}
-
-/// WebView 表示前の補足（スクロールして同意ボタンが有効になる旨）を表示するクラス。
-class _TermsWebViewTitleHint extends StatelessWidget {
-  const _TermsWebViewTitleHint();
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      '最後までスクロールすると「同意する」ボタンが有効になります。',
-      style: AppTextStyles.body12.copyWith(color: AppColors.primaryGray),
-      textAlign: TextAlign.center,
     );
   }
 }

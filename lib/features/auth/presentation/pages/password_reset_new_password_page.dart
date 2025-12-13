@@ -11,7 +11,7 @@ import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
 import 'package:linky_project_0318/features/auth/auth_providers.dart';
 import 'package:linky_project_0318/features/auth/presentation/controllers/password_reset_new_password_state.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/auth_action_button.dart';
-import 'package:linky_project_0318/features/auth/presentation/widgets/auth_input_decorations.dart';
+import 'package:linky_project_0318/features/auth/presentation/widgets/auth_password_field.dart';
 
 /// 新しいパスワード設定画面へ渡す引数。
 ///
@@ -168,31 +168,13 @@ class _NewPasswordField extends StatefulWidget {
 }
 
 class _NewPasswordFieldState extends State<_NewPasswordField> {
-  bool _obscure = true;
-
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          '新しいパスワード',
-          style: AppTextStyles.body14.copyWith(color: AppColors.primaryGray),
-        ),
-        const SizedBox(height: 8),
-        TextField(
-          obscureText: _obscure,
-          onChanged: widget.onChanged,
-          decoration: AuthInputDecorations.textField(
-            hintText: '********',
-            errorText: widget.errorText,
-            suffixIcon: IconButton(
-              onPressed: () => setState(() => _obscure = !_obscure),
-              icon: Icon(_obscure ? Icons.visibility_off : Icons.visibility),
-            ),
-          ),
-        ),
-      ],
+    return AuthPasswordField(
+      label: '新しいパスワード',
+      errorText: widget.errorText,
+      onChanged: widget.onChanged,
+      textInputAction: TextInputAction.next,
     );
   }
 }
@@ -213,31 +195,13 @@ class _NewPasswordConfirmField extends StatefulWidget {
 }
 
 class _NewPasswordConfirmFieldState extends State<_NewPasswordConfirmField> {
-  bool _obscure = true;
-
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          '新しいパスワード再確認',
-          style: AppTextStyles.body14.copyWith(color: AppColors.primaryGray),
-        ),
-        const SizedBox(height: 8),
-        TextField(
-          obscureText: _obscure,
-          onChanged: widget.onChanged,
-          decoration: AuthInputDecorations.textField(
-            hintText: '********',
-            errorText: widget.errorText,
-            suffixIcon: IconButton(
-              onPressed: () => setState(() => _obscure = !_obscure),
-              icon: Icon(_obscure ? Icons.visibility_off : Icons.visibility),
-            ),
-          ),
-        ),
-      ],
+    return AuthPasswordField(
+      label: '新しいパスワード再確認',
+      errorText: widget.errorText,
+      onChanged: widget.onChanged,
+      textInputAction: TextInputAction.done,
     );
   }
 }

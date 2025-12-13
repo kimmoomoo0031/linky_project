@@ -11,7 +11,7 @@ import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
 import 'package:linky_project_0318/features/auth/auth_providers.dart';
 import 'package:linky_project_0318/features/auth/presentation/controllers/password_reset_state.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/auth_action_button.dart';
-import 'package:linky_project_0318/features/auth/presentation/widgets/auth_input_decorations.dart';
+import 'package:linky_project_0318/features/auth/presentation/widgets/auth_labeled_text_field.dart';
 
 /// パスワード再設定リクエスト画面。
 ///
@@ -149,25 +149,13 @@ class _EmailInputSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'メールアドレス',
-          style: AppTextStyles.body14.copyWith(
-            color: AppColors.primaryGray,
-          ),
-        ),
-        const SizedBox(height: 8),
-        TextField(
-          keyboardType: TextInputType.emailAddress,
-          onChanged: onChanged,
-          decoration: AuthInputDecorations.textField(
-            hintText: 'yamada@example.com',
-            errorText: errorText,
-          ),
-        ),
-      ],
+    return AuthLabeledTextField(
+      label: 'メールアドレス',
+      hintText: 'yamada@example.com',
+      keyboardType: TextInputType.emailAddress,
+      errorText: errorText,
+      onChanged: onChanged,
+      textInputAction: TextInputAction.done,
     );
   }
 }
