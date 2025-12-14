@@ -20,11 +20,8 @@ mixin _$PasswordResetNewPasswordState {
   String get newPassword => throw _privateConstructorUsedError;
   String get newPasswordConfirm => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
-  bool get isSuccess => throw _privateConstructorUsedError;
   String? get newPasswordError => throw _privateConstructorUsedError;
   String? get newPasswordConfirmError => throw _privateConstructorUsedError;
-  String? get generalErrorMessage => throw _privateConstructorUsedError;
-  LinkyDialogType? get generalErrorType => throw _privateConstructorUsedError;
 
   /// Create a copy of PasswordResetNewPasswordState
   /// with the given fields replaced by the non-null parameter values.
@@ -48,11 +45,8 @@ abstract class $PasswordResetNewPasswordStateCopyWith<$Res> {
     String newPassword,
     String newPasswordConfirm,
     bool isLoading,
-    bool isSuccess,
     String? newPasswordError,
     String? newPasswordConfirmError,
-    String? generalErrorMessage,
-    LinkyDialogType? generalErrorType,
   });
 }
 
@@ -77,11 +71,8 @@ class _$PasswordResetNewPasswordStateCopyWithImpl<
     Object? newPassword = null,
     Object? newPasswordConfirm = null,
     Object? isLoading = null,
-    Object? isSuccess = null,
     Object? newPasswordError = freezed,
     Object? newPasswordConfirmError = freezed,
-    Object? generalErrorMessage = freezed,
-    Object? generalErrorType = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -97,10 +88,6 @@ class _$PasswordResetNewPasswordStateCopyWithImpl<
                 ? _value.isLoading
                 : isLoading // ignore: cast_nullable_to_non_nullable
                       as bool,
-            isSuccess: null == isSuccess
-                ? _value.isSuccess
-                : isSuccess // ignore: cast_nullable_to_non_nullable
-                      as bool,
             newPasswordError: freezed == newPasswordError
                 ? _value.newPasswordError
                 : newPasswordError // ignore: cast_nullable_to_non_nullable
@@ -109,14 +96,6 @@ class _$PasswordResetNewPasswordStateCopyWithImpl<
                 ? _value.newPasswordConfirmError
                 : newPasswordConfirmError // ignore: cast_nullable_to_non_nullable
                       as String?,
-            generalErrorMessage: freezed == generalErrorMessage
-                ? _value.generalErrorMessage
-                : generalErrorMessage // ignore: cast_nullable_to_non_nullable
-                      as String?,
-            generalErrorType: freezed == generalErrorType
-                ? _value.generalErrorType
-                : generalErrorType // ignore: cast_nullable_to_non_nullable
-                      as LinkyDialogType?,
           )
           as $Val,
     );
@@ -136,11 +115,8 @@ abstract class _$$PasswordResetNewPasswordStateImplCopyWith<$Res>
     String newPassword,
     String newPasswordConfirm,
     bool isLoading,
-    bool isSuccess,
     String? newPasswordError,
     String? newPasswordConfirmError,
-    String? generalErrorMessage,
-    LinkyDialogType? generalErrorType,
   });
 }
 
@@ -165,11 +141,8 @@ class __$$PasswordResetNewPasswordStateImplCopyWithImpl<$Res>
     Object? newPassword = null,
     Object? newPasswordConfirm = null,
     Object? isLoading = null,
-    Object? isSuccess = null,
     Object? newPasswordError = freezed,
     Object? newPasswordConfirmError = freezed,
-    Object? generalErrorMessage = freezed,
-    Object? generalErrorType = freezed,
   }) {
     return _then(
       _$PasswordResetNewPasswordStateImpl(
@@ -185,10 +158,6 @@ class __$$PasswordResetNewPasswordStateImplCopyWithImpl<$Res>
             ? _value.isLoading
             : isLoading // ignore: cast_nullable_to_non_nullable
                   as bool,
-        isSuccess: null == isSuccess
-            ? _value.isSuccess
-            : isSuccess // ignore: cast_nullable_to_non_nullable
-                  as bool,
         newPasswordError: freezed == newPasswordError
             ? _value.newPasswordError
             : newPasswordError // ignore: cast_nullable_to_non_nullable
@@ -197,14 +166,6 @@ class __$$PasswordResetNewPasswordStateImplCopyWithImpl<$Res>
             ? _value.newPasswordConfirmError
             : newPasswordConfirmError // ignore: cast_nullable_to_non_nullable
                   as String?,
-        generalErrorMessage: freezed == generalErrorMessage
-            ? _value.generalErrorMessage
-            : generalErrorMessage // ignore: cast_nullable_to_non_nullable
-                  as String?,
-        generalErrorType: freezed == generalErrorType
-            ? _value.generalErrorType
-            : generalErrorType // ignore: cast_nullable_to_non_nullable
-                  as LinkyDialogType?,
       ),
     );
   }
@@ -218,11 +179,8 @@ class _$PasswordResetNewPasswordStateImpl
     this.newPassword = '',
     this.newPasswordConfirm = '',
     this.isLoading = false,
-    this.isSuccess = false,
     this.newPasswordError,
     this.newPasswordConfirmError,
-    this.generalErrorMessage,
-    this.generalErrorType,
   });
 
   @override
@@ -235,20 +193,13 @@ class _$PasswordResetNewPasswordStateImpl
   @JsonKey()
   final bool isLoading;
   @override
-  @JsonKey()
-  final bool isSuccess;
-  @override
   final String? newPasswordError;
   @override
   final String? newPasswordConfirmError;
-  @override
-  final String? generalErrorMessage;
-  @override
-  final LinkyDialogType? generalErrorType;
 
   @override
   String toString() {
-    return 'PasswordResetNewPasswordState(newPassword: $newPassword, newPasswordConfirm: $newPasswordConfirm, isLoading: $isLoading, isSuccess: $isSuccess, newPasswordError: $newPasswordError, newPasswordConfirmError: $newPasswordConfirmError, generalErrorMessage: $generalErrorMessage, generalErrorType: $generalErrorType)';
+    return 'PasswordResetNewPasswordState(newPassword: $newPassword, newPasswordConfirm: $newPasswordConfirm, isLoading: $isLoading, newPasswordError: $newPasswordError, newPasswordConfirmError: $newPasswordConfirmError)';
   }
 
   @override
@@ -262,19 +213,13 @@ class _$PasswordResetNewPasswordStateImpl
                 other.newPasswordConfirm == newPasswordConfirm) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
-            (identical(other.isSuccess, isSuccess) ||
-                other.isSuccess == isSuccess) &&
             (identical(other.newPasswordError, newPasswordError) ||
                 other.newPasswordError == newPasswordError) &&
             (identical(
                   other.newPasswordConfirmError,
                   newPasswordConfirmError,
                 ) ||
-                other.newPasswordConfirmError == newPasswordConfirmError) &&
-            (identical(other.generalErrorMessage, generalErrorMessage) ||
-                other.generalErrorMessage == generalErrorMessage) &&
-            (identical(other.generalErrorType, generalErrorType) ||
-                other.generalErrorType == generalErrorType));
+                other.newPasswordConfirmError == newPasswordConfirmError));
   }
 
   @override
@@ -283,11 +228,8 @@ class _$PasswordResetNewPasswordStateImpl
     newPassword,
     newPasswordConfirm,
     isLoading,
-    isSuccess,
     newPasswordError,
     newPasswordConfirmError,
-    generalErrorMessage,
-    generalErrorType,
   );
 
   /// Create a copy of PasswordResetNewPasswordState
@@ -310,11 +252,8 @@ abstract class _PasswordResetNewPasswordState
     final String newPassword,
     final String newPasswordConfirm,
     final bool isLoading,
-    final bool isSuccess,
     final String? newPasswordError,
     final String? newPasswordConfirmError,
-    final String? generalErrorMessage,
-    final LinkyDialogType? generalErrorType,
   }) = _$PasswordResetNewPasswordStateImpl;
 
   @override
@@ -324,15 +263,9 @@ abstract class _PasswordResetNewPasswordState
   @override
   bool get isLoading;
   @override
-  bool get isSuccess;
-  @override
   String? get newPasswordError;
   @override
   String? get newPasswordConfirmError;
-  @override
-  String? get generalErrorMessage;
-  @override
-  LinkyDialogType? get generalErrorType;
 
   /// Create a copy of PasswordResetNewPasswordState
   /// with the given fields replaced by the non-null parameter values.

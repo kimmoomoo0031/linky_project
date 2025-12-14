@@ -9,13 +9,14 @@ import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
 import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
 import 'package:linky_project_0318/features/auth/auth_providers.dart';
+import 'package:linky_project_0318/features/auth/presentation/auth_dialog_event_providers.dart';
 import 'package:linky_project_0318/features/auth/presentation/controllers/register_controller.dart';
 import 'package:linky_project_0318/features/auth/presentation/controllers/register_state.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/auth_action_button.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/auth_labeled_text_field.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/auth_password_field.dart';
 
-import '../../../../core/constants/dialog_messages.dart';
+import 'package:linky_project_0318/features/auth/presentation/constants/auth_dialog_messages.dart';
 
 /// Linky 新規登録画面。
 ///
@@ -29,18 +30,21 @@ class RegisterPage extends ConsumerWidget {
     final state = ref.watch(registerControllerProvider);
     final controller = ref.read(registerControllerProvider.notifier);
 
-    // generalErrorMessage がセットされたときにだけダイアログを出し、
+    // ダイアログ表示イベント（1回限り）
+    ref.listen(registerDialogEventProvider, (previous, next) async {
+      final event = next;
+      if (event == null) return;
+      await showLinkyDialog(
+        context: context,
+        title: event.title,
+        message: event.message,
+        type: event.type,
+      );
+      ref.read(registerDialogEventProvider.notifier).state = null;
+    });
+
     // 登録成功（isSuccess == true）になったタイミングで成功画面へ遷移する。
     ref.listen(registerControllerProvider, (previous, next) async {
-      final message = next.generalErrorMessage;
-
-      if (message != null && message.isNotEmpty) {
-        final type = next.generalErrorType ?? LinkyDialogType.info;
-        await showLinkyDialog(context: context, message: message, type: type);
-        ref.read(registerControllerProvider.notifier).clearGeneralError();
-      }
-
-      // 登録成功を検知して成功画面へ遷移
       if (previous?.isSuccess != true && next.isSuccess) {
         context.go('/signUpSuccess');
       }

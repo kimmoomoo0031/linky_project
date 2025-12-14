@@ -9,6 +9,7 @@ import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/gradient_text.dart';
 import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
 import 'package:linky_project_0318/features/auth/auth_providers.dart';
+import 'package:linky_project_0318/features/auth/presentation/auth_dialog_event_providers.dart';
 import 'package:linky_project_0318/features/auth/presentation/controllers/login_controller.dart';
 import 'package:linky_project_0318/features/auth/presentation/controllers/login_state.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/auth_action_button.dart';
@@ -24,22 +25,17 @@ class LoginPage extends ConsumerWidget {
     final state = ref.watch(loginControllerProvider);
     final controller = ref.read(loginControllerProvider.notifier);
 
-    // generalErrorMessage がセットされたときにだけダイアログを出す。
-    ref.listen(loginControllerProvider, (previous, next) async {
-      final message = next.generalErrorMessage;
-      if (message == null || message.isEmpty) {
-        return;
-      }
-
-      // ダイアログを表示して、閉じたタイミングでエラーをクリアする。
-      final type = next.generalErrorType ?? LinkyDialogType.info;
-      showLinkyDialog(
+    // ダイアログ表示イベント（1回限り）。
+    ref.listen(loginDialogEventProvider, (previous, next) async {
+      final event = next;
+      if (event == null) return;
+      await showLinkyDialog(
         context: context,
-        message: message,
-        type: type,
-      ).then((_) {
-        ref.read(loginControllerProvider.notifier).clearGeneralError();
-      });
+        title: event.title,
+        message: event.message,
+        type: event.type,
+      );
+      ref.read(loginDialogEventProvider.notifier).state = null;
     });
 
     return Scaffold(

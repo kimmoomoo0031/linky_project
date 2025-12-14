@@ -3,15 +3,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'register_state.dart';
 import 'package:linky_project_0318/core/constants/dialog_type.dart';
 import 'package:linky_project_0318/core/utils/validators.dart';
+import 'package:linky_project_0318/core/ui/events/linky_dialog_event.dart';
+import 'package:linky_project_0318/core/constants/common_dialog_messages.dart';
 import 'package:linky_project_0318/features/auth/domain/usecases/register_usecase.dart';
 import 'package:linky_project_0318/features/auth/domain/usecases/register_result.dart';
+import 'package:linky_project_0318/features/auth/presentation/auth_dialog_event_providers.dart';
 
 /// 新規登録画面の入力値・バリデーション・ローディング状態を管理するコントローラ。
 ///
 /// RegisterUseCase を通じて Repository と通信し、結果は RegisterResult で受け取る。
 class RegisterController extends StateNotifier<RegisterState> {
-  RegisterController(this._registerUseCase) : super(const RegisterState());
+  RegisterController(this._ref, this._registerUseCase) : super(const RegisterState());
 
+  final Ref _ref;
   final RegisterUseCase _registerUseCase;
 
   void onEmailChanged(String value) {
@@ -30,12 +34,8 @@ class RegisterController extends StateNotifier<RegisterState> {
     state = state.copyWith(passwordConfirm: value, passwordConfirmError: null);
   }
 
-  /// ダイアログ表示後などに全体エラーをリセットするためのヘルパー。
-  void clearGeneralError() {
-    state = state.copyWith(
-      generalErrorMessage: null,
-      generalErrorType: null,
-    );
+  void _emitDialog(LinkyDialogEvent event) {
+    _ref.read(registerDialogEventProvider.notifier).state = event;
   }
 
   /// 全てのエラーメッセージをクリアする。
@@ -45,8 +45,6 @@ class RegisterController extends StateNotifier<RegisterState> {
       nicknameError: null,
       passwordError: null,
       passwordConfirmError: null,
-      generalErrorMessage: null,
-      generalErrorType: null,
     );
   }
 
@@ -117,24 +115,24 @@ class RegisterController extends StateNotifier<RegisterState> {
         state = state.copyWith(
           isSuccess: false,
           emailError: 'このメールアドレスはすでに登録されています',
-          generalErrorMessage: null,
-          generalErrorType: null,
         );
       },
       networkError: () {
-        state = state.copyWith(
-          isSuccess: false,
-          generalErrorMessage:
-              'ネットワークエラーが発生しました。\n通信状況を確認してから、もう一度お試しください。',
-          generalErrorType: LinkyDialogType.error,
+        state = state.copyWith(isSuccess: false);
+        _emitDialog(
+          const LinkyDialogEvent(
+            type: LinkyDialogType.error,
+            message: CommonDialogMessages.networkError,
+          ),
         );
       },
       serverError: () {
-        state = state.copyWith(
-          isSuccess: false,
-          generalErrorMessage:
-              'サーバーエラーが発生しました。\nしばらく時間をおいて再度お試しください。',
-          generalErrorType: LinkyDialogType.error,
+        state = state.copyWith(isSuccess: false);
+        _emitDialog(
+          const LinkyDialogEvent(
+            type: LinkyDialogType.error,
+            message: CommonDialogMessages.serverError,
+          ),
         );
       },
     );
@@ -144,9 +142,12 @@ class RegisterController extends StateNotifier<RegisterState> {
   void _handleUnexpectedError() {
     state = state.copyWith(
       isSuccess: false,
-      generalErrorMessage:
-          '登録に失敗しました。\n時間をおいて再度お試しください。',
-      generalErrorType: LinkyDialogType.error,
+    );
+    _emitDialog(
+      const LinkyDialogEvent(
+        type: LinkyDialogType.error,
+        message: CommonDialogMessages.unexpectedError,
+      ),
     );
   }
 }

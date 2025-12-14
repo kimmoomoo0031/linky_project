@@ -1,8 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:linky_project_0318/core/constants/dialog_type.dart';
 import 'package:linky_project_0318/core/utils/validators.dart';
+import 'package:linky_project_0318/core/constants/common_dialog_messages.dart';
+import 'package:linky_project_0318/core/constants/dialog_type.dart';
+import 'package:linky_project_0318/core/ui/events/linky_dialog_event.dart';
 import 'package:linky_project_0318/features/auth/domain/usecases/reset_password_result.dart';
 import 'package:linky_project_0318/features/auth/domain/usecases/reset_password_usecase.dart';
+import 'package:linky_project_0318/features/auth/presentation/auth_dialog_event_providers.dart';
+import 'package:linky_project_0318/features/auth/presentation/constants/auth_dialog_messages.dart';
 
 import 'password_reset_new_password_state.dart';
 
@@ -15,9 +19,10 @@ import 'password_reset_new_password_state.dart';
 /// を一元管理する。
 class PasswordResetNewPasswordController
     extends StateNotifier<PasswordResetNewPasswordState> {
-  PasswordResetNewPasswordController(this._useCase)
+  PasswordResetNewPasswordController(this._ref, this._useCase)
       : super(const PasswordResetNewPasswordState());
 
+  final Ref _ref;
   final ResetPasswordUseCase _useCase;
 
   void onNewPasswordChanged(String value) {
@@ -29,12 +34,8 @@ class PasswordResetNewPasswordController
         state.copyWith(newPasswordConfirm: value, newPasswordConfirmError: null);
   }
 
-  /// ダイアログ表示後などに全体メッセージをリセットする。
-  void clearGeneralMessage() {
-    state = state.copyWith(
-      generalErrorMessage: null,
-      generalErrorType: null,
-    );
+  void _emitDialog(LinkyDialogEvent event) {
+    _ref.read(passwordResetNewPasswordDialogEventProvider.notifier).state = event;
   }
 
   bool _validateAll() {
@@ -46,7 +47,6 @@ class PasswordResetNewPasswordController
 
     if (passwordError != null || confirmError != null) {
       state = state.copyWith(
-        isSuccess: false,
         newPasswordError: passwordError,
         newPasswordConfirmError: confirmError,
       );
@@ -62,8 +62,7 @@ class PasswordResetNewPasswordController
     if (state.isLoading) return;
     if (!_validateAll()) return;
 
-    // 連続で試すケースに備え、成功フラグは毎回リセットしてから開始する。
-    state = state.copyWith(isLoading: true, isSuccess: false);
+    state = state.copyWith(isLoading: true);
 
     try {
       final result = await _requestToServer(email: email, code: code);
@@ -91,12 +90,19 @@ class PasswordResetNewPasswordController
   void _handleResetPasswordResult(ResetPasswordResult result) {
     result.when(
       success: () {
-        state = state.copyWith(isSuccess: true);
+        _emitDialog(
+          const LinkyDialogEvent(
+            type: LinkyDialogType.info,
+            message: AuthDialogMessages.resetPasswordSuccess,
+          ),
+        );
       },
       invalidCode: () {
-        state = state.copyWith(
-          generalErrorMessage: '認証コードが無効です。\nもう一度やり直してください。',
-          generalErrorType: LinkyDialogType.error,
+        _emitDialog(
+          const LinkyDialogEvent(
+            type: LinkyDialogType.error,
+            message: AuthDialogMessages.invalidResetCode,
+          ),
         );
       },
       weakPassword: () {
@@ -105,17 +111,19 @@ class PasswordResetNewPasswordController
         );
       },
       networkError: () {
-        state = state.copyWith(
-          generalErrorMessage:
-              'ネットワークエラーが発生しました。\n通信状況を確認してから、もう一度お試しください。',
-          generalErrorType: LinkyDialogType.error,
+        _emitDialog(
+          const LinkyDialogEvent(
+            type: LinkyDialogType.error,
+            message: CommonDialogMessages.networkError,
+          ),
         );
       },
       serverError: () {
-        state = state.copyWith(
-          generalErrorMessage:
-              'サーバーエラーが発生しました。\nしばらく時間をおいて再度お試しください。',
-          generalErrorType: LinkyDialogType.error,
+        _emitDialog(
+          const LinkyDialogEvent(
+            type: LinkyDialogType.error,
+            message: CommonDialogMessages.serverError,
+          ),
         );
       },
     );
@@ -123,10 +131,11 @@ class PasswordResetNewPasswordController
 
   /// 想定外の例外発生時のエラーハンドリング。
   void _handleUnexpectedError() {
-    state = state.copyWith(
-      generalErrorMessage:
-          '予期せぬエラーが発生しました。\nしばらく時間をおいて再度お試しください。',
-      generalErrorType: LinkyDialogType.error,
+    _emitDialog(
+      const LinkyDialogEvent(
+        type: LinkyDialogType.error,
+        message: CommonDialogMessages.unexpectedError,
+      ),
     );
   }
 }

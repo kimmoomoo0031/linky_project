@@ -4,8 +4,8 @@ import 'package:linky_project_0318/core/utils/validators.dart';
 import '../../../../core/utils/regex.dart';
 import 'password_reset_code_state.dart';
 import 'package:linky_project_0318/core/constants/dialog_type.dart';
-import 'package:linky_project_0318/core/ui/linky_dialog_event.dart';
-import 'package:linky_project_0318/features/auth/auth_providers.dart';
+import 'package:linky_project_0318/core/ui/events/linky_dialog_event.dart';
+import 'package:linky_project_0318/features/auth/presentation/auth_dialog_event_providers.dart';
 
 /// パスワード再設定の「認証コード入力」画面用コントローラ。
 ///
@@ -40,14 +40,6 @@ class PasswordResetCodeController extends StateNotifier<PasswordResetCodeState> 
         state = state.copyWith(code4: trimmed, codeError: null);
         break;
     }
-  }
-
-  /// ダイアログ表示後などに全体メッセージをリセットする。
-  void clearGeneralMessage() {
-    state = state.copyWith(
-      generalErrorMessage: null,
-      generalErrorType: null,
-    );
   }
 
   /// ダイアログイベントをクリアする（画面側で showDialog 後に呼ぶ想定）。

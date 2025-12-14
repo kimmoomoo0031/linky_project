@@ -24,8 +24,6 @@ mixin _$PasswordResetCodeState {
   bool get isLoading => throw _privateConstructorUsedError;
   bool get isSuccess => throw _privateConstructorUsedError;
   String? get codeError => throw _privateConstructorUsedError;
-  String? get generalErrorMessage => throw _privateConstructorUsedError;
-  LinkyDialogType? get generalErrorType => throw _privateConstructorUsedError;
 
   /// Create a copy of PasswordResetCodeState
   /// with the given fields replaced by the non-null parameter values.
@@ -49,8 +47,6 @@ abstract class $PasswordResetCodeStateCopyWith<$Res> {
     bool isLoading,
     bool isSuccess,
     String? codeError,
-    String? generalErrorMessage,
-    LinkyDialogType? generalErrorType,
   });
 }
 
@@ -79,8 +75,6 @@ class _$PasswordResetCodeStateCopyWithImpl<
     Object? isLoading = null,
     Object? isSuccess = null,
     Object? codeError = freezed,
-    Object? generalErrorMessage = freezed,
-    Object? generalErrorType = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -112,14 +106,6 @@ class _$PasswordResetCodeStateCopyWithImpl<
                 ? _value.codeError
                 : codeError // ignore: cast_nullable_to_non_nullable
                       as String?,
-            generalErrorMessage: freezed == generalErrorMessage
-                ? _value.generalErrorMessage
-                : generalErrorMessage // ignore: cast_nullable_to_non_nullable
-                      as String?,
-            generalErrorType: freezed == generalErrorType
-                ? _value.generalErrorType
-                : generalErrorType // ignore: cast_nullable_to_non_nullable
-                      as LinkyDialogType?,
           )
           as $Val,
     );
@@ -143,8 +129,6 @@ abstract class _$$PasswordResetCodeStateImplCopyWith<$Res>
     bool isLoading,
     bool isSuccess,
     String? codeError,
-    String? generalErrorMessage,
-    LinkyDialogType? generalErrorType,
   });
 }
 
@@ -170,8 +154,6 @@ class __$$PasswordResetCodeStateImplCopyWithImpl<$Res>
     Object? isLoading = null,
     Object? isSuccess = null,
     Object? codeError = freezed,
-    Object? generalErrorMessage = freezed,
-    Object? generalErrorType = freezed,
   }) {
     return _then(
       _$PasswordResetCodeStateImpl(
@@ -203,14 +185,6 @@ class __$$PasswordResetCodeStateImplCopyWithImpl<$Res>
             ? _value.codeError
             : codeError // ignore: cast_nullable_to_non_nullable
                   as String?,
-        generalErrorMessage: freezed == generalErrorMessage
-            ? _value.generalErrorMessage
-            : generalErrorMessage // ignore: cast_nullable_to_non_nullable
-                  as String?,
-        generalErrorType: freezed == generalErrorType
-            ? _value.generalErrorType
-            : generalErrorType // ignore: cast_nullable_to_non_nullable
-                  as LinkyDialogType?,
       ),
     );
   }
@@ -227,8 +201,6 @@ class _$PasswordResetCodeStateImpl implements _PasswordResetCodeState {
     this.isLoading = false,
     this.isSuccess = false,
     this.codeError,
-    this.generalErrorMessage,
-    this.generalErrorType,
   });
 
   @override
@@ -251,14 +223,10 @@ class _$PasswordResetCodeStateImpl implements _PasswordResetCodeState {
   final bool isSuccess;
   @override
   final String? codeError;
-  @override
-  final String? generalErrorMessage;
-  @override
-  final LinkyDialogType? generalErrorType;
 
   @override
   String toString() {
-    return 'PasswordResetCodeState(code1: $code1, code2: $code2, code3: $code3, code4: $code4, isLoading: $isLoading, isSuccess: $isSuccess, codeError: $codeError, generalErrorMessage: $generalErrorMessage, generalErrorType: $generalErrorType)';
+    return 'PasswordResetCodeState(code1: $code1, code2: $code2, code3: $code3, code4: $code4, isLoading: $isLoading, isSuccess: $isSuccess, codeError: $codeError)';
   }
 
   @override
@@ -275,11 +243,7 @@ class _$PasswordResetCodeStateImpl implements _PasswordResetCodeState {
             (identical(other.isSuccess, isSuccess) ||
                 other.isSuccess == isSuccess) &&
             (identical(other.codeError, codeError) ||
-                other.codeError == codeError) &&
-            (identical(other.generalErrorMessage, generalErrorMessage) ||
-                other.generalErrorMessage == generalErrorMessage) &&
-            (identical(other.generalErrorType, generalErrorType) ||
-                other.generalErrorType == generalErrorType));
+                other.codeError == codeError));
   }
 
   @override
@@ -292,8 +256,6 @@ class _$PasswordResetCodeStateImpl implements _PasswordResetCodeState {
     isLoading,
     isSuccess,
     codeError,
-    generalErrorMessage,
-    generalErrorType,
   );
 
   /// Create a copy of PasswordResetCodeState
@@ -318,8 +280,6 @@ abstract class _PasswordResetCodeState implements PasswordResetCodeState {
     final bool isLoading,
     final bool isSuccess,
     final String? codeError,
-    final String? generalErrorMessage,
-    final LinkyDialogType? generalErrorType,
   }) = _$PasswordResetCodeStateImpl;
 
   @override
@@ -336,10 +296,6 @@ abstract class _PasswordResetCodeState implements PasswordResetCodeState {
   bool get isSuccess;
   @override
   String? get codeError;
-  @override
-  String? get generalErrorMessage;
-  @override
-  LinkyDialogType? get generalErrorType;
 
   /// Create a copy of PasswordResetCodeState
   /// with the given fields replaced by the non-null parameter values.

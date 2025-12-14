@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:linky_project_0318/core/constants/dialog_messages.dart';
+import 'package:linky_project_0318/features/auth/presentation/constants/auth_dialog_messages.dart';
 
 import 'package:linky_project_0318/core/constants/dialog_type.dart';
 import 'package:linky_project_0318/core/theme/app_colors.dart';
@@ -9,6 +9,7 @@ import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
 import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
 import 'package:linky_project_0318/features/auth/auth_providers.dart';
+import 'package:linky_project_0318/features/auth/presentation/auth_dialog_event_providers.dart';
 import 'package:linky_project_0318/features/auth/presentation/controllers/password_reset_new_password_state.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/auth_action_button.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/auth_password_field.dart';
@@ -41,29 +42,22 @@ class PasswordResetNewPasswordPage extends ConsumerWidget {
       passwordResetNewPasswordControllerProvider.notifier,
     );
 
-    // generalErrorMessage がセットされたときにだけダイアログを出し、
-    // 成功（isSuccess == true）になったタイミングでログイン画面へ戻す。
-    ref.listen(passwordResetNewPasswordControllerProvider, (
-      previous,
-      next,
-    ) async {
-      final message = next.generalErrorMessage;
-      if (message != null && message.isNotEmpty) {
-        final type = next.generalErrorType ?? LinkyDialogType.info;
-        await showLinkyDialog(context: context, message: message, type: type);
-        controller.clearGeneralMessage();
-      }
+    // ダイアログ表示イベント（1回限り）
+    // 成功時（info）はダイアログを閉じた後にログインへ戻す。
+    ref.listen(passwordResetNewPasswordDialogEventProvider, (previous, next) async {
+      final event = next;
+      if (event == null) return;
 
-      if (previous?.isSuccess != true && next.isSuccess) {
-        await showLinkyDialog(
-          context: context,
-          message: '新しいパスワードを設定しました。',
-          type: LinkyDialogType.info,
-        );
-        // 完了後はログイン画面に戻す（スタックを整理したいので go を使う）。
-        if (context.mounted) {
-          context.go('/login');
-        }
+      await showLinkyDialog(
+        context: context,
+        title: event.title,
+        message: event.message,
+        type: event.type,
+      );
+      ref.read(passwordResetNewPasswordDialogEventProvider.notifier).state = null;
+
+      if (event.type == LinkyDialogType.info && context.mounted) {
+        context.go('/login');
       }
     });
 

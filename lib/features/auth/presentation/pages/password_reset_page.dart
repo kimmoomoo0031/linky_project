@@ -9,6 +9,7 @@ import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
 import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
 import 'package:linky_project_0318/features/auth/auth_providers.dart';
+import 'package:linky_project_0318/features/auth/presentation/auth_dialog_event_providers.dart';
 import 'package:linky_project_0318/features/auth/presentation/controllers/password_reset_state.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/auth_action_button.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/auth_labeled_text_field.dart';
@@ -25,25 +26,23 @@ class PasswordResetPage extends ConsumerWidget {
     final state = ref.watch(passwordResetControllerProvider);
     final controller = ref.read(passwordResetControllerProvider.notifier);
 
-    // generalErrorMessage がセットされたときにだけダイアログを出し、
-    // 送信成功（isSuccess == true）になったタイミングでログイン画面へ遷移する。
-    ref.listen(passwordResetControllerProvider, (previous, next) async {
-      final message = next.generalErrorMessage;
-      if (message != null && message.isNotEmpty) {
-        final type = next.generalErrorType ?? LinkyDialogType.info;
-        await showLinkyDialog(
-          context: context,
-          message: message,
-          type: type,
-        );
-        controller.clearGeneralMessage();
-      }
+    // ダイアログ表示イベント（1回限り）
+    // 成功時はダイアログを閉じた後に認証コード入力画面へ進む。
+    ref.listen(passwordResetDialogEventProvider, (previous, next) async {
+      final event = next;
+      if (event == null) return;
 
-      if (previous?.isSuccess != true && next.isSuccess) {
-        context.push(
-          '/passwordResetCode',
-          extra: next.email,
-        );
+      await showLinkyDialog(
+        context: context,
+        title: event.title,
+        message: event.message,
+        type: event.type,
+      );
+      ref.read(passwordResetDialogEventProvider.notifier).state = null;
+
+      if (event.type == LinkyDialogType.info) {
+        final email = ref.read(passwordResetControllerProvider).email;
+        context.push('/passwordResetCode', extra: email);
       }
     });
 
