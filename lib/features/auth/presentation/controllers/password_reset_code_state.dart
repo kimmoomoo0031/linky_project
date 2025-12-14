@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:linky_project_0318/core/constants/dialog_type.dart';
 
 part 'password_reset_code_state.freezed.dart';
 
@@ -14,8 +13,6 @@ class PasswordResetCodeState with _$PasswordResetCodeState {
     @Default(false) bool isSuccess,
 
     String? codeError,
-    String? generalErrorMessage,
-    LinkyDialogType? generalErrorType,
   }) = _PasswordResetCodeState;
 }
 

@@ -9,12 +9,14 @@ import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
 import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
 import 'package:linky_project_0318/features/auth/auth_providers.dart';
+import 'package:linky_project_0318/features/auth/presentation/auth_dialog_event_providers.dart';
 import 'package:linky_project_0318/features/auth/presentation/controllers/register_controller.dart';
 import 'package:linky_project_0318/features/auth/presentation/controllers/register_state.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/auth_action_button.dart';
-import 'package:linky_project_0318/features/auth/presentation/widgets/auth_input_decorations.dart';
+import 'package:linky_project_0318/features/auth/presentation/widgets/auth_labeled_text_field.dart';
+import 'package:linky_project_0318/features/auth/presentation/widgets/auth_password_field.dart';
 
-import '../../../../core/constants/dialog_messages.dart';
+import 'package:linky_project_0318/features/auth/presentation/constants/auth_dialog_messages.dart';
 
 /// Linky 新規登録画面。
 ///
@@ -28,18 +30,21 @@ class RegisterPage extends ConsumerWidget {
     final state = ref.watch(registerControllerProvider);
     final controller = ref.read(registerControllerProvider.notifier);
 
-    // generalErrorMessage がセットされたときにだけダイアログを出し、
+    // ダイアログ表示イベント（1回限り）
+    ref.listen(registerDialogEventProvider, (previous, next) async {
+      final event = next;
+      if (event == null) return;
+      await showLinkyDialog(
+        context: context,
+        title: event.title,
+        message: event.message,
+        type: event.type,
+      );
+      ref.read(registerDialogEventProvider.notifier).state = null;
+    });
+
     // 登録成功（isSuccess == true）になったタイミングで成功画面へ遷移する。
     ref.listen(registerControllerProvider, (previous, next) async {
-      final message = next.generalErrorMessage;
-
-      if (message != null && message.isNotEmpty) {
-        final type = next.generalErrorType ?? LinkyDialogType.info;
-        await showLinkyDialog(context: context, message: message, type: type);
-        ref.read(registerControllerProvider.notifier).clearGeneralError();
-      }
-
-      // 登録成功を検知して成功画面へ遷移
       if (previous?.isSuccess != true && next.isSuccess) {
         context.go('/signUpSuccess');
       }
@@ -244,20 +249,19 @@ class _EmailField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const _RequiredLabel('メールアドレス'),
-        const SizedBox(height: 8),
-        TextField(
-          keyboardType: TextInputType.emailAddress,
-          onChanged: onChanged,
-          decoration: AuthInputDecorations.textField(
-            hintText: 'yamada@example.com',
-            errorText: errorText,
-          ),
-        ),
-      ],
+    return AuthLabeledTextField(
+      label: 'メールアドレス',
+      hintText: 'yamada@example.com',
+      keyboardType: TextInputType.emailAddress,
+      errorText: errorText,
+      onChanged: onChanged,
+      isRequired: true,
+      requiredMark: SvgPicture.asset(
+        AppAssets.asteriskLogoSvg,
+        width: 8,
+        height: 8,
+      ),
+      textInputAction: TextInputAction.next,
     );
   }
 }
@@ -271,103 +275,66 @@ class _NicknameField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const _RequiredLabel('ニックネーム'),
-        const SizedBox(height: 8),
-        TextField(
-          onChanged: onChanged,
-          decoration: AuthInputDecorations.textField(
-            hintText: 'リンゴ',
-            errorText: errorText,
-          ),
-        ),
-      ],
+    return AuthLabeledTextField(
+      label: 'ニックネーム',
+      hintText: 'リンゴ',
+      errorText: errorText,
+      onChanged: onChanged,
+      isRequired: true,
+      requiredMark: SvgPicture.asset(
+        AppAssets.asteriskLogoSvg,
+        width: 8,
+        height: 8,
+      ),
+      textInputAction: TextInputAction.next,
     );
   }
 }
 
 /// パスワード入力欄（必須 + 表示切替）を表示するセクション用クラス。
-class _PasswordField extends StatefulWidget {
+class _PasswordField extends StatelessWidget {
   const _PasswordField({required this.onChanged, this.errorText});
 
   final ValueChanged<String> onChanged;
   final String? errorText;
 
   @override
-  State<_PasswordField> createState() => _PasswordFieldState();
-}
-
-class _PasswordFieldState extends State<_PasswordField> {
-  bool _obscure = true;
-
-  @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const _RequiredLabel('パスワード'),
-        const SizedBox(height: 8),
-        TextField(
-          obscureText: _obscure,
-          onChanged: widget.onChanged,
-          decoration: AuthInputDecorations.textField(
-            hintText: '********',
-            errorText: widget.errorText,
-            suffixIcon: IconButton(
-              onPressed: () {
-                setState(() {
-                  _obscure = !_obscure;
-                });
-              },
-              icon: Icon(_obscure ? Icons.visibility_off : Icons.visibility),
-            ),
-          ),
-        ),
-      ],
+    return AuthPasswordField(
+      label: 'パスワード',
+      errorText: errorText,
+      onChanged: onChanged,
+      isRequired: true,
+      requiredMark: SvgPicture.asset(
+        AppAssets.asteriskLogoSvg,
+        width: 8,
+        height: 8,
+      ),
+      textInputAction: TextInputAction.next,
     );
   }
 }
 
 /// パスワード再確認入力欄（必須 + 表示切替）を表示するセクション用クラス。
-class _PasswordConfirmField extends StatefulWidget {
+class _PasswordConfirmField extends StatelessWidget {
   const _PasswordConfirmField({required this.onChanged, this.errorText});
 
   final ValueChanged<String> onChanged;
   final String? errorText;
 
   @override
-  State<_PasswordConfirmField> createState() => _PasswordConfirmFieldState();
-}
-
-class _PasswordConfirmFieldState extends State<_PasswordConfirmField> {
-  bool _obscure = true;
-
-  @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const _RequiredLabel('パスワード再確認'),
-        const SizedBox(height: 8),
-        TextField(
-          obscureText: _obscure,
-          onChanged: widget.onChanged,
-          decoration: AuthInputDecorations.textField(
-            hintText: '********',
-            errorText: widget.errorText,
-            suffixIcon: IconButton(
-              onPressed: () {
-                setState(() {
-                  _obscure = !_obscure;
-                });
-              },
-              icon: Icon(_obscure ? Icons.visibility_off : Icons.visibility),
-            ),
-          ),
-        ),
-      ],
+    return AuthPasswordField(
+      label: 'パスワード再確認',
+      errorText: errorText,
+      onChanged: onChanged,
+      isRequired: true,
+      requiredMark: SvgPicture.asset(
+        AppAssets.asteriskLogoSvg,
+        width: 8,
+        height: 8,
+      ),
+      textInputAction: TextInputAction.done,
     );
   }
 }

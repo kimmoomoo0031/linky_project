@@ -2,6 +2,7 @@ import '../../domain/entities/auth_user.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../../domain/usecases/login_result.dart';
 import '../../domain/usecases/register_result.dart';
+import '../../domain/usecases/reset_password_result.dart';
 
 /// バックエンド未接続の段階で利用する、インメモリのダミー実装。
 ///
@@ -57,6 +58,29 @@ class FakeAuthRepository implements AuthRepository {
   Future<void> logout() async {
     // ダミー実装なので特に何もしない
     await Future<void>.delayed(const Duration(milliseconds: 200));
+  }
+
+  @override
+  Future<ResetPasswordResult> resetPassword({
+    required String email,
+    required String code,
+    required String newPassword,
+  }) async {
+    await Future<void>.delayed(const Duration(milliseconds: 600));
+
+    // ざっくり挙動確認用のダミールール。
+    // TODO(api): バックエンド仕様が確定したら差し替える。
+    if (email.contains('network')) {
+      return const ResetPasswordResult.networkError();
+    }
+    if (code != '1234') {
+      return const ResetPasswordResult.invalidCode();
+    }
+    if (newPassword.length < 8) {
+      return const ResetPasswordResult.weakPassword();
+    }
+
+    return const ResetPasswordResult.success();
   }
 }
 

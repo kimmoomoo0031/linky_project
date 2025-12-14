@@ -28,12 +28,6 @@ mixin _$RegisterState {
   String? get passwordError => throw _privateConstructorUsedError;
   String? get passwordConfirmError => throw _privateConstructorUsedError;
 
-  /// フィールド単位ではなく、ダイアログなどで表示したい全体エラー文言。
-  String? get generalErrorMessage => throw _privateConstructorUsedError;
-
-  /// 全体エラー文言に対応するダイアログのタイプ。
-  LinkyDialogType? get generalErrorType => throw _privateConstructorUsedError;
-
   /// Create a copy of RegisterState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -59,8 +53,6 @@ abstract class $RegisterStateCopyWith<$Res> {
     String? nicknameError,
     String? passwordError,
     String? passwordConfirmError,
-    String? generalErrorMessage,
-    LinkyDialogType? generalErrorType,
   });
 }
 
@@ -89,8 +81,6 @@ class _$RegisterStateCopyWithImpl<$Res, $Val extends RegisterState>
     Object? nicknameError = freezed,
     Object? passwordError = freezed,
     Object? passwordConfirmError = freezed,
-    Object? generalErrorMessage = freezed,
-    Object? generalErrorType = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -134,14 +124,6 @@ class _$RegisterStateCopyWithImpl<$Res, $Val extends RegisterState>
                 ? _value.passwordConfirmError
                 : passwordConfirmError // ignore: cast_nullable_to_non_nullable
                       as String?,
-            generalErrorMessage: freezed == generalErrorMessage
-                ? _value.generalErrorMessage
-                : generalErrorMessage // ignore: cast_nullable_to_non_nullable
-                      as String?,
-            generalErrorType: freezed == generalErrorType
-                ? _value.generalErrorType
-                : generalErrorType // ignore: cast_nullable_to_non_nullable
-                      as LinkyDialogType?,
           )
           as $Val,
     );
@@ -168,8 +150,6 @@ abstract class _$$RegisterStateImplCopyWith<$Res>
     String? nicknameError,
     String? passwordError,
     String? passwordConfirmError,
-    String? generalErrorMessage,
-    LinkyDialogType? generalErrorType,
   });
 }
 
@@ -197,8 +177,6 @@ class __$$RegisterStateImplCopyWithImpl<$Res>
     Object? nicknameError = freezed,
     Object? passwordError = freezed,
     Object? passwordConfirmError = freezed,
-    Object? generalErrorMessage = freezed,
-    Object? generalErrorType = freezed,
   }) {
     return _then(
       _$RegisterStateImpl(
@@ -242,14 +220,6 @@ class __$$RegisterStateImplCopyWithImpl<$Res>
             ? _value.passwordConfirmError
             : passwordConfirmError // ignore: cast_nullable_to_non_nullable
                   as String?,
-        generalErrorMessage: freezed == generalErrorMessage
-            ? _value.generalErrorMessage
-            : generalErrorMessage // ignore: cast_nullable_to_non_nullable
-                  as String?,
-        generalErrorType: freezed == generalErrorType
-            ? _value.generalErrorType
-            : generalErrorType // ignore: cast_nullable_to_non_nullable
-                  as LinkyDialogType?,
       ),
     );
   }
@@ -269,8 +239,6 @@ class _$RegisterStateImpl implements _RegisterState {
     this.nicknameError,
     this.passwordError,
     this.passwordConfirmError,
-    this.generalErrorMessage,
-    this.generalErrorType,
   });
 
   @override
@@ -300,17 +268,9 @@ class _$RegisterStateImpl implements _RegisterState {
   @override
   final String? passwordConfirmError;
 
-  /// フィールド単位ではなく、ダイアログなどで表示したい全体エラー文言。
-  @override
-  final String? generalErrorMessage;
-
-  /// 全体エラー文言に対応するダイアログのタイプ。
-  @override
-  final LinkyDialogType? generalErrorType;
-
   @override
   String toString() {
-    return 'RegisterState(email: $email, nickname: $nickname, password: $password, passwordConfirm: $passwordConfirm, isLoading: $isLoading, isSuccess: $isSuccess, emailError: $emailError, nicknameError: $nicknameError, passwordError: $passwordError, passwordConfirmError: $passwordConfirmError, generalErrorMessage: $generalErrorMessage, generalErrorType: $generalErrorType)';
+    return 'RegisterState(email: $email, nickname: $nickname, password: $password, passwordConfirm: $passwordConfirm, isLoading: $isLoading, isSuccess: $isSuccess, emailError: $emailError, nicknameError: $nicknameError, passwordError: $passwordError, passwordConfirmError: $passwordConfirmError)';
   }
 
   @override
@@ -336,11 +296,7 @@ class _$RegisterStateImpl implements _RegisterState {
             (identical(other.passwordError, passwordError) ||
                 other.passwordError == passwordError) &&
             (identical(other.passwordConfirmError, passwordConfirmError) ||
-                other.passwordConfirmError == passwordConfirmError) &&
-            (identical(other.generalErrorMessage, generalErrorMessage) ||
-                other.generalErrorMessage == generalErrorMessage) &&
-            (identical(other.generalErrorType, generalErrorType) ||
-                other.generalErrorType == generalErrorType));
+                other.passwordConfirmError == passwordConfirmError));
   }
 
   @override
@@ -356,8 +312,6 @@ class _$RegisterStateImpl implements _RegisterState {
     nicknameError,
     passwordError,
     passwordConfirmError,
-    generalErrorMessage,
-    generalErrorType,
   );
 
   /// Create a copy of RegisterState
@@ -381,8 +335,6 @@ abstract class _RegisterState implements RegisterState {
     final String? nicknameError,
     final String? passwordError,
     final String? passwordConfirmError,
-    final String? generalErrorMessage,
-    final LinkyDialogType? generalErrorType,
   }) = _$RegisterStateImpl;
 
   @override
@@ -405,14 +357,6 @@ abstract class _RegisterState implements RegisterState {
   String? get passwordError;
   @override
   String? get passwordConfirmError;
-
-  /// フィールド単位ではなく、ダイアログなどで表示したい全体エラー文言。
-  @override
-  String? get generalErrorMessage;
-
-  /// 全体エラー文言に対応するダイアログのタイプ。
-  @override
-  LinkyDialogType? get generalErrorType;
 
   /// Create a copy of RegisterState
   /// with the given fields replaced by the non-null parameter values.

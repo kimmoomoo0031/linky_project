@@ -1,6 +1,7 @@
 import '../entities/auth_user.dart';
 import '../usecases/login_result.dart';
 import '../usecases/register_result.dart';
+import '../usecases/reset_password_result.dart';
 
 /// 認証系のドメインロジックが依存する抽象リポジトリ。
 ///
@@ -24,6 +25,13 @@ abstract class AuthRepository {
 
   /// ログアウト。
   Future<void> logout();
+
+  /// パスワード再設定（認証コード確認後に新しいパスワードを設定する）。
+  Future<ResetPasswordResult> resetPassword({
+    required String email,
+    required String code,
+    required String newPassword,
+  });
 }
 
 

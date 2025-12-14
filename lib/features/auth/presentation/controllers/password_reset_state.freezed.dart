@@ -19,14 +19,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$PasswordResetState {
   String get email => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
-  bool get isSuccess => throw _privateConstructorUsedError;
   String? get emailError => throw _privateConstructorUsedError;
-
-  /// フィールド単位ではなく、ダイアログなどで表示したい全体メッセージ。
-  String? get generalErrorMessage => throw _privateConstructorUsedError;
-
-  /// 全体メッセージに対応するダイアログのタイプ。
-  LinkyDialogType? get generalErrorType => throw _privateConstructorUsedError;
 
   /// Create a copy of PasswordResetState
   /// with the given fields replaced by the non-null parameter values.
@@ -42,14 +35,7 @@ abstract class $PasswordResetStateCopyWith<$Res> {
     $Res Function(PasswordResetState) then,
   ) = _$PasswordResetStateCopyWithImpl<$Res, PasswordResetState>;
   @useResult
-  $Res call({
-    String email,
-    bool isLoading,
-    bool isSuccess,
-    String? emailError,
-    String? generalErrorMessage,
-    LinkyDialogType? generalErrorType,
-  });
+  $Res call({String email, bool isLoading, String? emailError});
 }
 
 /// @nodoc
@@ -69,10 +55,7 @@ class _$PasswordResetStateCopyWithImpl<$Res, $Val extends PasswordResetState>
   $Res call({
     Object? email = null,
     Object? isLoading = null,
-    Object? isSuccess = null,
     Object? emailError = freezed,
-    Object? generalErrorMessage = freezed,
-    Object? generalErrorType = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -84,22 +67,10 @@ class _$PasswordResetStateCopyWithImpl<$Res, $Val extends PasswordResetState>
                 ? _value.isLoading
                 : isLoading // ignore: cast_nullable_to_non_nullable
                       as bool,
-            isSuccess: null == isSuccess
-                ? _value.isSuccess
-                : isSuccess // ignore: cast_nullable_to_non_nullable
-                      as bool,
             emailError: freezed == emailError
                 ? _value.emailError
                 : emailError // ignore: cast_nullable_to_non_nullable
                       as String?,
-            generalErrorMessage: freezed == generalErrorMessage
-                ? _value.generalErrorMessage
-                : generalErrorMessage // ignore: cast_nullable_to_non_nullable
-                      as String?,
-            generalErrorType: freezed == generalErrorType
-                ? _value.generalErrorType
-                : generalErrorType // ignore: cast_nullable_to_non_nullable
-                      as LinkyDialogType?,
           )
           as $Val,
     );
@@ -115,14 +86,7 @@ abstract class _$$PasswordResetStateImplCopyWith<$Res>
   ) = __$$PasswordResetStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    String email,
-    bool isLoading,
-    bool isSuccess,
-    String? emailError,
-    String? generalErrorMessage,
-    LinkyDialogType? generalErrorType,
-  });
+  $Res call({String email, bool isLoading, String? emailError});
 }
 
 /// @nodoc
@@ -141,10 +105,7 @@ class __$$PasswordResetStateImplCopyWithImpl<$Res>
   $Res call({
     Object? email = null,
     Object? isLoading = null,
-    Object? isSuccess = null,
     Object? emailError = freezed,
-    Object? generalErrorMessage = freezed,
-    Object? generalErrorType = freezed,
   }) {
     return _then(
       _$PasswordResetStateImpl(
@@ -156,22 +117,10 @@ class __$$PasswordResetStateImplCopyWithImpl<$Res>
             ? _value.isLoading
             : isLoading // ignore: cast_nullable_to_non_nullable
                   as bool,
-        isSuccess: null == isSuccess
-            ? _value.isSuccess
-            : isSuccess // ignore: cast_nullable_to_non_nullable
-                  as bool,
         emailError: freezed == emailError
             ? _value.emailError
             : emailError // ignore: cast_nullable_to_non_nullable
                   as String?,
-        generalErrorMessage: freezed == generalErrorMessage
-            ? _value.generalErrorMessage
-            : generalErrorMessage // ignore: cast_nullable_to_non_nullable
-                  as String?,
-        generalErrorType: freezed == generalErrorType
-            ? _value.generalErrorType
-            : generalErrorType // ignore: cast_nullable_to_non_nullable
-                  as LinkyDialogType?,
       ),
     );
   }
@@ -183,10 +132,7 @@ class _$PasswordResetStateImpl implements _PasswordResetState {
   const _$PasswordResetStateImpl({
     this.email = '',
     this.isLoading = false,
-    this.isSuccess = false,
     this.emailError,
-    this.generalErrorMessage,
-    this.generalErrorType,
   });
 
   @override
@@ -196,22 +142,11 @@ class _$PasswordResetStateImpl implements _PasswordResetState {
   @JsonKey()
   final bool isLoading;
   @override
-  @JsonKey()
-  final bool isSuccess;
-  @override
   final String? emailError;
-
-  /// フィールド単位ではなく、ダイアログなどで表示したい全体メッセージ。
-  @override
-  final String? generalErrorMessage;
-
-  /// 全体メッセージに対応するダイアログのタイプ。
-  @override
-  final LinkyDialogType? generalErrorType;
 
   @override
   String toString() {
-    return 'PasswordResetState(email: $email, isLoading: $isLoading, isSuccess: $isSuccess, emailError: $emailError, generalErrorMessage: $generalErrorMessage, generalErrorType: $generalErrorType)';
+    return 'PasswordResetState(email: $email, isLoading: $isLoading, emailError: $emailError)';
   }
 
   @override
@@ -222,26 +157,12 @@ class _$PasswordResetStateImpl implements _PasswordResetState {
             (identical(other.email, email) || other.email == email) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
-            (identical(other.isSuccess, isSuccess) ||
-                other.isSuccess == isSuccess) &&
             (identical(other.emailError, emailError) ||
-                other.emailError == emailError) &&
-            (identical(other.generalErrorMessage, generalErrorMessage) ||
-                other.generalErrorMessage == generalErrorMessage) &&
-            (identical(other.generalErrorType, generalErrorType) ||
-                other.generalErrorType == generalErrorType));
+                other.emailError == emailError));
   }
 
   @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    email,
-    isLoading,
-    isSuccess,
-    emailError,
-    generalErrorMessage,
-    generalErrorType,
-  );
+  int get hashCode => Object.hash(runtimeType, email, isLoading, emailError);
 
   /// Create a copy of PasswordResetState
   /// with the given fields replaced by the non-null parameter values.
@@ -259,10 +180,7 @@ abstract class _PasswordResetState implements PasswordResetState {
   const factory _PasswordResetState({
     final String email,
     final bool isLoading,
-    final bool isSuccess,
     final String? emailError,
-    final String? generalErrorMessage,
-    final LinkyDialogType? generalErrorType,
   }) = _$PasswordResetStateImpl;
 
   @override
@@ -270,17 +188,7 @@ abstract class _PasswordResetState implements PasswordResetState {
   @override
   bool get isLoading;
   @override
-  bool get isSuccess;
-  @override
   String? get emailError;
-
-  /// フィールド単位ではなく、ダイアログなどで表示したい全体メッセージ。
-  @override
-  String? get generalErrorMessage;
-
-  /// 全体メッセージに対応するダイアログのタイプ。
-  @override
-  LinkyDialogType? get generalErrorType;
 
   /// Create a copy of PasswordResetState
   /// with the given fields replaced by the non-null parameter values.

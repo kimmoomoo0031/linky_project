@@ -1,14 +1,18 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'login_state.dart';
-import 'package:linky_project_0318/core/constants/dialog_type.dart';
 import 'package:linky_project_0318/core/utils/validators.dart';
+import 'package:linky_project_0318/core/ui/events/linky_dialog_event.dart';
 import 'package:linky_project_0318/features/auth/domain/usecases/login_usecase.dart';
 import 'package:linky_project_0318/features/auth/domain/usecases/login_result.dart';
+import 'package:linky_project_0318/features/auth/presentation/auth_dialog_event_providers.dart';
+import 'package:linky_project_0318/core/constants/common_dialog_messages.dart';
+import 'package:linky_project_0318/core/constants/dialog_type.dart';
 
 class LoginController extends StateNotifier<LoginState> {
-  LoginController(this._loginUseCase) : super(const LoginState());
+  LoginController(this._ref, this._loginUseCase) : super(const LoginState());
 
+  final Ref _ref;
   final LoginUseCase _loginUseCase;
 
   void onEmailChanged(String value) {
@@ -19,12 +23,8 @@ class LoginController extends StateNotifier<LoginState> {
     state = state.copyWith(password: value, passwordError: null);
   }
 
-  /// ダイアログ表示後などに全体エラーをリセットするためのヘルパー。
-  void clearGeneralError() {
-    state = state.copyWith(
-      generalErrorMessage: null,
-      generalErrorType: null,
-    );
+  void _emitDialog(LinkyDialogEvent event) {
+    _ref.read(loginDialogEventProvider.notifier).state = event;
   }
 
   /// 全てのエラーメッセージをクリアする
@@ -32,8 +32,6 @@ class LoginController extends StateNotifier<LoginState> {
     state = state.copyWith(
       emailError: null,
       passwordError: null,
-      generalErrorMessage: null,
-      generalErrorType: null,
     );
   }
 
@@ -72,32 +70,31 @@ class LoginController extends StateNotifier<LoginState> {
           state = state.copyWith(
             emailError: null,
             passwordError: 'メールアドレスまたはパスワードが正しくありません',
-            generalErrorMessage: null,
-            generalErrorType: null,
           );
         },
         networkError: () {
-          // 入力を変えても解決しないエラーはダイアログ用のメッセージに載せる。
-          state = state.copyWith(
-            generalErrorMessage:
-                'ネットワークエラーが発生しました。\n通信状況を確認してから、もう一度お試しください',
-            generalErrorType: LinkyDialogType.error,
+          _emitDialog(
+            const LinkyDialogEvent(
+              type: LinkyDialogType.error,
+              message: CommonDialogMessages.networkError,
+            ),
           );
         },
         serverError: () {
-          state = state.copyWith(
-            generalErrorMessage:
-                'サーバーエラーが発生しました。\nしばらく時間をおいて再度お試しください',
-            generalErrorType: LinkyDialogType.error,
+          _emitDialog(
+            const LinkyDialogEvent(
+              type: LinkyDialogType.error,
+              message: CommonDialogMessages.serverError,
+            ),
           );
         },
       );
     } catch (_) {
-      // 想定外の例外は一律「予期せぬエラー」としてダイアログ表示用メッセージに流す。
-      state = state.copyWith(
-        generalErrorMessage:
-            '予期せぬエラーが発生しました。\nしばらく時間をおいて再度お試しください',
-        generalErrorType: LinkyDialogType.error,
+      _emitDialog(
+        const LinkyDialogEvent(
+          type: LinkyDialogType.error,
+          message: CommonDialogMessages.unexpectedError,
+        ),
       );
     } finally {
       state = state.copyWith(isLoading: false);

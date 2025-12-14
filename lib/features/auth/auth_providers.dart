@@ -3,16 +3,18 @@ import 'package:linky_project_0318/features/auth/presentation/controllers/login_
 import 'package:linky_project_0318/features/auth/presentation/controllers/register_state.dart';
 import 'package:linky_project_0318/features/auth/presentation/controllers/password_reset_state.dart';
 import 'package:linky_project_0318/features/auth/presentation/controllers/password_reset_code_state.dart';
+import 'package:linky_project_0318/features/auth/presentation/controllers/password_reset_new_password_state.dart';
 
 import 'data/repositories/fake_auth_repository.dart';
 import 'domain/repositories/auth_repository.dart';
 import 'domain/usecases/login_usecase.dart';
 import 'domain/usecases/register_usecase.dart';
+import 'domain/usecases/reset_password_usecase.dart';
 import 'presentation/controllers/login_controller.dart';
 import 'presentation/controllers/register_controller.dart';
 import 'presentation/controllers/password_reset_controller.dart';
 import 'presentation/controllers/password_reset_code_controller.dart';
-import 'package:linky_project_0318/core/ui/linky_dialog_event.dart';
+import 'presentation/controllers/password_reset_new_password_controller.dart';
 
 /// Auth 機能全体の DI（依存関係のつなぎ込み）を行う Provider 群。
 /// data / domain / presentation をまたいで依存を組み立てる「コンポジションルート」的な役割。
@@ -35,7 +37,7 @@ final loginUseCaseProvider = Provider<LoginUseCase>((ref) {
 final loginControllerProvider =
     StateNotifierProvider.autoDispose<LoginController, LoginState>((ref) {
       final useCase = ref.watch(loginUseCaseProvider);
-      return LoginController(useCase);
+      return LoginController(ref, useCase);
     });
 
 /// 新規登録ユースケース。
@@ -44,18 +46,24 @@ final registerUseCaseProvider = Provider<RegisterUseCase>((ref) {
   return RegisterUseCase(repo);
 });
 
+/// 新パスワード設定ユースケース。
+final resetPasswordUseCaseProvider = Provider<ResetPasswordUseCase>((ref) {
+  final repo = ref.watch(authRepositoryProvider);
+  return ResetPasswordUseCase(repo);
+});
+
 /// 新規登録画面用 StateNotifierProvider。
 /// autoDisposeを書くことでバリデーションエラー時、画面から離れたらエラーがリセット
 final registerControllerProvider =
     StateNotifierProvider.autoDispose<RegisterController, RegisterState>((ref) {
       final useCase = ref.watch(registerUseCaseProvider);
-      return RegisterController(useCase);
+      return RegisterController(ref, useCase);
     });
 
 /// パスワード再設定画面用 StateNotifierProvider。
 final passwordResetControllerProvider =
     StateNotifierProvider.autoDispose<PasswordResetController, PasswordResetState>((ref) {
-      return PasswordResetController();
+      return PasswordResetController(ref);
     });
 
 /// 認証コード入力画面用 StateNotifierProvider。
@@ -64,6 +72,13 @@ final passwordResetCodeControllerProvider =
       return PasswordResetCodeController(ref);
     });
 
-/// 認証コード画面のダイアログ表示イベント（1回限り）
-final passwordResetCodeDialogEventProvider =
-    StateProvider.autoDispose<LinkyDialogEvent?>((ref) => null);
+/// 新しいパスワード設定画面用 StateNotifierProvider。
+final passwordResetNewPasswordControllerProvider =
+    StateNotifierProvider.autoDispose<
+        PasswordResetNewPasswordController, PasswordResetNewPasswordState>((ref) {
+  final useCase = ref.watch(resetPasswordUseCaseProvider);
+  return PasswordResetNewPasswordController(ref, useCase);
+});
+
+// ダイアログイベント（1回限り）は循環importを避けるため presentation 側に分離
+// → `features/auth/presentation/auth_dialog_event_providers.dart`

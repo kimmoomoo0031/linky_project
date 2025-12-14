@@ -9,10 +9,12 @@ import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/gradient_text.dart';
 import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
 import 'package:linky_project_0318/features/auth/auth_providers.dart';
+import 'package:linky_project_0318/features/auth/presentation/auth_dialog_event_providers.dart';
 import 'package:linky_project_0318/features/auth/presentation/controllers/login_controller.dart';
 import 'package:linky_project_0318/features/auth/presentation/controllers/login_state.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/auth_action_button.dart';
-import 'package:linky_project_0318/features/auth/presentation/widgets/auth_input_decorations.dart';
+import 'package:linky_project_0318/features/auth/presentation/widgets/auth_labeled_text_field.dart';
+import 'package:linky_project_0318/features/auth/presentation/widgets/auth_password_field.dart';
 
 /// Linky ログイン画面。
 class LoginPage extends ConsumerWidget {
@@ -23,22 +25,17 @@ class LoginPage extends ConsumerWidget {
     final state = ref.watch(loginControllerProvider);
     final controller = ref.read(loginControllerProvider.notifier);
 
-    // generalErrorMessage がセットされたときにだけダイアログを出す。
-    ref.listen(loginControllerProvider, (previous, next) async {
-      final message = next.generalErrorMessage;
-      if (message == null || message.isEmpty) {
-        return;
-      }
-
-      // ダイアログを表示して、閉じたタイミングでエラーをクリアする。
-      final type = next.generalErrorType ?? LinkyDialogType.info;
-      showLinkyDialog(
+    // ダイアログ表示イベント（1回限り）。
+    ref.listen(loginDialogEventProvider, (previous, next) async {
+      final event = next;
+      if (event == null) return;
+      await showLinkyDialog(
         context: context,
-        message: message,
-        type: type,
-      ).then((_) {
-        ref.read(loginControllerProvider.notifier).clearGeneralError();
-      });
+        title: event.title,
+        message: event.message,
+        type: event.type,
+      );
+      ref.read(loginDialogEventProvider.notifier).state = null;
     });
 
     return Scaffold(
@@ -157,68 +154,31 @@ class _EmailField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'メールアドレス',
-          style: AppTextStyles.body14.copyWith(color: AppColors.primaryGray),
-        ),
-        const SizedBox(height: 8),
-        TextField(
-          keyboardType: TextInputType.emailAddress,
-          onChanged: onChanged,
-          decoration: AuthInputDecorations.textField(
-            hintText: 'yamada@example.com',
-            errorText: errorText,
-          ),
-        ),
-      ],
+    return AuthLabeledTextField(
+      label: 'メールアドレス',
+      hintText: 'yamada@example.com',
+      keyboardType: TextInputType.emailAddress,
+      errorText: errorText,
+      onChanged: onChanged,
+      textInputAction: TextInputAction.next,
     );
   }
 }
 
-/// パスワード入力欄（ラベル + TextField + 表示切替）を表示するセクション用クラス。
-class _PasswordField extends StatefulWidget {
+/// パスワード入力欄（ラベル + 表示切替）を表示するセクション用クラス。
+class _PasswordField extends StatelessWidget {
   const _PasswordField({required this.onChanged, this.errorText});
 
   final ValueChanged<String> onChanged;
   final String? errorText;
 
   @override
-  State<_PasswordField> createState() => _PasswordFieldState();
-}
-
-class _PasswordFieldState extends State<_PasswordField> {
-  bool _obscure = true;
-
-  @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'パスワード',
-          style: AppTextStyles.body14.copyWith(color: AppColors.primaryGray),
-        ),
-        const SizedBox(height: 8),
-        TextField(
-          obscureText: _obscure,
-          onChanged: widget.onChanged,
-          decoration: AuthInputDecorations.textField(
-            hintText: '********',
-            errorText: widget.errorText,
-            suffixIcon: IconButton(
-              onPressed: () {
-                setState(() {
-                  _obscure = !_obscure;
-                });
-              },
-              icon: Icon(_obscure ? Icons.visibility_off : Icons.visibility),
-            ),
-          ),
-        ),
-      ],
+    return AuthPasswordField(
+      label: 'パスワード',
+      errorText: errorText,
+      onChanged: onChanged,
+      textInputAction: TextInputAction.done,
     );
   }
 }
