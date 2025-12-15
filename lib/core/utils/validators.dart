@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:linky_project_0318/core/utils/regex.dart';
 
 class Validators {
@@ -57,9 +56,9 @@ class Validators {
 
   ///認証番号4桁確認バリデーション
   static String? validateOtpCode(
-      String code, {
-        int length = 4,
-      }) {
+    String code, {
+    int length = 4,
+  }) {
     final trimmed = code.trim();
 
     if (trimmed.isEmpty) {
@@ -67,7 +66,7 @@ class Validators {
     }
 
     if (!RegexPatterns.otpCode(length: length).hasMatch(trimmed)) {
-      return '${length}桁の認証コードを入力してください。';
+      return '$length桁の認証コードを入力してください。';
     }
     return null;
   }

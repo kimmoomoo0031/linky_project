@@ -41,6 +41,7 @@ class PasswordResetPage extends ConsumerWidget {
       ref.read(passwordResetDialogEventProvider.notifier).state = null;
 
       if (event.type == LinkyDialogType.info) {
+        if (!context.mounted) return;
         final email = ref.read(passwordResetControllerProvider).email;
         context.push('/passwordResetCode', extra: email);
       }

@@ -30,7 +30,6 @@ Future<void> showLinkyDialog({
       textColor = AppColors.error;
       break;
     case LinkyDialogType.info:
-    default:
       borderColor = AppColors.primaryActionBlue;
       textColor = AppColors.primaryGray;
       break;

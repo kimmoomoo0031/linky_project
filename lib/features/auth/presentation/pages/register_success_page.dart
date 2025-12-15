@@ -77,9 +77,8 @@ class _RegisterSuccessMessage extends StatelessWidget {
     return GradientText(
       '会員登録が完了しました。\n他のユーザーと情報を共有してみましょう!',
       gradient: AppColors.linky45degGradient,
-      style: AppTextStyles.splashTitleTextStyle24,
+      style: AppTextStyles.body18,
       textAlign: TextAlign.center,
-      fontSize: 18,
     );
   }
 }

@@ -1,4 +1,3 @@
-import '../entities/auth_user.dart';
 import '../usecases/login_result.dart';
 import '../usecases/register_result.dart';
 import '../usecases/reset_password_result.dart';
