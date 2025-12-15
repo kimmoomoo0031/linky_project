@@ -26,6 +26,7 @@ class AuthDialogMessages {
   static const String resetEmailSent = 'パスワード再設定用のコードを送信しました。';
   static const String invalidResetCode = '認証コードが無効です。\nもう一度やり直してください。';
   static const String resetPasswordSuccess = '新しいパスワードを設定しました。';
+  static const String passwordResetCompleted = 'パスワード設定が完了しました！';
 }
 
 

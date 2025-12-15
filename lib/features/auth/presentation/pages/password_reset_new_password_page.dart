@@ -43,10 +43,19 @@ class PasswordResetNewPasswordPage extends ConsumerWidget {
     );
 
     // ダイアログ表示イベント（1回限り）
-    // 成功時（info）はダイアログを閉じた後にログインへ戻す。
+    // 成功時（info）は成功画面へ遷移する（スタック整理のため go を使う）。
     ref.listen(passwordResetNewPasswordDialogEventProvider, (previous, next) async {
       final event = next;
       if (event == null) return;
+
+      if (event.type == LinkyDialogType.info) {
+        // 成功時はダイアログを出さず、完了画面へ遷移する。
+        ref.read(passwordResetNewPasswordDialogEventProvider.notifier).state = null;
+        if (context.mounted) {
+          context.go('/passwordResetSuccess');
+        }
+        return;
+      }
 
       await showLinkyDialog(
         context: context,
@@ -55,10 +64,6 @@ class PasswordResetNewPasswordPage extends ConsumerWidget {
         type: event.type,
       );
       ref.read(passwordResetNewPasswordDialogEventProvider.notifier).state = null;
-
-      if (event.type == LinkyDialogType.info && context.mounted) {
-        context.go('/login');
-      }
     });
 
     return Scaffold(

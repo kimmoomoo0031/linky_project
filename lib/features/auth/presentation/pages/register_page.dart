@@ -213,33 +213,6 @@ class _LoginWithoutRegisterLink extends StatelessWidget {
   }
 }
 
-/// ラベル + 必須アスタリスクをまとめた共通ウィジェット。
-class _RequiredLabel extends StatelessWidget {
-  const _RequiredLabel(this.label);
-
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Text(
-          label,
-          style: AppTextStyles.body14.copyWith(color: AppColors.primaryGray),
-        ),
-        const SizedBox(width: 4),
-        // デザインで使用している「必須マーク」のアスタリスクアイコン。
-        // 実際のパス / 形式に合わせて拡張子は調整してください。
-        SvgPicture.asset(
-          AppAssets.asteriskLogoSvg,
-          width: 8,
-          height: 8,
-        ),
-      ],
-    );
-  }
-}
-
 /// メールアドレス入力欄（ラベル + 必須 + TextField）を表示するセクション用クラス。
 class _EmailField extends StatelessWidget {
   const _EmailField({required this.onChanged, this.errorText});
