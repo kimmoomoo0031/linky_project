@@ -1,4 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:linky_project_0318/core/debug/app_log.dart';
+import 'package:linky_project_0318/core/debug/logged_action.dart';
 import 'package:linky_project_0318/core/utils/validators.dart';
 import 'package:linky_project_0318/core/constants/common_dialog_messages.dart';
 import 'package:linky_project_0318/core/constants/dialog_type.dart';
@@ -59,19 +61,36 @@ class PasswordResetNewPasswordController
     required String email,
     required String code,
   }) async {
-    if (state.isLoading) return;
-    if (!_validateAll()) return;
-
-    state = state.copyWith(isLoading: true);
-
-    try {
-      final result = await _requestToServer(email: email, code: code);
-      _handleResetPasswordResult(result);
-    } catch (_) {
-      _handleUnexpectedError();
-    } finally {
-      state = state.copyWith(isLoading: false);
-    }
+    return runLogged(
+      feature: 'AUTH',
+      action: 'passwordResetNewPassword.submit',
+      fields: {
+        'email': AppLog.maskEmail(email),
+        'code': AppLog.maskSecret(),
+        'newPassword': AppLog.maskSecret(),
+      },
+      blockReason: () {
+        if (state.isLoading) return 'isLoading';
+        if (!_validateAll()) return 'validation';
+        return null;
+      },
+      blockFields: () => {
+        'newPasswordError': state.newPasswordError,
+        'newPasswordConfirmError': state.newPasswordConfirmError,
+      },
+      run: () async {
+        state = state.copyWith(isLoading: true);
+        try {
+          final result = await _requestToServer(email: email, code: code);
+          _handleResetPasswordResult(result);
+        } finally {
+          state = state.copyWith(isLoading: false);
+        }
+      },
+      onException: (e, st) {
+        _handleUnexpectedError();
+      },
+    );
   }
 
   /// 現在の入力値をもとにサーバーへリクエストを送り、ResetPasswordResult を返す。

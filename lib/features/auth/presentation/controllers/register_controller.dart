@@ -1,6 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'register_state.dart';
+import 'package:linky_project_0318/core/debug/app_log.dart';
+import 'package:linky_project_0318/core/debug/logged_action.dart';
 import 'package:linky_project_0318/core/constants/dialog_type.dart';
 import 'package:linky_project_0318/core/utils/validators.dart';
 import 'package:linky_project_0318/core/ui/events/linky_dialog_event.dart';
@@ -77,20 +79,38 @@ class RegisterController extends StateNotifier<RegisterState> {
   }
 
   Future<void> submit() async {
-    if (state.isLoading) return;
-
-    if (!_validateAll()) return;
-
-    state = state.copyWith(isLoading: true);
-
-    try {
-      final result = await _requestToServer();
-      _handleRegisterResult(result);
-    } catch (_) {
-      _handleUnexpectedError();
-    } finally {
-      state = state.copyWith(isLoading: false);
-    }
+    return runLogged(
+      feature: 'AUTH',
+      action: 'register.submit',
+      fields: {
+        'email': AppLog.maskEmail(state.email),
+        'nickname': state.nickname,
+        'password': AppLog.maskSecret(),
+      },
+      blockReason: () {
+        if (state.isLoading) return 'isLoading';
+        if (!_validateAll()) return 'validation';
+        return null;
+      },
+      blockFields: () => {
+        'emailError': state.emailError,
+        'nicknameError': state.nicknameError,
+        'passwordError': state.passwordError,
+        'passwordConfirmError': state.passwordConfirmError,
+      },
+      run: () async {
+        state = state.copyWith(isLoading: true);
+        try {
+          final result = await _requestToServer();
+          _handleRegisterResult(result);
+        } finally {
+          state = state.copyWith(isLoading: false);
+        }
+      },
+      onException: (e, st) {
+        _handleUnexpectedError();
+      },
+    );
   }
 
   /// 現在の入力値をもとにサーバーへリクエストを送り、RegisterResult を返す。

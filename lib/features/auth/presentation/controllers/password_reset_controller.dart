@@ -1,4 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:linky_project_0318/core/debug/app_log.dart';
+import 'package:linky_project_0318/core/debug/logged_action.dart';
 
 import 'password_reset_state.dart';
 import 'package:linky_project_0318/core/utils/validators.dart';
@@ -34,33 +36,46 @@ class PasswordResetController extends StateNotifier<PasswordResetState> {
   }
 
   Future<void> submit() async {
-    if (state.isLoading) return;
+    return runLogged(
+      feature: 'AUTH',
+      action: 'passwordReset.submit',
+      fields: {
+        'email': AppLog.maskEmail(state.email),
+      },
+      blockReason: () {
+        if (state.isLoading) return 'isLoading';
+        if (!_validateEmail()) return 'validation';
+        return null;
+      },
+      blockFields: () => {
+        'error': state.emailError,
+      },
+      run: () async {
+        state = state.copyWith(isLoading: true);
+        try {
+          // TODO(api): パスワード再設定メール送信 UseCase を呼び出す。
+          // いまは UI 動作確認のためにダミーの待ち時間だけ入れている。
+          await Future.delayed(const Duration(seconds: 1));
 
-    if (!_validateEmail()) return;
-
-    state = state.copyWith(isLoading: true);
-
-    try {
-      // TODO(api): パスワード再設定メール送信 UseCase を呼び出す。
-      // いまは UI 動作確認のためにダミーの待ち時間だけ入れている。
-      await Future.delayed(const Duration(seconds: 1));
-
-      _emitDialog(
-        const LinkyDialogEvent(
-          type: LinkyDialogType.info,
-          message: AuthDialogMessages.resetEmailSent,
-        ),
-      );
-    } catch (_) {
-      _emitDialog(
-        const LinkyDialogEvent(
-          type: LinkyDialogType.error,
-          message: CommonDialogMessages.unexpectedError,
-        ),
-      );
-    } finally {
-      state = state.copyWith(isLoading: false);
-    }
+          _emitDialog(
+            const LinkyDialogEvent(
+              type: LinkyDialogType.info,
+              message: AuthDialogMessages.resetEmailSent,
+            ),
+          );
+        } finally {
+          state = state.copyWith(isLoading: false);
+        }
+      },
+      onException: (e, st) {
+        _emitDialog(
+          const LinkyDialogEvent(
+            type: LinkyDialogType.error,
+            message: CommonDialogMessages.unexpectedError,
+          ),
+        );
+      },
+    );
   }
 }
 

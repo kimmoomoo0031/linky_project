@@ -1,4 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:linky_project_0318/core/debug/app_log.dart';
+import 'package:linky_project_0318/core/debug/logged_action.dart';
 import 'package:linky_project_0318/core/utils/validators.dart';
 
 import '../../../../core/utils/regex.dart';
@@ -70,30 +72,44 @@ class PasswordResetCodeController extends StateNotifier<PasswordResetCodeState> 
   /// いまは API 未連携のため、ローカルバリデーションと
   /// ダミーの成功メッセージのみ実装している。
   Future<void> submit({required String email}) async {
-    if (state.isLoading) return;
+    return runLogged(
+      feature: 'AUTH',
+      action: 'passwordResetCode.submit',
+      fields: {
+        'email': AppLog.maskEmail(email),
+        'code': AppLog.maskSecret(),
+      },
+      blockReason: () {
+        if (state.isLoading) return 'isLoading';
+        if (!_validateCode()) return 'validation';
+        return null;
+      },
+      blockFields: () => {
+        'error': state.codeError,
+      },
+      run: () async {
+        // 連続で試すケースに備え、成功フラグは毎回リセットしてから開始する。
+        state = state.copyWith(isLoading: true, isSuccess: false);
+        try {
+          // TODO(api): 認証コード検証用の UseCase を呼び出す。
+          await Future.delayed(const Duration(seconds: 1));
 
-    if (!_validateCode()) return;
-
-    // 連続で試すケースに備え、成功フラグは毎回リセットしてから開始する。
-    state = state.copyWith(isLoading: true, isSuccess: false);
-
-    try {
-      // TODO(api): 認証コード検証用の UseCase を呼び出す。
-      await Future.delayed(const Duration(seconds: 1));
-
-      state = state.copyWith(isSuccess: true);
-    } catch (_) {
-      state = state.copyWith(isSuccess: false);
-      _emitDialog(
-        const LinkyDialogEvent(
-          type: LinkyDialogType.error,
-          message: '認証コードの確認に失敗しました。\n時間をおいて再度お試しください。',
-        ),
-      );
-    } finally {
-      // 成功/失敗どちらでも必ずローディングを解除する。
-      state = state.copyWith(isLoading: false);
-    }
+          state = state.copyWith(isSuccess: true);
+        } finally {
+          // 成功/失敗どちらでも必ずローディングを解除する。
+          state = state.copyWith(isLoading: false);
+        }
+      },
+      onException: (e, st) {
+        state = state.copyWith(isSuccess: false);
+        _emitDialog(
+          const LinkyDialogEvent(
+            type: LinkyDialogType.error,
+            message: '認証コードの確認に失敗しました。\n時間をおいて再度お試しください。',
+          ),
+        );
+      },
+    );
   }
 
   /// 認証コードの再送信。
@@ -101,33 +117,45 @@ class PasswordResetCodeController extends StateNotifier<PasswordResetCodeState> 
   /// いまは API 未連携のため、ダミー遅延 + 成功/失敗ダイアログのみ。
   /// 成功したら true を返す（画面側で入力欄クリアするかの判断用）。
   Future<bool> resendEmail({required String email}) async {
-    if (_isResending) return false;
-    _isResending = true;
+    return runLoggedValue<bool>(
+      feature: 'AUTH',
+      action: 'passwordResetCode.resendEmail',
+      fields: {'email': AppLog.maskEmail(email)},
+      blockedValue: false,
+      blockReason: () {
+        if (_isResending) return '_isResending';
+        return null;
+      },
+      run: () async {
+        _isResending = true;
+        try {
+          // TODO(api): 認証コード再送信の UseCase を呼び出す。
+          await Future.delayed(const Duration(seconds: 1));
 
-    try {
-      // TODO(api): 認証コード再送信の UseCase を呼び出す。
-      await Future.delayed(const Duration(seconds: 1));
+          resetCode();
 
-      resetCode();
-
-      _emitDialog(
-        const LinkyDialogEvent(
-          type: LinkyDialogType.info,
-          message: '認証コードを再送信しました。',
-        ),
-      );
-      return true;
-    } catch (_) {
-      _emitDialog(
-        const LinkyDialogEvent(
-          type: LinkyDialogType.error,
-          message: '再送信に失敗しました。\n時間をおいて再度お試しください。',
-        ),
-      );
-      return false;
-    } finally {
-      _isResending = false;
-    }
+          _emitDialog(
+            const LinkyDialogEvent(
+              type: LinkyDialogType.info,
+              message: '認証コードを再送信しました。',
+            ),
+          );
+          return true;
+        } finally {
+          _isResending = false;
+        }
+      },
+      ok: (v) => v,
+      onException: (e, st) {
+        _emitDialog(
+          const LinkyDialogEvent(
+            type: LinkyDialogType.error,
+            message: '再送信に失敗しました。\n時間をおいて再度お試しください。',
+          ),
+        );
+        return false;
+      },
+    );
   }
 }
 
