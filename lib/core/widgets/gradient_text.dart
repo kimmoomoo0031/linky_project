@@ -12,14 +12,12 @@ class GradientText extends StatelessWidget {
     required this.gradient,
     this.style,
     this.textAlign,
-    this.fontSize
   });
 
   final String text;
   final Gradient gradient;
   final TextStyle? style;
   final TextAlign? textAlign;
-  final double? fontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +31,6 @@ class GradientText extends StatelessWidget {
         text,
         textAlign: textAlign,
         style: baseStyle.copyWith(
-          fontSize: fontSize,
           color: AppColors.primaryWhite,
         ),
       ),

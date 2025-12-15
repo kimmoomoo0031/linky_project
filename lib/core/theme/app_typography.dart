@@ -19,6 +19,10 @@ class AppTextStyles {
   static TextStyle get heading24 =>
       GoogleFonts.openSans(fontSize: 24, fontWeight: FontWeight.bold);
 
+  /// 一般的な本文（18px, bold）。
+  static TextStyle get body18 =>
+      GoogleFonts.openSans(fontSize: 18, fontWeight: FontWeight.bold);
+
   /// 一般的な本文（16px, bold）。
   static TextStyle get body16 =>
       GoogleFonts.openSans(fontSize: 16, fontWeight: FontWeight.bold);

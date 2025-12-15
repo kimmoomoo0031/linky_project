@@ -29,9 +29,15 @@ class PasswordResetSuccessPage extends ConsumerWidget {
                 GradientText(
                   AuthDialogMessages.passwordResetCompleted,
                   gradient: AppColors.linky45degGradient,
-                  style: AppTextStyles.splashTitleTextStyle24,
+                  style: AppTextStyles.heading24,
                   textAlign: TextAlign.center,
-                  fontSize: 18,
+                ),
+                const SizedBox(height: 24),
+                GradientText(
+                  AuthDialogMessages.passWordResetCompletedContext,
+                  gradient: AppColors.linky45degGradient,
+                  style: AppTextStyles.body14,
+                  textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 24),
                 AuthActionButton(
