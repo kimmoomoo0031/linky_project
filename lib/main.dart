@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'package:linky_project_0318/core/router/app_router.dart';
 import 'package:linky_project_0318/core/debug/riverpod_debug_observer.dart';
+import 'package:linky_project_0318/core/theme/app_theme.dart';
 
 /// `--dart-define=ENABLE_STATE_OBSERVER=true` を付けた時だけ有効になる（デバッグ用）。
 const bool _enableStateObserver =
@@ -28,9 +28,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        textTheme: GoogleFonts.openSansTextTheme(),
-      ),
+      theme: AppTheme.light(),
+      darkTheme: AppTheme.dark(),
+      themeMode: ThemeMode.light,
       routerConfig: appRouter,
     );
   }

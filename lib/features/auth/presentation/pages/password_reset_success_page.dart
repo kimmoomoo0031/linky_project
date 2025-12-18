@@ -16,8 +16,8 @@ class PasswordResetSuccessPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final cs = Theme.of(context).colorScheme;
     return Scaffold(
-      backgroundColor: AppColors.backgroundBlue,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -43,8 +43,8 @@ class PasswordResetSuccessPage extends ConsumerWidget {
                 AuthActionButton(
                   label: 'ログイン画面へ',
                   onPressed: () => context.go('/login'),
-                  backgroundColor: AppColors.loginButton,
-                  textColor: AppColors.primaryWhite,
+                  backgroundColor: cs.primary,
+                  textColor: cs.onPrimary,
                   style: AuthActionButtonStyle.filled,
                 ),
               ],

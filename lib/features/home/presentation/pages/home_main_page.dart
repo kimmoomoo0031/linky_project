@@ -20,16 +20,16 @@ class HomeMainPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final asyncHome = ref.watch(homeControllerProvider);
+    final cs = Theme.of(context).colorScheme;
 
     return Scaffold(
-      backgroundColor: AppColors.backgroundBlue,
       appBar: _MainAppBar(onPressedMenu: onPressedMenu),
       body: asyncHome.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, st) => Center(
           child: Text(
             'error: $e',
-            style: AppTextStyles.body14.copyWith(color: AppColors.error),
+            style: AppTextStyles.body14.copyWith(color: cs.error),
           ),
         ),
         data: (data) {
@@ -76,8 +76,8 @@ class _MainAppBar extends StatelessWidget implements PreferredSizeWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12),
       child: AppBar(
-        backgroundColor: AppColors.backgroundBlue,
-        elevation: 0,
+        backgroundColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
         centerTitle: true,
         leading: IconButton(
           onPressed: () {
@@ -112,12 +112,13 @@ class _SearchBarStub extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return Container(
       height: 40,
       padding: const EdgeInsets.symmetric(horizontal: 12),
       decoration: BoxDecoration(
-        color: AppColors.primaryWhite,
-        border: Border.all(color: AppColors.outlineGray),
+        color: cs.surface,
+        border: Border.all(color: cs.outlineVariant),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
@@ -126,11 +127,11 @@ class _SearchBarStub extends StatelessWidget {
             child: Text(
               'ラウンジ検索',
               style: AppTextStyles.body12.copyWith(
-                color: AppColors.primaryGray,
+                color: cs.onSurfaceVariant,
               ),
             ),
           ),
-          const Icon(Icons.search, color: AppColors.primaryGray),
+          Icon(Icons.search, color: cs.onSurfaceVariant),
         ],
       ),
     );
@@ -184,12 +185,13 @@ class _LatestViewedPagerState extends State<_LatestViewedPager> {
   Widget build(BuildContext context) {
     final items = widget.items;
     final pageCount = (items.length / _itemsPerPage).ceil().clamp(1, 9999);
+    final cs = Theme.of(context).colorScheme;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
       decoration: BoxDecoration(
-        color: AppColors.backgroundBlue,
-        border: Border.all(color: AppColors.outlineGray),
+        color: cs.surface,
+        border: Border.all(color: cs.outlineVariant),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -284,6 +286,7 @@ class _DotsIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(count, (i) {
@@ -293,7 +296,7 @@ class _DotsIndicator extends StatelessWidget {
           height: 6,
           margin: const EdgeInsets.symmetric(horizontal: 3),
           decoration: BoxDecoration(
-            color: active ? AppColors.primaryActionBlue : AppColors.outlineGray,
+            color: active ? cs.primary : cs.outlineVariant,
             borderRadius: BorderRadius.circular(10),
           ),
         );
@@ -310,12 +313,13 @@ class _BestPostsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final list = items;
+    final cs = Theme.of(context).colorScheme;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: AppColors.backgroundBlue,
-        border: Border.all(color: AppColors.outlineGray),
+        color: cs.surface,
+        border: Border.all(color: cs.outlineVariant),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -333,7 +337,7 @@ class _BestPostsList extends StatelessWidget {
                   child: Text(
                     '${i + 1}.',
                     style: AppTextStyles.body12.copyWith(
-                      color: AppColors.primaryGray,
+                      color: cs.onSurfaceVariant,
                     ),
                   ),
                 ),
@@ -341,14 +345,14 @@ class _BestPostsList extends StatelessWidget {
                   child: Text(
                     title,
                     style: AppTextStyles.body12.copyWith(
-                      color: AppColors.primaryGray,
+                      color: cs.onSurfaceVariant,
                     ),
                   ),
                 ),
                 Text(
                   date,
                   style: AppTextStyles.body12.copyWith(
-                    color: AppColors.primaryGray,
+                    color: cs.onSurfaceVariant,
                   ),
                 ),
               ],

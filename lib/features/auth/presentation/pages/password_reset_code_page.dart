@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:linky_project_0318/core/theme/app_colors.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
 import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
@@ -70,7 +69,6 @@ class _PasswordResetCodePageState extends ConsumerState<PasswordResetCodePage> {
     });
 
     return Scaffold(
-      backgroundColor: AppColors.backgroundBlue,
       appBar: const LinkyAppBar(
         title: '認証コード入力',
         showBackButton: true,
@@ -155,8 +153,8 @@ class _PasswordResetCodeScrollContent extends StatelessWidget {
           AuthActionButton(
             label: '送信する',
             onPressed: onPressedSubmit,
-            backgroundColor: AppColors.loginButton,
-            textColor: AppColors.primaryWhite,
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            textColor: Theme.of(context).colorScheme.onPrimary,
             style: AuthActionButtonStyle.filled,
             isLoading: state.isLoading,
           ),
@@ -174,10 +172,11 @@ class _ResetCodeNoticeText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return Text(
       '入力したメールアドレス $email\n宛に認証コードを送信しました。',
       style: AppTextStyles.body14.copyWith(
-        color: AppColors.primaryGray,
+        color: cs.onSurfaceVariant,
       ),
       textAlign: TextAlign.center,
     );
@@ -200,6 +199,7 @@ class _OtpInputSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return Column(
       children: [
         OtpCodeInput(
@@ -212,7 +212,7 @@ class _OtpInputSection extends StatelessWidget {
         if (codeError != null) ...[
           Text(
             codeError!,
-            style: AppTextStyles.body12.copyWith(color: AppColors.error),
+            style: AppTextStyles.body12.copyWith(color: cs.error),
           ),
         ],
       ],
@@ -234,6 +234,7 @@ class _ResendEmailButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return Align(
       alignment: Alignment.centerRight,
       child: TextButton(
@@ -241,7 +242,7 @@ class _ResendEmailButton extends StatelessWidget {
         child: Text(
           'メールを再送信する',
           style: AppTextStyles.body12.copyWith(
-            color: AppColors.primaryActionBlue,
+            color: cs.primary,
             decoration: TextDecoration.underline,
           ),
         ),
@@ -260,18 +261,19 @@ class _NoEmailHelpLink extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return Center(
       child: RichText(
         text: TextSpan(
           style: AppTextStyles.body12.copyWith(
-            color: AppColors.primaryGray,
+            color: cs.onSurfaceVariant,
           ),
           children: [
             const TextSpan(text: 'メールが届かない場合は'),
             TextSpan(
               text: 'こちら',
               style: AppTextStyles.body12.copyWith(
-                color: AppColors.primaryActionBlue,
+                color: cs.primary,
                 decoration: TextDecoration.underline,
               ),
               recognizer: TapGestureRecognizer()..onTap = onTapHere,
@@ -296,15 +298,11 @@ class _CenterLoadingOverlay extends StatelessWidget {
   Widget build(BuildContext context) {
     if (!isVisible) return const SizedBox.shrink();
 
-    return const Stack(
+    final cs = Theme.of(context).colorScheme;
+    return Stack(
       children: [
-        ModalBarrier(
-          dismissible: false,
-          color: AppColors.indicatorBackground,
-        ),
-        Center(
-          child: CircularProgressIndicator(),
-        ),
+        ModalBarrier(dismissible: false, color: cs.scrim.withAlpha(107)), // 0.42 * 255 ≒ 107
+        const Center(child: CircularProgressIndicator()),
       ],
     );
   }

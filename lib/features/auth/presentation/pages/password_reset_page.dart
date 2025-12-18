@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 
 import 'package:linky_project_0318/core/constants/dialog_type.dart';
 import 'package:linky_project_0318/core/constants/app_assets.dart';
-import 'package:linky_project_0318/core/theme/app_colors.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
 import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
@@ -48,7 +47,6 @@ class PasswordResetPage extends ConsumerWidget {
     });
 
     return Scaffold(
-      backgroundColor: AppColors.backgroundBlue,
       appBar: const LinkyAppBar(
         title: 'パスワード再設定',
         showBackButton: true,
@@ -114,6 +112,7 @@ class _PasswordResetHeaderSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return Column(
       children: [
         Center(
@@ -126,7 +125,7 @@ class _PasswordResetHeaderSection extends StatelessWidget {
         Text(
           'パスワードを再設定するための\nメールアドレスを入力してください。',
           style: AppTextStyles.body14.copyWith(
-            color: AppColors.primaryGray,
+            color: cs.onSurfaceVariant,
           ),
           textAlign: TextAlign.center,
         ),
@@ -174,11 +173,12 @@ class _SubmitButtonSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return AuthActionButton(
       label: '送信する',
       onPressed: onPressed,
-      backgroundColor: AppColors.loginButton,
-      textColor: AppColors.primaryWhite,
+      backgroundColor: cs.primary,
+      textColor: cs.onPrimary,
       style: AuthActionButtonStyle.filled,
       isLoading: isLoading,
     );
@@ -193,12 +193,13 @@ class _BackButtonSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return AuthActionButton(
       label: 'もどる',
       onPressed: onPressed,
-      backgroundColor: AppColors.primaryWhite,
-      textColor: AppColors.primaryGray,
-      borderColor: AppColors.outlineGray,
+      backgroundColor: cs.surface,
+      textColor: cs.onSurfaceVariant,
+      borderColor: cs.outlineVariant,
       style: AuthActionButtonStyle.outlined,
     );
   }

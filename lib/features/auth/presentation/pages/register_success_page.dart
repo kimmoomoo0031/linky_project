@@ -16,7 +16,6 @@ class RegisterSuccessPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundBlue,
       body: SafeArea(
         child: _RegisterSuccessScrollContent(
           onPressedGoToLogin: () => context.go('/login'),
@@ -91,11 +90,12 @@ class _GoToLoginButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return AuthActionButton(
       label: 'ログイン画面へ',
       onPressed: onPressed,
-      backgroundColor: AppColors.loginButton,
-      textColor: AppColors.primaryWhite,
+      backgroundColor: cs.primary,
+      textColor: cs.onPrimary,
       style: AuthActionButtonStyle.filled,
     );
   }

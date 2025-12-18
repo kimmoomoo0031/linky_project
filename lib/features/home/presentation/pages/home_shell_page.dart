@@ -33,7 +33,7 @@ class _HomeShellPageState extends ConsumerState<HomeShellPage> {
       borderRadius: 18,
       angle: 0,
       slideWidth: MediaQuery.sizeOf(context).width * 0.78,
-      menuBackgroundColor: const Color(0xFFE6F7FF),
+      menuBackgroundColor: Theme.of(context).colorScheme.surface,
       mainScreenTapClose: true,
     );
   }

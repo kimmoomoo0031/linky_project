@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:linky_project_0318/core/theme/app_colors.dart';
 import 'package:linky_project_0318/core/widgets/labeled_field.dart';
 import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
 import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
@@ -33,6 +32,7 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
   Widget build(BuildContext context) {
     final state = ref.watch(profileEditControllerProvider);
     final controller = ref.read(profileEditControllerProvider.notifier);
+    final cs = Theme.of(context).colorScheme;
 
     // 1回限りのダイアログイベント
     ref.listen(profileEditDialogEventProvider, (previous, next) async {
@@ -57,7 +57,6 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
     }
 
     return Scaffold(
-      backgroundColor: AppColors.backgroundBlue,
       appBar: const LinkyAppBar(title: 'プロフィール編集', showBackButton: true),
       body: SafeArea(
         child: state.isLoading
@@ -90,7 +89,7 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                             const SizedBox(height: 6),
                             Text(
                               state.nicknameError!,
-                              style: const TextStyle(color: AppColors.error),
+                              style: TextStyle(color: cs.error),
                             ),
                           ],
                         ],
@@ -112,7 +111,7 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                             const SizedBox(height: 6),
                             Text(
                               state.bioError!,
-                              style: const TextStyle(color: AppColors.error),
+                              style: TextStyle(color: cs.error),
                             ),
                           ],
                         ],
@@ -122,8 +121,8 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
                     AuthActionButton(
                       label: '保存する',
                       onPressed: state.isSaving ? null : controller.save,
-                      backgroundColor: AppColors.loginButton,
-                      textColor: AppColors.primaryWhite,
+                      backgroundColor: cs.primary,
+                      textColor: cs.onPrimary,
                       style: AuthActionButtonStyle.filled,
                       isLoading: state.isSaving,
                     ),
@@ -135,23 +134,24 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
   }
 
   InputDecoration _decor({required String hintText}) {
+    final cs = Theme.of(context).colorScheme;
     return InputDecoration(
       hintText: hintText,
-      hintStyle: const TextStyle(color: AppColors.primaryGray),
+      hintStyle: TextStyle(color: cs.onSurfaceVariant),
       filled: true,
-      fillColor: AppColors.primaryWhite,
+      fillColor: Theme.of(context).inputDecorationTheme.fillColor,
       contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: AppColors.outlineGray),
+        borderSide: BorderSide(color: cs.outlineVariant),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: AppColors.primaryActionBlue),
+        borderSide: BorderSide(color: cs.primary),
       ),
       disabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: AppColors.outlineGray),
+        borderSide: BorderSide(color: cs.outlineVariant),
       ),
     );
   }

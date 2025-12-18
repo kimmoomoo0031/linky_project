@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:linky_project_0318/core/theme/app_colors.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
 import 'package:linky_project_0318/features/post/post_providers.dart';
@@ -13,9 +12,9 @@ class MyPostsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final asyncPosts = ref.watch(myPostsControllerProvider);
+    final cs = Theme.of(context).colorScheme;
 
     return Scaffold(
-      backgroundColor: AppColors.backgroundBlue,
       appBar: const LinkyAppBar(title: '自分の投稿', showBackButton: true),
       body: SafeArea(
         child: asyncPosts.when(
@@ -23,7 +22,7 @@ class MyPostsPage extends ConsumerWidget {
           error: (e, st) => Center(
             child: Text(
               'error: $e',
-              style: AppTextStyles.body14.copyWith(color: AppColors.error),
+              style: AppTextStyles.body14.copyWith(color: cs.error),
             ),
           ),
           data: (posts) {
@@ -32,7 +31,7 @@ class MyPostsPage extends ConsumerWidget {
                 child: Text(
                   '投稿がありません',
                   style:
-                      AppTextStyles.body14.copyWith(color: AppColors.primaryGray),
+                      AppTextStyles.body14.copyWith(color: cs.onSurfaceVariant),
                 ),
               );
             }
@@ -47,8 +46,8 @@ class MyPostsPage extends ConsumerWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                   decoration: BoxDecoration(
-                    color: AppColors.primaryWhite,
-                    border: Border.all(color: AppColors.outlineGray),
+                    color: cs.surface,
+                    border: Border.all(color: cs.outlineVariant),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Row(
@@ -57,18 +56,17 @@ class MyPostsPage extends ConsumerWidget {
                         child: Text(
                           p.title,
                           style: AppTextStyles.body14
-                              .copyWith(color: AppColors.primaryGray),
+                              .copyWith(color: cs.onSurfaceVariant),
                         ),
                       ),
                       const SizedBox(width: 8),
                       Text(
                         p.dateLabel,
                         style: AppTextStyles.body12
-                            .copyWith(color: AppColors.primaryGray),
+                            .copyWith(color: cs.onSurfaceVariant),
                       ),
                       const SizedBox(width: 4),
-                      const Icon(Icons.chevron_right,
-                          color: AppColors.primaryGray),
+                      Icon(Icons.chevron_right, color: cs.onSurfaceVariant),
                     ],
                   ),
                 );

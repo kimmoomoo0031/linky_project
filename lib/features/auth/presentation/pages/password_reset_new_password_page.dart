@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:linky_project_0318/features/auth/presentation/constants/auth_dialog_messages.dart';
 
 import 'package:linky_project_0318/core/constants/dialog_type.dart';
-import 'package:linky_project_0318/core/theme/app_colors.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
 import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
@@ -67,7 +66,6 @@ class PasswordResetNewPasswordPage extends ConsumerWidget {
     });
 
     return Scaffold(
-      backgroundColor: AppColors.backgroundBlue,
       appBar: const LinkyAppBar(title: '新しいパスワード設定', showBackButton: true),
       body: SafeArea(
         child: _PasswordResetNewPasswordScrollContent(
@@ -97,6 +95,7 @@ class _PasswordResetNewPasswordScrollContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
@@ -118,8 +117,8 @@ class _PasswordResetNewPasswordScrollContent extends StatelessWidget {
           AuthActionButton(
             label: '設定する',
             onPressed: onPressedSubmit,
-            backgroundColor: AppColors.loginButton,
-            textColor: AppColors.primaryWhite,
+            backgroundColor: cs.primary,
+            textColor: cs.onPrimary,
             style: AuthActionButtonStyle.filled,
             isLoading: state.isLoading,
           ),
@@ -135,11 +134,12 @@ class _PasswordRuleBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return DecoratedBox(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: AppColors.outlineGray),
-        color: AppColors.dialogBackground,
+        border: Border.all(color: cs.outlineVariant),
+        color: cs.surface,
       ),
       child: Transform.translate(
         offset: const Offset(0, 8),
@@ -147,7 +147,7 @@ class _PasswordRuleBox extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           child: Text(
             AuthDialogMessages.passwordResetDescription,
-            style: AppTextStyles.body12.copyWith(color: AppColors.primaryGray),
+            style: AppTextStyles.body12.copyWith(color: cs.onSurfaceVariant),
             textAlign: TextAlign.left,
           ),
         ),

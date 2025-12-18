@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:linky_project_0318/core/constants/app_assets.dart';
-import 'package:linky_project_0318/core/theme/app_colors.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/features/auth/auth_providers.dart';
 import 'package:linky_project_0318/features/home/home_providers.dart';
@@ -19,6 +18,7 @@ class HomeMenuPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final asyncHome = ref.watch(homeControllerProvider);
     final me = asyncHome.valueOrNull?.me;
+    final cs = Theme.of(context).colorScheme;
 
     void closeAndPush(String path) {
       onClose();
@@ -31,7 +31,7 @@ class HomeMenuPage extends ConsumerWidget {
     // ZoomDrawer の menuScreen は Scaffold/Material の外側で描画されることがあるため、
     // ListTile が要求する Material 祖先をここで保証する。
     return Material(
-      color: Colors.transparent,
+      color: cs.surface,
       child: SafeArea(
         child: Column(
           children: [
@@ -43,11 +43,11 @@ class HomeMenuPage extends ConsumerWidget {
               const SizedBox(width: 6),
               Text('Linky',
                   style: AppTextStyles.body16Bold
-                      .copyWith(color: AppColors.primaryActionBlue)),
+                      .copyWith(color: cs.primary)),
               const Spacer(),
               IconButton(
                 onPressed: onClose,
-                icon: const Icon(Icons.close, color: AppColors.primaryGray),
+                icon: Icon(Icons.close, color: cs.onSurfaceVariant),
               ),
               const SizedBox(width: 8),
             ],
@@ -84,7 +84,7 @@ class HomeMenuPage extends ConsumerWidget {
                 const SizedBox(height: 8),
                 _MenuTile(
                   title: '退会する',
-                  titleColor: AppColors.error,
+                  titleColor: cs.error,
                   onTap: () {},
                 ),
               ],
@@ -105,26 +105,26 @@ class _UserHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.symmetric(horizontal: 12),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       decoration: BoxDecoration(
-        color: AppColors.backgroundBlue,
-        border: Border.all(color: AppColors.outlineGray),
+        color: cs.surface,
+        border: Border.all(color: cs.outlineVariant),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
         children: [
           Text(
             nickname,
-            style:
-                AppTextStyles.body16Bold.copyWith(color: AppColors.primaryBlack),
+            style: AppTextStyles.body16Bold.copyWith(color: cs.onSurface),
           ),
           const SizedBox(height: 4),
           Text(
             email,
-            style: AppTextStyles.body12.copyWith(color: AppColors.primaryGray),
+            style: AppTextStyles.body12.copyWith(color: cs.onSurfaceVariant),
           ),
         ],
       ),
@@ -145,11 +145,12 @@ class _MenuTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 6),
       decoration: BoxDecoration(
-        color: AppColors.primaryWhite,
-        border: Border.all(color: AppColors.outlineGray),
+        color: cs.surface,
+        border: Border.all(color: cs.outlineVariant),
         borderRadius: BorderRadius.circular(10),
       ),
       child: ListTile(
@@ -157,10 +158,10 @@ class _MenuTile extends StatelessWidget {
         title: Text(
           title,
           style: AppTextStyles.body14.copyWith(
-            color: titleColor ?? AppColors.primaryGray,
+            color: titleColor ?? cs.onSurfaceVariant,
           ),
         ),
-        trailing: const Icon(Icons.chevron_right, color: AppColors.primaryGray),
+        trailing: Icon(Icons.chevron_right, color: cs.onSurfaceVariant),
         onTap: onTap,
       ),
     );

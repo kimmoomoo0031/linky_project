@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import 'package:linky_project_0318/core/theme/app_colors.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/utils/image_url_builder.dart';
 
@@ -19,11 +18,7 @@ class LoungeCard extends StatelessWidget {
     required this.title,
     this.thumbnail,
     this.thumbnailUrl,
-    this.fallbackThumbnail = const Icon(
-      Icons.image_outlined,
-      color: AppColors.outlineGray,
-      size: 24,
-    ),
+    this.fallbackThumbnail,
     this.onTap,
   }) : assert(
           !(thumbnail != null && thumbnailUrl != null),
@@ -33,11 +28,7 @@ class LoungeCard extends StatelessWidget {
   const LoungeCard.basic({
     super.key,
     required this.title,
-    this.fallbackThumbnail = const Icon(
-      Icons.image_outlined,
-      color: AppColors.outlineGray,
-      size: 24,
-    ),
+    this.fallbackThumbnail,
     this.onTap,
   })  : thumbnail = null,
         thumbnailUrl = null;
@@ -54,7 +45,7 @@ class LoungeCard extends StatelessWidget {
   /// 画像の取得に失敗した場合や未設定の場合に表示するフォールバック。
   ///
   /// 例: `SvgPicture.asset(AppAssets.loungeIconLogoSvg)`
-  final Widget fallbackThumbnail;
+  final Widget? fallbackThumbnail;
   final VoidCallback? onTap;
 
   // タイルが小さい場合でも overflow しないように、タイトル領域の高さを確保する。
@@ -62,21 +53,32 @@ class LoungeCard extends StatelessWidget {
   static const double _titleBoxHeight = 32; // body12 * 2行分の目安
   static const double _fallbackIconSize = 100;
 
-  Widget _buildFixedFallback() {
+  Widget _buildFixedFallback(Widget fallback) {
     return Center(
       child: SizedBox(
         width: _fallbackIconSize,
         height: _fallbackIconSize,
-        child: fallbackThumbnail,
+        child: fallback,
       ),
     );
+  }
+
+  Widget _resolveFallback(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    return fallbackThumbnail ??
+        Icon(
+          Icons.image_outlined,
+          color: cs.outline,
+          size: 24,
+        );
   }
 
   /// 画像の縦横比がバラバラでも、見た目のサイズ感が揃うようにする。
   ///
   /// - ラスタ画像URL: `BoxFit.cover`（枠いっぱい、必要ならトリミング）
   /// - SVG/プレースホルダ: `BoxFit.contain`（見切れなし）
-  Widget _buildThumbnailFitted() {
+  Widget _buildThumbnailFitted(BuildContext context) {
+    final fallback = _resolveFallback(context);
     // 呼び出し側がWidgetを直接渡す場合は「見切れなし」で収める（安全側）
     if (thumbnail != null) {
       return Padding(
@@ -97,7 +99,7 @@ class LoungeCard extends StatelessWidget {
           child: SvgPicture.network(
             url,
             fit: BoxFit.contain,
-            placeholderBuilder: (context) => _buildFixedFallback(),
+            placeholderBuilder: (context) => _buildFixedFallback(fallback),
           ),
         );
       }
@@ -124,7 +126,7 @@ class LoungeCard extends StatelessWidget {
               sizedUrl,
               fit: BoxFit.cover,
               errorBuilder: (context, error, stackTrace) =>
-                  _buildFixedFallback(),
+                  _buildFixedFallback(fallback),
             ),
           );
         },
@@ -132,12 +134,13 @@ class LoungeCard extends StatelessWidget {
     }
 
     // デフォルト（画像未登録）
-    return _buildFixedFallback();
+    return _buildFixedFallback(fallback);
   }
 
   @override
   Widget build(BuildContext context) {
     final radius = BorderRadius.circular(25);
+    final cs = Theme.of(context).colorScheme;
 
     return Material(
       color: Colors.transparent,
@@ -154,13 +157,13 @@ class LoungeCard extends StatelessWidget {
                 borderRadius: radius,
                 child: DecoratedBox(
                   decoration: BoxDecoration(
-                    border: Border.all(color: AppColors.outlineGray),
-                    color: AppColors.primaryWhite,
+                    border: Border.all(color: cs.outlineVariant),
+                    color: cs.surface,
                     borderRadius: radius,
                   ),
                   // どんなサイズのサムネでも、カード内いっぱいに見やすく収まるようスケールする
                   child: SizedBox.expand(
-                    child: _buildThumbnailFitted(),
+                    child: _buildThumbnailFitted(context),
                   ),
                 ),
               ),
@@ -173,7 +176,7 @@ class LoungeCard extends StatelessWidget {
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
-                style: AppTextStyles.body12.copyWith(color: AppColors.primaryGray),
+                style: AppTextStyles.body12.copyWith(color: cs.onSurfaceVariant),
               ),
             ),
           ],

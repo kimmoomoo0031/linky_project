@@ -38,6 +38,10 @@ class LoginController extends StateNotifier<LoginState> {
     );
   }
 
+  /// 画面遷移などのタイミングで、バリデーションエラー表示だけを消したい時に呼ぶ。
+  ///（入力値は保持する）
+  void clearValidationErrors() => _clearErrors();
+
   Future<void> submit() async {
     return runLogged(
       feature: 'AUTH',
