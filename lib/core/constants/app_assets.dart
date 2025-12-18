@@ -13,6 +13,9 @@ class AppAssets {
   static const backLogoSvg = '$_common/back_logo.svg';
   static const helpCircleLogoSvg = '$_common/helpcircle_logo.svg';
   static const asteriskLogoSvg = '$_common/asterisk_logo.svg';
+  static const bellLogoSvg = '$_common/bell_logo.svg';
+  static const mainScreenListLogoSvg = '$_common/main_screen_list_logo.svg';
+  static const loungeIconLogoSvg = '$_common/lounge_icon_logo.svg';
   static const lineLogoSvg = '$_common/line_logo.svg';
   static const googleLogoSvg = '$_common/google_logo.svg';
   static const userLogoSvg = '$_common/user_logo.svg';

@@ -37,6 +37,13 @@ class LoginPage extends ConsumerWidget {
       ref.read(loginDialogEventProvider.notifier).state = null;
     });
 
+    // ログイン成功（isSuccess == true）になったタイミングでホームへ遷移する。
+    ref.listen(loginControllerProvider, (previous, next) {
+      if (previous?.isSuccess != true && next.isSuccess) {
+        context.go('/home');
+      }
+    });
+
     return Scaffold(
       backgroundColor: AppColors.backgroundBlue,
       body: SafeArea(

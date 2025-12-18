@@ -18,11 +18,12 @@ class LoginController extends StateNotifier<LoginState> {
   final LoginUseCase _loginUseCase;
 
   void onEmailChanged(String value) {
-    state = state.copyWith(email: value, emailError: null);
+    state = state.copyWith(email: value, emailError: null, isSuccess: false);
   }
 
   void onPasswordChanged(String value) {
-    state = state.copyWith(password: value, passwordError: null);
+    state =
+        state.copyWith(password: value, passwordError: null, isSuccess: false);
   }
 
   void _emitDialog(LinkyDialogEvent event) {
@@ -65,7 +66,7 @@ class LoginController extends StateNotifier<LoginState> {
         'passwordError': state.passwordError,
       },
       run: () async {
-        state = state.copyWith(isLoading: true);
+        state = state.copyWith(isLoading: true, isSuccess: false);
         try {
           // 実際API呼び出し (現在は FakeAuthRepository が応答)
           final LoginResult result = await _loginUseCase(
@@ -78,6 +79,7 @@ class LoginController extends StateNotifier<LoginState> {
               // TODO: 成功時 user をグローバルな AuthState などに保存し、画面遷移する。
               // この Controller ではとりあえずエラーをクリアするだけにしておく。
               _clearErrors();
+              state = state.copyWith(isSuccess: true);
             },
             invalidCredentials: () {
               // ユーザーが入力を修正できる種類のエラーはフィールド下に表示。

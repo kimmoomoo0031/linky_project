@@ -1,0 +1,186 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
+import 'package:linky_project_0318/core/theme/app_colors.dart';
+import 'package:linky_project_0318/core/theme/app_typography.dart';
+import 'package:linky_project_0318/core/utils/image_url_builder.dart';
+
+/// ラウンジ一覧などで使う共通カード（画像 + タイトル）。
+///
+/// 画面側で毎回「プレースホルダ画像 + タイトル」を組み立てないために、
+/// このWidget側に “標準サムネ” の責務を寄せる。
+///
+/// - [thumbnail] を渡したらそれを優先して表示
+/// - [thumbnailUrl] があればネットワーク画像（S3等）を表示
+/// - どちらも無ければ標準アイコン（asset）を表示
+class LoungeCard extends StatelessWidget {
+  const LoungeCard({
+    super.key,
+    required this.title,
+    this.thumbnail,
+    this.thumbnailUrl,
+    this.fallbackThumbnail = const Icon(
+      Icons.image_outlined,
+      color: AppColors.outlineGray,
+      size: 24,
+    ),
+    this.onTap,
+  }) : assert(
+          !(thumbnail != null && thumbnailUrl != null),
+          'thumbnail と thumbnailUrl は同時に指定できません。',
+        );
+
+  const LoungeCard.basic({
+    super.key,
+    required this.title,
+    this.fallbackThumbnail = const Icon(
+      Icons.image_outlined,
+      color: AppColors.outlineGray,
+      size: 24,
+    ),
+    this.onTap,
+  })  : thumbnail = null,
+        thumbnailUrl = null;
+
+  final String title;
+  final Widget? thumbnail;
+
+  /// 将来的にS3などのURLでサムネを表示するためのURL。
+  ///
+  /// - `.svg` の場合は `SvgPicture.network`
+  /// - それ以外は `Image.network`
+  final String? thumbnailUrl;
+
+  /// 画像の取得に失敗した場合や未設定の場合に表示するフォールバック。
+  ///
+  /// 例: `SvgPicture.asset(AppAssets.loungeIconLogoSvg)`
+  final Widget fallbackThumbnail;
+  final VoidCallback? onTap;
+
+  // タイルが小さい場合でも overflow しないように、タイトル領域の高さを確保する。
+  static const double _titleSpacing = 4;
+  static const double _titleBoxHeight = 32; // body12 * 2行分の目安
+  static const double _fallbackIconSize = 100;
+
+  Widget _buildFixedFallback() {
+    return Center(
+      child: SizedBox(
+        width: _fallbackIconSize,
+        height: _fallbackIconSize,
+        child: fallbackThumbnail,
+      ),
+    );
+  }
+
+  /// 画像の縦横比がバラバラでも、見た目のサイズ感が揃うようにする。
+  ///
+  /// - ラスタ画像URL: `BoxFit.cover`（枠いっぱい、必要ならトリミング）
+  /// - SVG/プレースホルダ: `BoxFit.contain`（見切れなし）
+  Widget _buildThumbnailFitted() {
+    // 呼び出し側がWidgetを直接渡す場合は「見切れなし」で収める（安全側）
+    if (thumbnail != null) {
+      return Padding(
+        padding: const EdgeInsets.all(10),
+        child: FittedBox(
+          fit: BoxFit.contain,
+          child: thumbnail!,
+        ),
+      );
+    }
+
+    final url = thumbnailUrl;
+    if (url != null && url.isNotEmpty) {
+      final lower = url.toLowerCase();
+      if (lower.endsWith('.svg')) {
+        return Padding(
+          padding: const EdgeInsets.all(10),
+          child: SvgPicture.network(
+            url,
+            fit: BoxFit.contain,
+            placeholderBuilder: (context) => _buildFixedFallback(),
+          ),
+        );
+      }
+
+      // 写真系は cover で “枠いっぱいに揃える”
+      return LayoutBuilder(
+        builder: (context, constraints) {
+          // 1) いま画面で表示する「フレームの実サイズ(px)」を算出
+          final dpr = MediaQuery.of(context).devicePixelRatio;
+          final logical = constraints.biggest.shortestSide; // 正方形想定
+          final neededPx = (logical * dpr).ceil().clamp(1, 4096);
+
+          // 2) CDNキャッシュ効率を考えて、固定バケットに丸める（例: 128/256/512...）
+          final bucketPx = ImageUrlBuilder.bucketSquareSizePx(neededPx);
+
+          // 3) 原本URLに w/h/fit を付けてリサイズ版を要求
+          final sizedUrl = ImageUrlBuilder.withSquareCropParams(
+            url,
+            sizePx: bucketPx,
+          );
+
+          return SizedBox.expand(
+            child: Image.network(
+              sizedUrl,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) =>
+                  _buildFixedFallback(),
+            ),
+          );
+        },
+      );
+    }
+
+    // デフォルト（画像未登録）
+    return _buildFixedFallback();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final radius = BorderRadius.circular(25);
+
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: radius,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // サムネ枠は常に正方形（= 画像が来ても “枠” はブレない）
+            AspectRatio(
+              aspectRatio: 1,
+              child: ClipRRect(
+                borderRadius: radius,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: AppColors.outlineGray),
+                    color: AppColors.primaryWhite,
+                    borderRadius: radius,
+                  ),
+                  // どんなサイズのサムネでも、カード内いっぱいに見やすく収まるようスケールする
+                  child: SizedBox.expand(
+                    child: _buildThumbnailFitted(),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: _titleSpacing),
+            SizedBox(
+              height: _titleBoxHeight,
+              child: Text(
+                title,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+                style: AppTextStyles.body12.copyWith(color: AppColors.primaryGray),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
