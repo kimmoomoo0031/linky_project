@@ -24,7 +24,7 @@ class AuthInputDecorations {
     return InputDecoration(
       hintText: hintText,
       hintStyle: AppTextStyles.body12.copyWith(
-        color: cs.onSurfaceVariant,
+        color: cs.outlineVariant,
       ),
       filled: true,
       fillColor: Theme.of(context).inputDecorationTheme.fillColor,

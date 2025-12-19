@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:linky_project_0318/core/constants/app_assets.dart';
 import 'package:linky_project_0318/core/theme/app_colors.dart';
@@ -10,20 +11,60 @@ import 'package:linky_project_0318/features/home/home_providers.dart';
 import 'package:linky_project_0318/features/home/domain/entities/best_post.dart';
 import 'package:linky_project_0318/features/home/domain/entities/lounge_preview.dart';
 import 'package:linky_project_0318/features/lounge/presentation/widgets/lounge_card.dart';
+import 'package:linky_project_0318/features/home/presentation/pages/home_menu_page.dart';
 
 /// ホーム画面（メイン側）。
-class HomeMainPage extends ConsumerWidget {
-  const HomeMainPage({super.key, required this.onPressedMenu});
-
-  final VoidCallback onPressedMenu;
+class HomeMainPage extends ConsumerStatefulWidget {
+  const HomeMainPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<HomeMainPage> createState() => _HomeMainPageState();
+}
+
+class _HomeMainPageState extends ConsumerState<HomeMainPage> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  void _openDrawer() => _scaffoldKey.currentState?.openEndDrawer();
+
+  void _closeDrawer() {
+    final state = _scaffoldKey.currentState;
+    if (state == null) return;
+
+    if (state.isEndDrawerOpen) {
+      Navigator.of(context).pop();
+      return;
+    }
+  }
+
+  void _navigate(String path, {bool replace = false}) {
+    // Drawer を閉じた後でも遷移に使う context が生きているように、
+    // “メイン側”の context で遷移を実行する。
+    _closeDrawer();
+    Future.microtask(() {
+      if (!mounted) return;
+      if (replace) {
+        context.go(path);
+      } else {
+        context.push(path);
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final asyncHome = ref.watch(homeControllerProvider);
     final cs = Theme.of(context).colorScheme;
 
     return Scaffold(
-      appBar: _MainAppBar(onPressedMenu: onPressedMenu),
+      key: _scaffoldKey,
+      endDrawer: Drawer(
+        width: MediaQuery.sizeOf(context).width * 0.9,
+        child: HomeMenuPage(
+          onClose: _closeDrawer,
+          onNavigate: _navigate,
+        ),
+      ),
+      appBar: _MainAppBar(onPressedMenu: _openDrawer),
       body: asyncHome.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, st) => Center(
@@ -76,8 +117,7 @@ class _MainAppBar extends StatelessWidget implements PreferredSizeWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12),
       child: AppBar(
-        backgroundColor: Colors.transparent,
-        surfaceTintColor: Colors.transparent,
+        backgroundColor: AppColors.primaryWhite,
         centerTitle: true,
         leading: IconButton(
           onPressed: () {
@@ -100,7 +140,6 @@ class _MainAppBar extends StatelessWidget implements PreferredSizeWidget {
               height: 35,
             ),
           ),
-          const SizedBox(width: 6),
         ],
       ),
     );
@@ -121,18 +160,23 @@ class _SearchBarStub extends StatelessWidget {
         border: Border.all(color: cs.outlineVariant),
         borderRadius: BorderRadius.circular(10),
       ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Text(
-              'ラウンジ検索',
-              style: AppTextStyles.body12.copyWith(
-                color: cs.onSurfaceVariant,
+      child: GestureDetector(
+        onTap: () {
+
+        },
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(
+                'ラウンジ検索',
+                style: AppTextStyles.body12.copyWith(
+                  color: cs.outlineVariant,
+                ),
               ),
             ),
-          ),
-          Icon(Icons.search, color: cs.onSurfaceVariant),
-        ],
+            Icon(Icons.search, color: cs.outlineVariant),
+          ],
+        ),
       ),
     );
   }
@@ -199,14 +243,20 @@ class _LatestViewedPagerState extends State<_LatestViewedPager> {
           LayoutBuilder(
             builder: (context, constraints) {
               const crossAxisCount = 4;
-              const mainAxisSpacing = 8.0;
-              const crossAxisSpacing = 8.0;
+              const mainAxisSpacing = 12.0;
+              const crossAxisSpacing = 12.0;
+              // PageViewのページ境界でカード枠線が“ピタッと接触”して見えるのを防ぐため、
+              // 各ページの中身に左右インセットを入れて必ず“隙間”を作る。
+              const pageHorizontalInset = 6.0;
               const rowsPerPage = 2;
               // タイル全体 = 正方形サムネ + タイトル領域 なので、少し縦長に確保する
               const childAspectRatio = 0.68;
 
+              final effectiveWidth =
+                  (constraints.maxWidth - pageHorizontalInset * 2)
+                      .clamp(0.0, constraints.maxWidth);
               final tileWidth =
-                  (constraints.maxWidth -
+                  (effectiveWidth -
                       crossAxisSpacing * (crossAxisCount - 1)) /
                   crossAxisCount;
               final tileHeight = tileWidth / childAspectRatio;
@@ -235,36 +285,41 @@ class _LatestViewedPagerState extends State<_LatestViewedPager> {
                     final end = (start + _itemsPerPage).clamp(0, items.length);
                     final slice = items.sublist(start, end);
 
-                    return GridView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      padding: EdgeInsets.zero,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: crossAxisCount,
-                            mainAxisSpacing: mainAxisSpacing,
-                            crossAxisSpacing: crossAxisSpacing,
-                            childAspectRatio: childAspectRatio,
-                          ),
-                      itemCount: _itemsPerPage,
-                      itemBuilder: (context, i) {
-                        if (i >= slice.length) {
-                          return const SizedBox.shrink();
-                        }
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: pageHorizontalInset,
+                      ),
+                      child: GridView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        padding: EdgeInsets.zero,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: crossAxisCount,
+                              mainAxisSpacing: mainAxisSpacing,
+                              crossAxisSpacing: crossAxisSpacing,
+                              childAspectRatio: childAspectRatio,
+                            ),
+                        itemCount: _itemsPerPage,
+                        itemBuilder: (context, i) {
+                          if (i >= slice.length) {
+                            return const SizedBox.shrink();
+                          }
 
-                        final item = slice[i];
-                        final title = item.title;
+                          final item = slice[i];
+                          final title = item.title;
 
-                        return LoungeCard(
-                          title: title,
-                          // ユーザーが画像未登録(null)なら LoungeCard 側がデフォルト画像へフォールバックする
-                          // （将来はここにS3 URLが入る想定）
-                          thumbnailUrl: item.thumbnailUrl,
-                          fallbackThumbnail: SvgPicture.asset(
-                            AppAssets.linkyLogoSvg,
-                          ),
-                          onTap: () {},
-                        );
-                      },
+                          return LoungeCard(
+                            title: title,
+                            // ユーザーが画像未登録(null)なら LoungeCard 側がデフォルト画像へフォールバックする
+                            // （将来はここにS3 URLが入る想定）
+                            thumbnailUrl: item.thumbnailUrl,
+                            fallbackThumbnail: SvgPicture.asset(
+                              AppAssets.linkyLogoSvg,
+                            ),
+                            onTap: () {},
+                          );
+                        },
+                      ),
                     );
                   },
                 ),

@@ -9,7 +9,7 @@ import 'package:linky_project_0318/features/auth/presentation/pages/password_res
 import 'package:linky_project_0318/features/auth/presentation/pages/password_reset_code_page.dart';
 import 'package:linky_project_0318/features/auth/presentation/pages/password_reset_new_password_page.dart';
 import 'package:linky_project_0318/features/auth/presentation/pages/password_reset_success_page.dart';
-import 'package:linky_project_0318/features/home/presentation/pages/home_shell_page.dart';
+import 'package:linky_project_0318/features/home/presentation/pages/home_main_page.dart';
 import 'package:linky_project_0318/features/post/presentation/pages/my_posts_page.dart';
 import 'package:linky_project_0318/features/user/presentation/pages/profile_edit_page.dart';
 
@@ -37,7 +37,7 @@ final GoRouter appRouter = GoRouter(
       path: '/home',
       name: 'home',
       builder: (BuildContext context, GoRouterState state) =>
-          const HomeShellPage(),
+          const HomeMainPage(),
     ),
     GoRoute(
       path: '/myPosts',

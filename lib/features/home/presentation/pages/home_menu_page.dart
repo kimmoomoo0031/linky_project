@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:go_router/go_router.dart';
 
 import 'package:linky_project_0318/core/constants/app_assets.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/features/auth/auth_providers.dart';
 import 'package:linky_project_0318/features/home/home_providers.dart';
 
-/// スライドドロワーのメニュー画面。
+typedef HomeMenuNavigate = void Function(String path, {bool replace});
+
+/// ホームのメニュー画面（Drawer内表示用）。
 class HomeMenuPage extends ConsumerWidget {
-  const HomeMenuPage({super.key, required this.onClose});
+  const HomeMenuPage({
+    super.key,
+    required this.onClose,
+    required this.onNavigate,
+  });
 
   final VoidCallback onClose;
+  final HomeMenuNavigate onNavigate;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -20,16 +26,7 @@ class HomeMenuPage extends ConsumerWidget {
     final me = asyncHome.valueOrNull?.me;
     final cs = Theme.of(context).colorScheme;
 
-    void closeAndPush(String path) {
-      onClose();
-      Future.microtask(() {
-        if (!context.mounted) return;
-        context.push(path);
-      });
-    }
-
-    // ZoomDrawer の menuScreen は Scaffold/Material の外側で描画されることがあるため、
-    // ListTile が要求する Material 祖先をここで保証する。
+    // Drawer内/外に関わらず、ListTile が要求する Material 祖先をここで保証する。
     return Material(
       color: cs.surface,
       child: SafeArea(
@@ -41,9 +38,6 @@ class HomeMenuPage extends ConsumerWidget {
               const SizedBox(width: 16),
               SvgPicture.asset(AppAssets.linkyLogoSvg, width: 20, height: 20),
               const SizedBox(width: 6),
-              Text('Linky',
-                  style: AppTextStyles.body16Bold
-                      .copyWith(color: cs.primary)),
               const Spacer(),
               IconButton(
                 onPressed: onClose,
@@ -64,11 +58,11 @@ class HomeMenuPage extends ConsumerWidget {
               children: [
                 _MenuTile(
                   title: '自分の投稿',
-                  onTap: () => closeAndPush('/myPosts'),
+                  onTap: () => onNavigate('/myPosts'),
                 ),
                 _MenuTile(
                   title: 'プロフィール編集',
-                  onTap: () => closeAndPush('/profileEdit'),
+                  onTap: () => onNavigate('/profileEdit'),
                 ),
                 _MenuTile(title: '通知設定', onTap: () {}),
                 _MenuTile(title: 'ラウンジ申請', onTap: () {}),
@@ -77,8 +71,7 @@ class HomeMenuPage extends ConsumerWidget {
                   onTap: () async {
                     onClose();
                     await ref.read(authRepositoryProvider).logout();
-                    if (!context.mounted) return;
-                    context.go('/login');
+                    onNavigate('/login', replace: true);
                   },
                 ),
                 const SizedBox(height: 8),

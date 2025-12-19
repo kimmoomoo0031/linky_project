@@ -50,7 +50,6 @@ class LoungeCard extends StatelessWidget {
 
   // タイルが小さい場合でも overflow しないように、タイトル領域の高さを確保する。
   static const double _titleSpacing = 4;
-  static const double _titleBoxHeight = 32; // body12 * 2行分の目安
   static const double _fallbackIconSize = 100;
 
   Widget _buildFixedFallback(Widget fallback) {
@@ -147,39 +146,65 @@ class LoungeCard extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         borderRadius: radius,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            // サムネ枠は常に正方形（= 画像が来ても “枠” はブレない）
-            AspectRatio(
-              aspectRatio: 1,
-              child: ClipRRect(
-                borderRadius: radius,
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: cs.outlineVariant),
-                    color: cs.surface,
-                    borderRadius: radius,
-                  ),
-                  // どんなサイズのサムネでも、カード内いっぱいに見やすく収まるようスケールする
-                  child: SizedBox.expand(
-                    child: _buildThumbnailFitted(context),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            // Grid などから渡される「タイルの実サイズ」が端数になると、
+            // 子の高さ合計が 0.x px だけズレて RenderFlex overflow が出ることがある。
+            // ここでは constraints から各領域の高さを算出し、合計が必ず一致するようにする。
+            const desiredTitleHeight = 32.0; // 2行分の目安
+            final h = constraints.maxHeight;
+            final w = constraints.maxWidth;
+
+            // タイトル領域（spacing含む）を確保した残りでサムネを作る（可能な限り正方形）
+            final reserved = desiredTitleHeight + _titleSpacing;
+            final thumbSide = (h - reserved).clamp(0.0, w);
+            final titleHeight = (h - thumbSide).clamp(0.0, h);
+
+            return Column(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                SizedBox(
+                  height: thumbSide,
+                  child: Center(
+                    child: SizedBox(
+                      width: thumbSide,
+                      height: thumbSide,
+                      child: ClipRRect(
+                        borderRadius: radius,
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: cs.outlineVariant),
+                            color: cs.surface,
+                            borderRadius: radius,
+                          ),
+                          child: SizedBox.expand(
+                            child: _buildThumbnailFitted(context),
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
-            const SizedBox(height: _titleSpacing),
-            SizedBox(
-              height: _titleBoxHeight,
-              child: Text(
-                title,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.center,
-                style: AppTextStyles.body12.copyWith(color: cs.onSurfaceVariant),
-              ),
-            ),
-          ],
+                SizedBox(
+                  height: titleHeight,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: _titleSpacing),
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: Text(
+                        title,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                        style: AppTextStyles.body12
+                            .copyWith(color: cs.onSurfaceVariant),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
         ),
       ),
     );

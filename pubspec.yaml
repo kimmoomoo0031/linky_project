@@ -40,7 +40,6 @@ dependencies:
 
   # WebView
   webview_flutter: ^4.7.0
-  flutter_zoom_drawer: ^3.2.0
 
 dev_dependencies:
   flutter_test:
