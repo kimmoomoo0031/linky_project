@@ -7,9 +7,19 @@ import '../../domain/repositories/home_repository.dart';
 
 /// バックエンド未接続の段階で利用する、インメモリのダミー実装。
 class FakeHomeRepository implements HomeRepository {
+  static const bool _forceGuest =
+      bool.fromEnvironment('FORCE_GUEST', defaultValue: true);
+
   static const HomeUser _dummyUser = HomeUser(
     nickname: 'テスト様',
     email: 'testuser@example.com',
+    isGuest: false,
+  );
+
+  static const HomeUser _dummyGuest = HomeUser(
+    nickname: 'ゲスト',
+    email: '',
+    isGuest: true,
   );
 
   static final List<LoungePreview> _latestPool = List.generate(18, (i) {
@@ -45,7 +55,8 @@ class FakeHomeRepository implements HomeRepository {
   @override
   Future<HomeUser> getMe() async {
     await Future<void>.delayed(const Duration(milliseconds: 250));
-    return _dummyUser;
+    return _forceGuest ? _dummyGuest : _dummyGuest;
+    //return _forceGuest ? _dummyGuest : _dummyUser;
   }
 
   @override
