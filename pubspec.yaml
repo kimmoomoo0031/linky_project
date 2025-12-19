@@ -41,6 +41,9 @@ dependencies:
   # WebView
   webview_flutter: ^4.7.0
 
+  # Local storage (theme mode persistence)
+  shared_preferences: ^2.3.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

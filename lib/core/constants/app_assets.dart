@@ -20,6 +20,8 @@ class AppAssets {
   static const googleLogoSvg = '$_common/google_logo.svg';
   static const userLogoSvg = '$_common/user_logo.svg';
   static const alertTriangleLogoSvg = '$_common/alert_triangle_logo.svg';
+  static const darkModeLogoSvg = '$_common/dark_mode_logo.svg';
+  static const lightModeLogoSvg = '$_common/light_mode_logo.svg';
 
   // ---- common (png) ----
   static const passwordResetLogoPng = '$_common/password_reset_logo.png';

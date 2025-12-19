@@ -114,16 +114,23 @@ class _MainAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12),
       child: AppBar(
-        backgroundColor: AppColors.primaryWhite,
+        // テーマに追従（ダーク時に白固定にならないようにする）
+        backgroundColor: cs.surface,
         centerTitle: true,
         leading: IconButton(
           onPressed: () {
             // TODO: 通知画面
           },
-          icon: SvgPicture.asset(AppAssets.bellLogoSvg, width: 25, height: 25),
+          icon: SvgPicture.asset(
+            AppAssets.bellLogoSvg,
+            width: 25,
+            height: 25,
+            colorFilter: ColorFilter.mode(cs.onSurfaceVariant, BlendMode.srcIn),
+          ),
         ),
         title: Row(
           mainAxisSize: MainAxisSize.min,
@@ -138,6 +145,8 @@ class _MainAppBar extends StatelessWidget implements PreferredSizeWidget {
               AppAssets.mainScreenListLogoSvg,
               width: 35,
               height: 35,
+              colorFilter:
+                  ColorFilter.mode(cs.onSurfaceVariant, BlendMode.srcIn),
             ),
           ),
         ],

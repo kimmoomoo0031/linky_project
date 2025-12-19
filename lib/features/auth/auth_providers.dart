@@ -15,6 +15,7 @@ import 'presentation/controllers/register_controller.dart';
 import 'presentation/controllers/password_reset_controller.dart';
 import 'presentation/controllers/password_reset_code_controller.dart';
 import 'presentation/controllers/password_reset_new_password_controller.dart';
+import 'presentation/controllers/auth_session_controller.dart';
 
 /// Auth 機能全体の DI（依存関係のつなぎ込み）を行う Provider 群。
 /// data / domain / presentation をまたいで依存を組み立てる「コンポジションルート」的な役割。
@@ -79,6 +80,10 @@ final passwordResetNewPasswordControllerProvider =
   final useCase = ref.watch(resetPasswordUseCaseProvider);
   return PasswordResetNewPasswordController(ref, useCase);
 });
+
+/// セッション操作（ログアウト等）用。
+final authSessionControllerProvider =
+    AsyncNotifierProvider<AuthSessionController, void>(AuthSessionController.new);
 
 // ダイアログイベント（1回限り）は循環importを避けるため presentation 側に分離
 // → `features/auth/presentation/auth_dialog_event_providers.dart`
