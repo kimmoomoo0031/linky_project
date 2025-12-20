@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:linky_project_0318/core/debug/app_log.dart';
 import 'package:linky_project_0318/core/debug/logged_action.dart';
 
-import 'password_reset_state.dart';
+import '../states/password_reset_state.dart';
 import 'package:linky_project_0318/core/utils/validators.dart';
 import 'package:linky_project_0318/core/constants/common_dialog_messages.dart';
 import 'package:linky_project_0318/core/constants/dialog_type.dart';

@@ -6,7 +6,7 @@ import 'package:linky_project_0318/features/user/domain/entities/user_profile.da
 import 'package:linky_project_0318/features/user/user_di.dart';
 import 'package:linky_project_0318/features/user/presentation/user_dialog_event_providers.dart';
 
-import 'profile_edit_state.dart';
+import '../states/profile_edit_state.dart';
 
 class ProfileEditController extends StateNotifier<ProfileEditState> {
   ProfileEditController(this._ref) : super(const ProfileEditState()) {

@@ -10,7 +10,7 @@ import 'package:linky_project_0318/core/theme/app_colors.dart';
 import 'package:linky_project_0318/features/auth/auth_providers.dart';
 import 'package:linky_project_0318/features/auth/presentation/auth_dialog_event_providers.dart';
 import 'package:linky_project_0318/features/auth/presentation/controllers/login_controller.dart';
-import 'package:linky_project_0318/features/auth/presentation/controllers/login_state.dart';
+import 'package:linky_project_0318/features/auth/presentation/states/login_state.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/auth_action_button.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/auth_labeled_text_field.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/auth_password_field.dart';

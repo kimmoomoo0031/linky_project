@@ -7,7 +7,6 @@ class PasswordResetState with _$PasswordResetState {
   const factory PasswordResetState({
     @Default('') String email,
     @Default(false) bool isLoading,
-
     String? emailError,
   }) = _PasswordResetState;
 }

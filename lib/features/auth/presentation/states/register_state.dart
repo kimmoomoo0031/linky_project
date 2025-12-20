@@ -11,11 +11,11 @@ class RegisterState with _$RegisterState {
     @Default('') String passwordConfirm,
     @Default(false) bool isLoading,
     @Default(false) bool isSuccess,
-
     String? emailError,
     String? nicknameError,
     String? passwordError,
     String? passwordConfirmError,
   }) = _RegisterState;
 }
+
 

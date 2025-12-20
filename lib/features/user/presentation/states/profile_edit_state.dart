@@ -7,11 +7,9 @@ class ProfileEditState with _$ProfileEditState {
   const factory ProfileEditState({
     @Default(true) bool isLoading,
     @Default(false) bool isSaving,
-
     @Default('') String nickname,
     @Default('') String email,
     @Default('') String bio,
-
     String? nicknameError,
     String? bioError,
   }) = _ProfileEditState;
