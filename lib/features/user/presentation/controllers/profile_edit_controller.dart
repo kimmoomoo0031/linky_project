@@ -3,7 +3,7 @@ import 'package:linky_project_0318/core/constants/common_dialog_messages.dart';
 import 'package:linky_project_0318/core/constants/dialog_type.dart';
 import 'package:linky_project_0318/core/ui/events/linky_dialog_event.dart';
 import 'package:linky_project_0318/features/user/domain/entities/user_profile.dart';
-import 'package:linky_project_0318/features/user/user_di_exports.dart';
+import 'package:linky_project_0318/features/user/user_exports.dart';
 import 'package:linky_project_0318/features/user/presentation/user_dialog_event_providers.dart';
 
 import '../states/profile_edit_state.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/entities/my_post.dart';
-import '../../post_di_exports.dart';
+import '../../post_exports.dart';
 
 class MyPostsController extends AsyncNotifier<List<MyPost>> {
   @override
