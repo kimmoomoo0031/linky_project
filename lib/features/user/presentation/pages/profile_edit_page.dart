@@ -6,7 +6,7 @@ import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
 import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/auth_action_button.dart';
 import 'package:linky_project_0318/features/user/presentation/user_dialog_event_providers.dart';
-import 'package:linky_project_0318/features/user/user_providers.dart';
+import 'package:linky_project_0318/features/user/user_providers_exports.dart';
 
 /// プロフィール編集画面（モック）。
 class ProfileEditPage extends ConsumerStatefulWidget {

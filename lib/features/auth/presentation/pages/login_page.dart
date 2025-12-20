@@ -7,7 +7,7 @@ import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/gradient_text.dart';
 import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
 import 'package:linky_project_0318/core/theme/app_colors.dart';
-import 'package:linky_project_0318/features/auth/auth_providers.dart';
+import 'package:linky_project_0318/features/auth/auth_exports.dart';
 import 'package:linky_project_0318/features/auth/presentation/auth_dialog_event_providers.dart';
 import 'package:linky_project_0318/features/auth/presentation/controllers/login_controller.dart';
 import 'package:linky_project_0318/features/auth/presentation/states/login_state.dart';

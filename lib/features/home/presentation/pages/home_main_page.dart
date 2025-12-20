@@ -7,7 +7,7 @@ import 'package:linky_project_0318/core/constants/app_assets.dart';
 import 'package:linky_project_0318/core/theme/app_colors.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/gradient_text.dart';
-import 'package:linky_project_0318/features/home/home_providers.dart';
+import 'package:linky_project_0318/features/home/home_exports.dart';
 import 'package:linky_project_0318/features/home/domain/entities/best_post.dart';
 import 'package:linky_project_0318/features/home/domain/entities/lounge_preview.dart';
 import 'package:linky_project_0318/features/lounge/presentation/widgets/lounge_card.dart';

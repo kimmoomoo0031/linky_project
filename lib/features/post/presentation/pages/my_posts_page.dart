@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
-import 'package:linky_project_0318/features/post/post_providers.dart';
+import 'package:linky_project_0318/features/post/post_providers_exports.dart';
 
 /// 自分の投稿一覧（モック）。
 class MyPostsPage extends ConsumerWidget {

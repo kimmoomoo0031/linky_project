@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../domain/entities/best_post.dart';
 import '../../domain/entities/home_user.dart';
 import '../../domain/entities/lounge_preview.dart';
-import '../../home_di.dart';
+import '../../home_exports.dart';
 
 class HomeViewData {
   const HomeViewData({
