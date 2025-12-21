@@ -3,12 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:linky_project_0318/core/theme/app_typography.dart';
+import 'package:linky_project_0318/core/widgets/linky_search_bar.dart';
 import 'package:linky_project_0318/features/home/home_exports.dart';
 import 'package:linky_project_0318/features/home/presentation/pages/home_menu_page.dart';
 import 'package:linky_project_0318/features/home/presentation/widgets/home_best_posts_list.dart';
 import 'package:linky_project_0318/features/home/presentation/widgets/home_latest_viewed_pager.dart';
 import 'package:linky_project_0318/features/home/presentation/widgets/home_main_app_bar.dart';
-import 'package:linky_project_0318/features/home/presentation/widgets/home_search_bar_stub.dart';
 import 'package:linky_project_0318/features/home/presentation/widgets/home_section_title.dart';
 
 /// ホーム画面（メイン側）。
@@ -58,10 +58,7 @@ class _HomeMainPageState extends ConsumerState<HomeMainPage> {
       key: _scaffoldKey,
       endDrawer: Drawer(
         width: drawerWidthSize,
-        child: HomeMenuPage(
-          onClose: _closeDrawer,
-          onNavigate: _navigate,
-        ),
+        child: HomeMenuPage(onClose: _closeDrawer, onNavigate: _navigate),
       ),
       appBar: HomeMainAppBar(onPressedMenu: _openDrawer),
       body: asyncHome.when(
@@ -78,7 +75,11 @@ class _HomeMainPageState extends ConsumerState<HomeMainPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const HomeSearchBarStub(),
+                LinkySearchBar(
+                  hintText: 'ラウンジ検索',
+                  readOnly: true,
+                  onTap: () => context.push('/loungeSearch'),
+                ),
                 const SizedBox(height: 16),
                 const HomeSectionTitle('最新閲覧'),
                 const SizedBox(height: 16),
