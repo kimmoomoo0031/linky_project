@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import 'package:linky_project_0318/core/constants/app_assets.dart';
-import 'package:linky_project_0318/core/theme/app_colors.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/auth_action_button.dart';
@@ -51,7 +50,6 @@ class _TermsOfServicePageState extends State<TermsOfServicePage> {
     final bool canAgree = _hasReachedBottom;
 
     return Scaffold(
-      backgroundColor: AppColors.backgroundBlue,
       appBar: const LinkyAppBar(
         title: '利用規約',
         showBackButton: true,
@@ -114,10 +112,9 @@ class _TermsWebViewSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return Container(
-      decoration: const BoxDecoration(
-        color: AppColors.primaryWhite,
-      ),
+      decoration: BoxDecoration(color: cs.surface),
       child: WebViewWidget(controller: controller),
     );
   }
@@ -137,11 +134,12 @@ class _AgreeButtonSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return AuthActionButton(
       label: '同意する',
       onPressed: canAgree ? onPressed : null,
-      backgroundColor: AppColors.primaryActionBlue,
-      textColor: AppColors.primaryWhite,
+      backgroundColor: cs.primary,
+      textColor: cs.onPrimary,
       style: AuthActionButtonStyle.filled,
     );
   }
@@ -155,12 +153,13 @@ class _DisagreeButtonSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return AuthActionButton(
       label: '同意しない',
       onPressed: onPressed,
-      backgroundColor: AppColors.primaryWhite,
-      textColor: AppColors.primaryGray,
-      borderColor: AppColors.outlineGray,
+      backgroundColor: cs.surface,
+      textColor: cs.onSurfaceVariant,
+      borderColor: cs.outlineVariant,
       style: AuthActionButtonStyle.outlined,
     );
   }
@@ -172,10 +171,11 @@ class _TermsFooterHintText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return Text(
       '上記の利用規約をよくお読みいただき、内容に同意いただける場合は「同意する」を押してください。',
       style: AppTextStyles.body12.copyWith(
-        color: AppColors.primaryGray,
+        color: cs.onSurfaceVariant,
       ),
       textAlign: TextAlign.center,
     );

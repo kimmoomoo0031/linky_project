@@ -20,6 +20,7 @@ mixin _$LoginState {
   String get email => throw _privateConstructorUsedError;
   String get password => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
+  bool get isSuccess => throw _privateConstructorUsedError;
   String? get emailError => throw _privateConstructorUsedError;
   String? get passwordError => throw _privateConstructorUsedError;
 
@@ -41,6 +42,7 @@ abstract class $LoginStateCopyWith<$Res> {
     String email,
     String password,
     bool isLoading,
+    bool isSuccess,
     String? emailError,
     String? passwordError,
   });
@@ -64,6 +66,7 @@ class _$LoginStateCopyWithImpl<$Res, $Val extends LoginState>
     Object? email = null,
     Object? password = null,
     Object? isLoading = null,
+    Object? isSuccess = null,
     Object? emailError = freezed,
     Object? passwordError = freezed,
   }) {
@@ -80,6 +83,10 @@ class _$LoginStateCopyWithImpl<$Res, $Val extends LoginState>
             isLoading: null == isLoading
                 ? _value.isLoading
                 : isLoading // ignore: cast_nullable_to_non_nullable
+                      as bool,
+            isSuccess: null == isSuccess
+                ? _value.isSuccess
+                : isSuccess // ignore: cast_nullable_to_non_nullable
                       as bool,
             emailError: freezed == emailError
                 ? _value.emailError
@@ -108,6 +115,7 @@ abstract class _$$LoginStateImplCopyWith<$Res>
     String email,
     String password,
     bool isLoading,
+    bool isSuccess,
     String? emailError,
     String? passwordError,
   });
@@ -130,6 +138,7 @@ class __$$LoginStateImplCopyWithImpl<$Res>
     Object? email = null,
     Object? password = null,
     Object? isLoading = null,
+    Object? isSuccess = null,
     Object? emailError = freezed,
     Object? passwordError = freezed,
   }) {
@@ -146,6 +155,10 @@ class __$$LoginStateImplCopyWithImpl<$Res>
         isLoading: null == isLoading
             ? _value.isLoading
             : isLoading // ignore: cast_nullable_to_non_nullable
+                  as bool,
+        isSuccess: null == isSuccess
+            ? _value.isSuccess
+            : isSuccess // ignore: cast_nullable_to_non_nullable
                   as bool,
         emailError: freezed == emailError
             ? _value.emailError
@@ -167,6 +180,7 @@ class _$LoginStateImpl implements _LoginState {
     this.email = '',
     this.password = '',
     this.isLoading = false,
+    this.isSuccess = false,
     this.emailError,
     this.passwordError,
   });
@@ -181,13 +195,16 @@ class _$LoginStateImpl implements _LoginState {
   @JsonKey()
   final bool isLoading;
   @override
+  @JsonKey()
+  final bool isSuccess;
+  @override
   final String? emailError;
   @override
   final String? passwordError;
 
   @override
   String toString() {
-    return 'LoginState(email: $email, password: $password, isLoading: $isLoading, emailError: $emailError, passwordError: $passwordError)';
+    return 'LoginState(email: $email, password: $password, isLoading: $isLoading, isSuccess: $isSuccess, emailError: $emailError, passwordError: $passwordError)';
   }
 
   @override
@@ -200,6 +217,8 @@ class _$LoginStateImpl implements _LoginState {
                 other.password == password) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
+            (identical(other.isSuccess, isSuccess) ||
+                other.isSuccess == isSuccess) &&
             (identical(other.emailError, emailError) ||
                 other.emailError == emailError) &&
             (identical(other.passwordError, passwordError) ||
@@ -212,6 +231,7 @@ class _$LoginStateImpl implements _LoginState {
     email,
     password,
     isLoading,
+    isSuccess,
     emailError,
     passwordError,
   );
@@ -230,6 +250,7 @@ abstract class _LoginState implements LoginState {
     final String email,
     final String password,
     final bool isLoading,
+    final bool isSuccess,
     final String? emailError,
     final String? passwordError,
   }) = _$LoginStateImpl;
@@ -240,6 +261,8 @@ abstract class _LoginState implements LoginState {
   String get password;
   @override
   bool get isLoading;
+  @override
+  bool get isSuccess;
   @override
   String? get emailError;
   @override

@@ -9,6 +9,9 @@ import 'package:linky_project_0318/features/auth/presentation/pages/password_res
 import 'package:linky_project_0318/features/auth/presentation/pages/password_reset_code_page.dart';
 import 'package:linky_project_0318/features/auth/presentation/pages/password_reset_new_password_page.dart';
 import 'package:linky_project_0318/features/auth/presentation/pages/password_reset_success_page.dart';
+import 'package:linky_project_0318/features/home/presentation/pages/home_main_page.dart';
+import 'package:linky_project_0318/features/post/presentation/pages/my_posts_page.dart';
+import 'package:linky_project_0318/features/user/presentation/pages/profile_edit_page.dart';
 
 import '../../features/auth/presentation/pages/terms_of_service_page.dart';
 
@@ -29,6 +32,24 @@ final GoRouter appRouter = GoRouter(
       name: 'login',
       builder: (BuildContext context, GoRouterState state) =>
           const LoginPage(),
+    ),
+    GoRoute(
+      path: '/home',
+      name: 'home',
+      builder: (BuildContext context, GoRouterState state) =>
+          const HomeMainPage(),
+    ),
+    GoRoute(
+      path: '/myPosts',
+      name: 'myPosts',
+      builder: (BuildContext context, GoRouterState state) =>
+          const MyPostsPage(),
+    ),
+    GoRoute(
+      path: '/profileEdit',
+      name: 'profileEdit',
+      builder: (BuildContext context, GoRouterState state) =>
+          const ProfileEditPage(),
     ),
     GoRoute(
       path: '/terms',

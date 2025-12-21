@@ -8,8 +8,10 @@ class LoginState with _$LoginState {
     @Default('') String email,
     @Default('') String password,
     @Default(false) bool isLoading,
-
+    @Default(false) bool isSuccess,
     String? emailError,
     String? passwordError,
   }) = _LoginState;
 }
+
+

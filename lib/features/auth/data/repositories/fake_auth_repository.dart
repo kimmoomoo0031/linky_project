@@ -26,7 +26,8 @@ class FakeAuthRepository implements AuthRepository {
     required String email,
     required String password,
   }) async {
-    await Future<void>.delayed(const Duration(milliseconds: 600));
+    // UX のため、ログイン時はローディングが見える程度に少し待つ（モック段階）。
+    await Future<void>.delayed(const Duration(milliseconds: 900));
 
     if (email == _dummyUser.email && password == 'password123') {
       return LoginResult.success(_dummyUser);

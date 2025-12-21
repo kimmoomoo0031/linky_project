@@ -11,7 +11,6 @@ class PasswordResetCodeState with _$PasswordResetCodeState {
     @Default('') String code4,
     @Default(false) bool isLoading,
     @Default(false) bool isSuccess,
-
     String? codeError,
   }) = _PasswordResetCodeState;
 }
@@ -20,3 +19,5 @@ extension PasswordResetCodeStateX on PasswordResetCodeState {
   /// 4つの桁を連結した認証コード。
   String get combinedCode => '$code1$code2$code3$code4';
 }
+
+

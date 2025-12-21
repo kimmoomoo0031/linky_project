@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:linky_project_0318/core/theme/app_colors.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/labeled_field.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/auth_input_decorations.dart';
@@ -50,11 +49,12 @@ class AuthLabeledTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return LabeledField(
       label: label,
       isRequired: isRequired,
       requiredMark: requiredMark,
-      labelStyle: AppTextStyles.body14.copyWith(color: AppColors.primaryGray),
+      labelStyle: AppTextStyles.body14.copyWith(color: cs.onSurfaceVariant),
       labelSpacing: 8,
       child: TextField(
         keyboardType: keyboardType,
@@ -64,6 +64,7 @@ class AuthLabeledTextField extends StatelessWidget {
         inputFormatters: inputFormatters,
         textInputAction: textInputAction,
         decoration: AuthInputDecorations.textField(
+          context: context,
           hintText: hintText,
           errorText: errorText,
           suffixIcon: suffixIcon,

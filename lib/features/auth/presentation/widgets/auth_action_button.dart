@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:linky_project_0318/core/theme/app_colors.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 
 /// 認証画面で使用するアクションボタンのスタイル種別。
@@ -56,11 +55,12 @@ class AuthActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     final resolvedTextColor =
-        textColor ?? (_isFilled ? AppColors.primaryWhite : AppColors.primaryBlack);
+        textColor ?? (_isFilled ? cs.onPrimary : cs.onSurface);
     final resolvedBackgroundColor =
-        backgroundColor ?? (_isFilled ? AppColors.primaryActionBlue : AppColors.primaryWhite);
-    final resolvedBorderColor = borderColor ?? AppColors.outlineGray;
+        backgroundColor ?? (_isFilled ? cs.primary : cs.surface);
+    final resolvedBorderColor = borderColor ?? cs.outlineVariant;
     final Widget child;
 
     // ローディング中は中央にインジケーターのみ表示。

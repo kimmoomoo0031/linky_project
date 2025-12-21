@@ -8,7 +8,8 @@ plugins {
 android {
     namespace = "com.example.linky_project_0318"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    // plugin が要求する NDK のうち、最大バージョンに合わせる（後方互換あり）
+    ndkVersion = "27.0.12077973"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11

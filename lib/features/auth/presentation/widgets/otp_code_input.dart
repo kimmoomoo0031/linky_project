@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:linky_project_0318/core/theme/app_colors.dart';
 
 class OtpCodeInput extends StatefulWidget {
   const OtpCodeInput({
@@ -125,6 +124,7 @@ class OtpCodeInputState extends State<OtpCodeInput> {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return LayoutBuilder(
       builder: (context, constraints) {
         final length = widget.length;
@@ -150,9 +150,9 @@ class OtpCodeInputState extends State<OtpCodeInput> {
 
         for (var index = 0; index < length; index++) {
           final enabledBorderColor =
-              widget.hasError ? AppColors.error : AppColors.inputBorderFocus;
+              widget.hasError ? cs.error : cs.outlineVariant;
           final focusedBorderColor =
-              widget.hasError ? AppColors.error : AppColors.primaryActionBlue;
+              widget.hasError ? cs.error : cs.primary;
 
           children.add(
             SizedBox(
@@ -171,7 +171,7 @@ class OtpCodeInputState extends State<OtpCodeInput> {
                 decoration: InputDecoration(
                   counterText: '',
                   filled: true,
-                  fillColor: AppColors.primaryWhite,
+                  fillColor: Theme.of(context).inputDecorationTheme.fillColor,
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                     borderSide: BorderSide(color: enabledBorderColor),

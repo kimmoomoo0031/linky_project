@@ -3,14 +3,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:linky_project_0318/core/constants/app_assets.dart';
-import 'package:linky_project_0318/core/theme/app_colors.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/gradient_text.dart';
 import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
-import 'package:linky_project_0318/features/auth/auth_providers.dart';
+import 'package:linky_project_0318/core/widgets/linky_divider.dart';
+import 'package:linky_project_0318/core/theme/app_colors.dart';
+import 'package:linky_project_0318/features/auth/auth_exports.dart';
 import 'package:linky_project_0318/features/auth/presentation/auth_dialog_event_providers.dart';
 import 'package:linky_project_0318/features/auth/presentation/controllers/login_controller.dart';
-import 'package:linky_project_0318/features/auth/presentation/controllers/login_state.dart';
+import 'package:linky_project_0318/features/auth/presentation/states/login_state.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/auth_action_button.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/auth_labeled_text_field.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/auth_password_field.dart';
@@ -23,6 +24,7 @@ class LoginPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(loginControllerProvider);
     final controller = ref.read(loginControllerProvider.notifier);
+    final cs = Theme.of(context).colorScheme;
 
     // ダイアログ表示イベント（1回限り）。
     ref.listen(loginDialogEventProvider, (previous, next) async {
@@ -37,14 +39,26 @@ class LoginPage extends ConsumerWidget {
       ref.read(loginDialogEventProvider.notifier).state = null;
     });
 
+    // ログイン成功（isSuccess == true）になったタイミングでホームへ遷移する。
+    ref.listen(loginControllerProvider, (previous, next) {
+      if (previous?.isSuccess != true && next.isSuccess) {
+        context.go('/home');
+      }
+    });
+
     return Scaffold(
-      backgroundColor: AppColors.backgroundBlue,
       body: SafeArea(
         child: _LoginScrollContent(
           state: state,
           controller: controller,
-          onPressedForgotPassword: () => context.push('/passwordReset'),
-          onPressedSignUp: () => context.push('/terms'),
+          onPressedForgotPassword: () {
+            controller.clearValidationErrors();
+            context.push('/passwordReset');
+          },
+          onPressedSignUp: () {
+            controller.clearValidationErrors();
+            context.push('/terms');
+          },
           onPressedLineLogin: () {
             // TODO: LINE ログイン
           },
@@ -190,6 +204,7 @@ class _ForgotPasswordLink extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return Align(
       alignment: Alignment.centerRight,
       child: TextButton(
@@ -197,7 +212,7 @@ class _ForgotPasswordLink extends StatelessWidget {
         child: Text(
           'パスワードを忘れた方はこちら',
           style: AppTextStyles.body12.copyWith(
-            color: AppColors.primaryGray,
+            color: cs.primary,
             decoration: TextDecoration.underline,
           ),
         ),
@@ -218,11 +233,12 @@ class _LoginButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return AuthActionButton(
       label: 'ログイン',
       onPressed: onPressed,
-      backgroundColor: AppColors.loginButton,
-      textColor: AppColors.primaryWhite,
+      backgroundColor: cs.primary,
+      textColor: cs.onPrimary,
       borderColor: Colors.transparent,
       style: AuthActionButtonStyle.filled,
       isLoading: isLoading,
@@ -236,17 +252,18 @@ class _OrDivider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return Row(
       children: [
-        const Expanded(child: Divider(thickness: 1)),
+        const Expanded(child: LinkyDivider()),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: Text(
             'または',
-            style: AppTextStyles.body16.copyWith(color: AppColors.primaryGray),
+            style: AppTextStyles.body16.copyWith(color: cs.onSurfaceVariant),
           ),
         ),
-        const Expanded(child: Divider(thickness: 1)),
+        const Expanded(child: LinkyDivider()),
       ],
     );
   }
@@ -279,13 +296,14 @@ class _GoogleLoginButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return AuthActionButton(
       label: 'Googleでログイン',
       icon: SvgPicture.asset(AppAssets.googleLogoSvg, width: 20, height: 20),
       onPressed: onPressed,
-      backgroundColor: AppColors.primaryWhite,
-      textColor: AppColors.primaryBlack,
-      borderColor: AppColors.outlineGray,
+      backgroundColor: cs.surface,
+      textColor: cs.onSurface,
+      borderColor: cs.outlineVariant,
       style: AuthActionButtonStyle.outlined,
     );
   }
@@ -299,13 +317,22 @@ class _GuestLoginButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return AuthActionButton(
       label: 'ゲストでログイン',
-      icon: SvgPicture.asset(AppAssets.userLogoSvg, width: 20, height: 20),
+      icon: SvgPicture.asset(
+        AppAssets.userLogoSvg,
+        width: 20,
+        height: 20,
+        colorFilter: isDark
+            ? const ColorFilter.mode(Colors.white, BlendMode.srcIn)
+            : null,
+      ),
       onPressed: onPressed,
-      backgroundColor: AppColors.primaryWhite,
-      textColor: AppColors.primaryBlack,
-      borderColor: AppColors.outlineGray,
+      backgroundColor: cs.surface,
+      textColor: cs.onSurface,
+      borderColor: cs.outlineVariant,
       style: AuthActionButtonStyle.outlined,
     );
   }
@@ -319,13 +346,14 @@ class _SignUpLink extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return Center(
       child: TextButton(
         onPressed: onPressed,
         child: Text(
           '新規登録はこちらから',
           style: AppTextStyles.body12.copyWith(
-            color: AppColors.primaryActionBlue,
+            color: cs.primary,
           ),
         ),
       ),

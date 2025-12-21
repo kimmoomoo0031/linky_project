@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:linky_project_0318/core/constants/dialog_type.dart';
-import 'package:linky_project_0318/core/theme/app_colors.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 
 /// アプリ共通のシンプルなダイアログ。
@@ -17,36 +16,37 @@ Future<void> showLinkyDialog({
   String closeText = 'とじる',
   LinkyDialogType type = LinkyDialogType.info,
 }) {
-  Color borderColor;
-  Color textColor;
-
-  switch (type) {
-    case LinkyDialogType.warning:
-      borderColor = AppColors.primaryActionBlue;
-      textColor = AppColors.primaryGray;
-      break;
-    case LinkyDialogType.error:
-      borderColor = AppColors.error;
-      textColor = AppColors.error;
-      break;
-    case LinkyDialogType.info:
-      borderColor = AppColors.primaryActionBlue;
-      textColor = AppColors.primaryGray;
-      break;
-  }
-
   return showDialog<void>(
     context: context,
     barrierDismissible: false,
     builder: (ctx) {
+      final cs = Theme.of(ctx).colorScheme;
+      final Color borderColor;
+      final Color textColor;
+
+      switch (type) {
+        case LinkyDialogType.warning:
+          borderColor = cs.primary;
+          textColor = cs.onSurfaceVariant;
+          break;
+        case LinkyDialogType.error:
+          borderColor = cs.error;
+          textColor = cs.error;
+          break;
+        case LinkyDialogType.info:
+          borderColor = cs.primary;
+          textColor = cs.onSurfaceVariant;
+          break;
+      }
+
       return Center(
         child: Material(
-          color: AppColors.dialogBackground,
+          color: Colors.transparent,
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 24),
             padding: const EdgeInsets.fromLTRB(20, 24, 20, 32),
             decoration: BoxDecoration(
-              color: AppColors.backgroundBlue,
+              color: cs.surface,
               borderRadius: BorderRadius.circular(18),
             ),
             child: Column(
@@ -57,7 +57,7 @@ Future<void> showLinkyDialog({
                     title,
                     textAlign: TextAlign.center,
                     style: AppTextStyles.heading24.copyWith(
-                      color: AppColors.primaryBlack,
+                      color: cs.onSurface,
                     ),
                   ),
                   const SizedBox(height: 24),
@@ -80,7 +80,7 @@ Future<void> showLinkyDialog({
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      backgroundColor: AppColors.primaryWhite,
+                      backgroundColor: cs.surface,
                     ),
                     onPressed: () {
                       Navigator.of(ctx).pop();
@@ -88,7 +88,7 @@ Future<void> showLinkyDialog({
                     child: Text(
                       closeText,
                       style: AppTextStyles.body16Bold.copyWith(
-                        color: AppColors.primaryGray,
+                        color: cs.onSurface,
                       ),
                     ),
                   ),

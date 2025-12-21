@@ -3,7 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:linky_project_0318/core/constants/app_assets.dart';
-import 'package:linky_project_0318/core/theme/app_colors.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 
 /// Linky 共通ヘッダー。
@@ -36,11 +35,10 @@ class LinkyAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final canPop = Navigator.of(context).canPop();
+    final cs = Theme.of(context).colorScheme;
 
     return AppBar(
       automaticallyImplyLeading: false,
-      backgroundColor: AppColors.backgroundBlue,
-      elevation: 0,
       centerTitle: true,
       leading: showBackButton && canPop
           ? IconButton(
@@ -54,14 +52,14 @@ class LinkyAppBar extends StatelessWidget implements PreferredSizeWidget {
           : null,
       title: Text(
         title,
-        style: AppTextStyles.body16Bold.copyWith(color: AppColors.primaryGray),
+        style: AppTextStyles.body16Bold.copyWith(color: cs.onSurface),
       ),
       actions: actions,
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(1),
         child: Container(
           height: 1,
-          color: AppColors.outlineGray.withAlpha(77),
+          color: cs.outlineVariant.withAlpha(77),
         ),
       ),
     );

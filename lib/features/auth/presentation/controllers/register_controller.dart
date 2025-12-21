@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'register_state.dart';
+import '../states/register_state.dart';
 import 'package:linky_project_0318/core/debug/app_log.dart';
 import 'package:linky_project_0318/core/debug/logged_action.dart';
 import 'package:linky_project_0318/core/constants/dialog_type.dart';
@@ -15,7 +15,8 @@ import 'package:linky_project_0318/features/auth/presentation/auth_dialog_event_
 ///
 /// RegisterUseCase を通じて Repository と通信し、結果は RegisterResult で受け取る。
 class RegisterController extends StateNotifier<RegisterState> {
-  RegisterController(this._ref, this._registerUseCase) : super(const RegisterState());
+  RegisterController(this._ref, this._registerUseCase)
+      : super(const RegisterState());
 
   final Ref _ref;
   final RegisterUseCase _registerUseCase;
