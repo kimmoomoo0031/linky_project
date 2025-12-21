@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:linky_project_0318/core/constants/app_assets.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/theme/theme_mode_provider.dart';
+import 'package:linky_project_0318/core/widgets/linky_divider.dart';
 import 'package:linky_project_0318/features/auth/auth_exports.dart';
 import 'package:linky_project_0318/features/auth/presentation/pages/guest_gate_page.dart';
 import 'package:linky_project_0318/features/home/home_exports.dart';
@@ -54,35 +55,33 @@ class HomeMenuPage extends ConsumerWidget {
     return Material(
       color: cs.surface,
       child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: Column(
-            children: [
-              const SizedBox(height: 12),
-              _HomeMenuHeader(
-                isDark: isDark,
-                onToggleTheme: () =>
-                    ref.read(themeModeProvider.notifier).toggle(),
-                onClose: onClose,
-              ),
-              const SizedBox(height: 8),
-              Expanded(
-                child: isGuest
-                    ? GuestGateView(
-                        onLogin: () {
-                          onClose();
-                          onNavigate('/login', replace: true);
-                        },
-                      )
-                    : LoggedInMenuView(
-                        me: me,
-                        items: items,
-                        titleColorFor: (item) => item.titleColor(cs),
-                        onTapItem: handler.handle,
-                      ),
-              ),
-            ],
-          ),
+        child: Column(
+          children: [
+            const SizedBox(height: 12),
+            _HomeMenuHeader(
+              isDark: isDark,
+              onToggleTheme: () =>
+                  ref.read(themeModeProvider.notifier).toggle(),
+              onClose: onClose,
+            ),
+            const LinkyDivider(),
+            const SizedBox(height: 8),
+            Expanded(
+              child: isGuest
+                  ? GuestGateView(
+                      onLogin: () {
+                        onClose();
+                        onNavigate('/login', replace: true);
+                      },
+                    )
+                  : LoggedInMenuView(
+                      me: me,
+                      items: items,
+                      titleColorFor: (item) => item.titleColor(cs),
+                      onTapItem: handler.handle,
+                    ),
+            ),
+          ],
         ),
       ),
     );
@@ -106,7 +105,7 @@ class _HomeMenuHeader extends StatelessWidget {
     return Row(
       children: [
         const SizedBox(width: 8),
-        SvgPicture.asset(AppAssets.linkyLogoSvg, width: 20, height: 20),
+        SvgPicture.asset(AppAssets.linkyLogoSvg, width: 30, height: 30),
         const SizedBox(width: 6),
         const Spacer(),
         IconButton(
@@ -121,7 +120,6 @@ class _HomeMenuHeader extends StatelessWidget {
           onPressed: onClose,
           icon: Icon(Icons.close, color: cs.onSurfaceVariant),
         ),
-        const SizedBox(width: 4),
       ],
     );
   }

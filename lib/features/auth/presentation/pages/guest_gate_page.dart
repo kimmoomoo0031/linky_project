@@ -20,8 +20,10 @@ class GuestGateView extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          const Spacer(flex: 1),
           SvgPicture.asset(
             AppAssets.guestSignupLogoSvg,
             width: 200,
@@ -38,7 +40,8 @@ class GuestGateView extends StatelessWidget {
           AuthActionButton(
               label: 'ログイン',
               onPressed: onLogin,
-          )
+          ),
+          const Spacer(flex: 2),
         ],
       ),
     );
