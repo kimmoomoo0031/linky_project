@@ -6,6 +6,7 @@ import 'package:linky_project_0318/core/constants/app_assets.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/gradient_text.dart';
 import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
+import 'package:linky_project_0318/core/widgets/linky_divider.dart';
 import 'package:linky_project_0318/core/theme/app_colors.dart';
 import 'package:linky_project_0318/features/auth/auth_exports.dart';
 import 'package:linky_project_0318/features/auth/presentation/auth_dialog_event_providers.dart';
@@ -254,7 +255,7 @@ class _OrDivider extends StatelessWidget {
     final cs = Theme.of(context).colorScheme;
     return Row(
       children: [
-        const Expanded(child: Divider(thickness: 1)),
+        const Expanded(child: LinkyDivider()),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: Text(
@@ -262,7 +263,7 @@ class _OrDivider extends StatelessWidget {
             style: AppTextStyles.body16.copyWith(color: cs.onSurfaceVariant),
           ),
         ),
-        const Expanded(child: Divider(thickness: 1)),
+        const Expanded(child: LinkyDivider()),
       ],
     );
   }
