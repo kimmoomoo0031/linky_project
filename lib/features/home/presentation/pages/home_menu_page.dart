@@ -65,21 +65,30 @@ class HomeMenuPage extends ConsumerWidget {
               onClose: onClose,
             ),
             const LinkyDivider(),
-            const SizedBox(height: 8),
             Expanded(
-              child: isGuest
-                  ? GuestGateView(
-                      onLogin: () {
-                        onClose();
-                        onNavigate('/login', replace: true);
-                      },
-                    )
-                  : LoggedInMenuView(
-                      me: me,
-                      items: items,
-                      titleColorFor: (item) => item.titleColor(cs),
-                      onTapItem: handler.handle,
+              child: Padding(
+                // ヘッダーは独立させ、本文側のみ全体パディングを適用する
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: isGuest
+                          ? GuestGateView(
+                              onLogin: () {
+                                onClose();
+                                onNavigate('/login', replace: true);
+                              },
+                            )
+                          : LoggedInMenuView(
+                              me: me,
+                              items: items,
+                              titleColorFor: (item) => item.titleColor(cs),
+                              onTapItem: handler.handle,
+                            ),
                     ),
+                  ],
+                ),
+              ),
             ),
           ],
         ),
