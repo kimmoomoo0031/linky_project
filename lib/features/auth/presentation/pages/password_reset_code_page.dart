@@ -13,7 +13,7 @@ import 'package:linky_project_0318/features/auth/presentation/widgets/auth_actio
 import 'package:linky_project_0318/features/auth/presentation/widgets/otp_code_input.dart';
 import 'package:linky_project_0318/features/auth/presentation/pages/password_reset_new_password_page.dart';
 
-import '../controllers/password_reset_code_controller.dart';
+import 'package:linky_project_0318/features/auth/presentation/controllers/password_reset_code_controller.dart';
 
 /// パスワード再設定の認証コード入力画面。
 ///

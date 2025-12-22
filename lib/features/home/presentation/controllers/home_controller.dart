@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../domain/entities/best_post.dart';
-import '../../domain/entities/home_user.dart';
-import '../../domain/entities/lounge_preview.dart';
-import '../../home_exports.dart';
+import 'package:linky_project_0318/features/home/domain/entities/best_post.dart';
+import 'package:linky_project_0318/features/home/domain/entities/home_user.dart';
+import 'package:linky_project_0318/features/home/domain/entities/lounge_preview.dart';
+import 'package:linky_project_0318/features/home/home_exports.dart';
 
 class HomeViewData {
   const HomeViewData({

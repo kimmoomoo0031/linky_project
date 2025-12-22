@@ -1,9 +1,9 @@
 import 'package:intl/intl.dart';
 
-import '../../domain/entities/best_post.dart';
-import '../../domain/entities/home_user.dart';
-import '../../domain/entities/lounge_preview.dart';
-import '../../domain/repositories/home_repository.dart';
+import 'package:linky_project_0318/features/home/domain/entities/best_post.dart';
+import 'package:linky_project_0318/features/home/domain/entities/home_user.dart';
+import 'package:linky_project_0318/features/home/domain/entities/lounge_preview.dart';
+import 'package:linky_project_0318/features/home/domain/repositories/home_repository.dart';
 
 /// バックエンド未接続の段階で利用する、インメモリのダミー実装。
 class FakeHomeRepository implements HomeRepository {

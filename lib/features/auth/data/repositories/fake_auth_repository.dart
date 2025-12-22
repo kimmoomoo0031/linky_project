@@ -1,8 +1,8 @@
-import '../../domain/entities/auth_user.dart';
-import '../../domain/repositories/auth_repository.dart';
-import '../../domain/usecases/login_result.dart';
-import '../../domain/usecases/register_result.dart';
-import '../../domain/usecases/reset_password_result.dart';
+import 'package:linky_project_0318/features/auth/domain/entities/auth_user.dart';
+import 'package:linky_project_0318/features/auth/domain/repositories/auth_repository.dart';
+import 'package:linky_project_0318/features/auth/domain/usecases/login_result.dart';
+import 'package:linky_project_0318/features/auth/domain/usecases/register_result.dart';
+import 'package:linky_project_0318/features/auth/domain/usecases/reset_password_result.dart';
 
 /// バックエンド未接続の段階で利用する、インメモリのダミー実装。
 ///

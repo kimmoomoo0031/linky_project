@@ -1,6 +1,6 @@
-import '../usecases/login_result.dart';
-import '../usecases/register_result.dart';
-import '../usecases/reset_password_result.dart';
+import 'package:linky_project_0318/features/auth/domain/usecases/login_result.dart';
+import 'package:linky_project_0318/features/auth/domain/usecases/register_result.dart';
+import 'package:linky_project_0318/features/auth/domain/usecases/reset_password_result.dart';
 
 /// 認証系のドメインロジックが依存する抽象リポジトリ。
 ///

@@ -10,7 +10,7 @@ import 'package:linky_project_0318/features/auth/domain/usecases/reset_password_
 import 'package:linky_project_0318/features/auth/presentation/auth_dialog_event_providers.dart';
 import 'package:linky_project_0318/features/auth/presentation/constants/auth_dialog_messages.dart';
 
-import '../states/password_reset_new_password_state.dart';
+import 'package:linky_project_0318/features/auth/presentation/states/password_reset_new_password_state.dart';
 
 /// パスワード再設定の「新しいパスワード設定」画面用コントローラ。
 ///

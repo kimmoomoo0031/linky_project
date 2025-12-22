@@ -1,4 +1,4 @@
-import '../repositories/auth_repository.dart';
+import 'package:linky_project_0318/features/auth/domain/repositories/auth_repository.dart';
 import 'register_result.dart';
 
 /// 新規登録用ユースケース。
