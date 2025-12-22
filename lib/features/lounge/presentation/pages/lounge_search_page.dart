@@ -88,7 +88,7 @@ class _LoungeSearchPageState extends ConsumerState<LoungeSearchPage> {
       appBar: const LinkyAppBar(title: 'ラウンジ検索', showBackButton: true),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
