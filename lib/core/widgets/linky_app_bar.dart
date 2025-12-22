@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:linky_project_0318/core/constants/app_assets.dart';
+import 'package:linky_project_0318/core/theme/app_colors.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 
 /// Linky 共通ヘッダー。
@@ -36,6 +37,7 @@ class LinkyAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final canPop = Navigator.of(context).canPop();
     final cs = Theme.of(context).colorScheme;
+    final isLight = Theme.of(context).brightness == Brightness.light;
 
     return AppBar(
       automaticallyImplyLeading: false,
@@ -52,7 +54,10 @@ class LinkyAppBar extends StatelessWidget implements PreferredSizeWidget {
           : null,
       title: Text(
         title,
-        style: AppTextStyles.body16Bold.copyWith(color: cs.onSurface),
+        // ライトモードのみ、指定色へ変更する（ダークは既存のまま）
+        style: AppTextStyles.body16Bold.copyWith(
+          color: isLight ? AppColors.primaryGray : cs.onSurface,
+        ),
       ),
       actions: actions,
       bottom: PreferredSize(
