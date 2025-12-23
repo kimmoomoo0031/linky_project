@@ -29,7 +29,7 @@ class HomeController extends AsyncNotifier<HomeViewData> {
     final repo = ref.read(homeRepositoryProvider);
 
     final me = await repo.getMe();
-    final latest = await repo.getLatestViewed(page: 1, pageSize: 12);
+    final latest = await repo.getLatestViewed(page: 1, pageSize: 18);
     final best = await repo.getBestPosts(limit: 10);
 
     return HomeViewData(
