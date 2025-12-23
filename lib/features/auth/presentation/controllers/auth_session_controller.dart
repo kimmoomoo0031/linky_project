@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../core/router/app_router.dart';
-import '../../domain/repositories/auth_repository.dart';
+import 'package:linky_project_0318/core/router/app_router.dart';
+import 'package:linky_project_0318/features/auth/domain/repositories/auth_repository.dart';
 
 /// セッション操作（ログアウト等）を扱う Controller.
 ///

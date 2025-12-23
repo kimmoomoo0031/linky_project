@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:linky_project_0318/core/theme/app_colors.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/features/home/domain/entities/best_post.dart';
 
@@ -25,6 +26,8 @@ class HomeBestPostsList extends StatelessWidget {
           final item = list[i];
           final title = item.title;
           final date = item.dateLabel;
+          final rank = i + 1;
+          final isTop3 = rank <= 3;
 
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 6),
@@ -33,9 +36,10 @@ class HomeBestPostsList extends StatelessWidget {
                 SizedBox(
                   width: 20,
                   child: Text(
-                    '${i + 1}.',
+                    '$rank.',
                     style: AppTextStyles.body12.copyWith(
-                      color: cs.onSurfaceVariant,
+                      // 1〜3位は赤文字にする
+                      color: isTop3 ? AppColors.emphasisRed : cs.onSurfaceVariant,
                     ),
                   ),
                 ),
@@ -61,5 +65,6 @@ class HomeBestPostsList extends StatelessWidget {
     );
   }
 }
+
 
 

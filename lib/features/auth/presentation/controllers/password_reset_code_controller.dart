@@ -3,8 +3,8 @@ import 'package:linky_project_0318/core/debug/app_log.dart';
 import 'package:linky_project_0318/core/debug/logged_action.dart';
 import 'package:linky_project_0318/core/utils/validators.dart';
 
-import '../../../../core/utils/regex.dart';
-import '../states/password_reset_code_state.dart';
+import 'package:linky_project_0318/core/utils/regex.dart';
+import 'package:linky_project_0318/features/auth/presentation/states/password_reset_code_state.dart';
 import 'package:linky_project_0318/core/constants/dialog_type.dart';
 import 'package:linky_project_0318/core/ui/events/linky_dialog_event.dart';
 import 'package:linky_project_0318/features/auth/presentation/auth_dialog_event_providers.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../data/repositories/fake_home_repository.dart';
-import '../domain/repositories/home_repository.dart';
+import 'package:linky_project_0318/features/home/data/repositories/fake_home_repository.dart';
+import 'package:linky_project_0318/features/home/domain/repositories/home_repository.dart';
 
 /// Home 機能の DI（依存関係のつなぎ込み）。
 ///

@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../domain/entities/best_post.dart';
-import '../../domain/entities/home_user.dart';
-import '../../domain/entities/lounge_preview.dart';
-import '../../home_exports.dart';
+import 'package:linky_project_0318/features/home/domain/entities/best_post.dart';
+import 'package:linky_project_0318/features/home/domain/entities/home_user.dart';
+import 'package:linky_project_0318/features/home/domain/entities/lounge_preview.dart';
+import 'package:linky_project_0318/features/home/home_exports.dart';
 
 class HomeViewData {
   const HomeViewData({
@@ -29,7 +29,7 @@ class HomeController extends AsyncNotifier<HomeViewData> {
     final repo = ref.read(homeRepositoryProvider);
 
     final me = await repo.getMe();
-    final latest = await repo.getLatestViewed(page: 1, pageSize: 12);
+    final latest = await repo.getLatestViewed(page: 1, pageSize: 18);
     final best = await repo.getBestPosts(limit: 10);
 
     return HomeViewData(

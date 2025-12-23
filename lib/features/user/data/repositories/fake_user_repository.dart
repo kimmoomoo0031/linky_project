@@ -1,5 +1,5 @@
-import '../../domain/entities/user_profile.dart';
-import '../../domain/repositories/user_repository.dart';
+import 'package:linky_project_0318/features/user/domain/entities/user_profile.dart';
+import 'package:linky_project_0318/features/user/domain/repositories/user_repository.dart';
 
 /// バックエンド未接続の段階で利用する、インメモリのダミー実装。
 class FakeUserRepository implements UserRepository {

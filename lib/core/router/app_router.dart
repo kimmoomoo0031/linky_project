@@ -14,7 +14,7 @@ import 'package:linky_project_0318/features/post/presentation/pages/my_posts_pag
 import 'package:linky_project_0318/features/user/presentation/pages/profile_edit_page.dart';
 import 'package:linky_project_0318/features/lounge/presentation/pages/lounge_search_page.dart';
 
-import '../../features/auth/presentation/pages/terms_of_service_page.dart';
+import 'package:linky_project_0318/features/auth/presentation/pages/terms_of_service_page.dart';
 
 /// アプリ全体のルーティング設定。
 ///

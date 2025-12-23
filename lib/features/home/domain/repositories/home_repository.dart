@@ -1,6 +1,6 @@
-import '../entities/best_post.dart';
-import '../entities/home_user.dart';
-import '../entities/lounge_preview.dart';
+import 'package:linky_project_0318/features/home/domain/entities/best_post.dart';
+import 'package:linky_project_0318/features/home/domain/entities/home_user.dart';
+import 'package:linky_project_0318/features/home/domain/entities/lounge_preview.dart';
 
 class LoungePreviewPage {
   const LoungePreviewPage({

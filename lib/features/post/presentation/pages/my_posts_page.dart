@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
 import 'package:linky_project_0318/features/post/post_exports.dart';
+import 'package:linky_project_0318/features/post/presentation/widgets/post_list_item.dart';
 
 /// 自分の投稿一覧（モック）。
 class MyPostsPage extends ConsumerWidget {
@@ -36,39 +37,18 @@ class MyPostsPage extends ConsumerWidget {
               );
             }
 
-            return ListView.separated(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            return ListView.builder(
+              padding: const EdgeInsets.symmetric(vertical: 12),
               itemCount: posts.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 10),
               itemBuilder: (context, i) {
                 final p = posts[i];
-                return Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                  decoration: BoxDecoration(
-                    color: cs.surface,
-                    border: Border.all(color: cs.outlineVariant),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          p.title,
-                          style: AppTextStyles.body14
-                              .copyWith(color: cs.onSurfaceVariant),
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        p.dateLabel,
-                        style: AppTextStyles.body12
-                            .copyWith(color: cs.onSurfaceVariant),
-                      ),
-                      const SizedBox(width: 4),
-                      Icon(Icons.chevron_right, color: cs.onSurfaceVariant),
-                    ],
-                  ),
+                return PostListItem(
+                  post: p,
+                  showTopDivider: i == 0,
+                  showBottomDivider: true,
+                  onTap: () {
+                    // TODO: 投稿詳細へ
+                  },
                 );
               },
             );

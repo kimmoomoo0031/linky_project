@@ -1,10 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../data/repositories/fake_auth_repository.dart';
-import '../domain/repositories/auth_repository.dart';
-import '../domain/usecases/login_usecase.dart';
-import '../domain/usecases/register_usecase.dart';
-import '../domain/usecases/reset_password_usecase.dart';
+import 'package:linky_project_0318/features/auth/data/repositories/fake_auth_repository.dart';
+import 'package:linky_project_0318/features/auth/domain/repositories/auth_repository.dart';
+import 'package:linky_project_0318/features/auth/domain/usecases/login_usecase.dart';
+import 'package:linky_project_0318/features/auth/domain/usecases/register_usecase.dart';
+import 'package:linky_project_0318/features/auth/domain/usecases/reset_password_usecase.dart';
 
 /// Auth 機能の DI（依存関係のつなぎ込み）。
 ///
