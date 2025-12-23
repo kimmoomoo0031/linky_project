@@ -20,6 +20,9 @@ class AppColors {
   /// Lineでログインボタン (#06C755)。
   static const Color lineButton = Color(0xFF06C755);
 
+  /// ライトモードベストロゴ (#9A825)。
+  static const Color lightModelBestLogo = Color(0xFFF9A825);
+
   /// 左下から右上（45度方向）に向かって #4A90E2 から #50E3C2 に変化するグラデーション。
   static const LinearGradient linky45degGradient = LinearGradient(
     begin: Alignment.bottomLeft,

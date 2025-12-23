@@ -25,6 +25,9 @@ class AppAssets {
   static const guestSignupLogoSvg = '$_common/guest_signup_logo.svg';
   static const searchXButtonLogoSvg = '$_common/search_x_button_logo.svg';
   static const searchLogoSvg = '$_common/search_logo.svg';
+  static const imageLogoSvg = '$_common/image_logo.svg';
+  static const bestLogoSvg = '$_common/best_logo.svg';
+  static const userCheckLogoSvg = '$_common/user_check_logo.svg';
 
   // ---- common (png) ----
   static const passwordResetLogoPng = '$_common/password_reset_logo.png';
