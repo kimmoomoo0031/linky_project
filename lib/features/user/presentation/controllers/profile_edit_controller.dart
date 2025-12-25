@@ -140,6 +140,10 @@ class ProfileEditController extends StateNotifier<ProfileEditState> {
         ),
       );
     } catch (_) {
+      // TODO(api): サーバー連携後、API失敗時のエラーコードを判定してメッセージを出し分ける。
+      // - 例：ニックネーム重複（errorCode: 2000）の場合は
+      //   - state.nicknameError を設定（フィールド下に表示）
+      //   - LinkyDialogType.warning のダイアログも表示
       _emitDialog(
         const LinkyDialogEvent(
           type: LinkyDialogType.error,
