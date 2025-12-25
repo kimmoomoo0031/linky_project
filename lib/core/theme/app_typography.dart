@@ -19,6 +19,11 @@ class AppTextStyles {
   static TextStyle get heading24 =>
       GoogleFonts.openSans(fontSize: 24, fontWeight: FontWeight.bold);
 
+  /// 中くらいの見出し（20px, Bold）。
+  /// スプラッシュタイトルやセクションタイトルなどに使用します。
+  static TextStyle get heading20 =>
+      GoogleFonts.openSans(fontSize: 20, fontWeight: FontWeight.bold);
+
   /// 一般的な本文（18px, bold）。
   static TextStyle get body18 =>
       GoogleFonts.openSans(fontSize: 18, fontWeight: FontWeight.bold);

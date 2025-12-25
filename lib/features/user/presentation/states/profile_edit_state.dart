@@ -7,11 +7,18 @@ class ProfileEditState with _$ProfileEditState {
   const factory ProfileEditState({
     @Default(true) bool isLoading,
     @Default(false) bool isSaving,
-    @Default('') String nickname,
     @Default('') String email,
+    @Default('') String nickname,
+    // 画面には出さないが、更新APIの都合で保持しておく（モックのため）
     @Default('') String bio,
+    @Default('') String currentPassword,
+    @Default('') String password,
+    @Default('') String passwordConfirm,
+    String? emailError,
     String? nicknameError,
-    String? bioError,
+    String? currentPasswordError,
+    String? passwordError,
+    String? passwordConfirmError,
   }) = _ProfileEditState;
 }
 

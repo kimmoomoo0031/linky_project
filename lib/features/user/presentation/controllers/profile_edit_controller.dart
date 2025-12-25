@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:linky_project_0318/core/constants/common_dialog_messages.dart';
 import 'package:linky_project_0318/core/constants/dialog_type.dart';
+import 'package:linky_project_0318/core/utils/validators.dart';
 import 'package:linky_project_0318/core/ui/events/linky_dialog_event.dart';
 import 'package:linky_project_0318/features/user/domain/entities/user_profile.dart';
 import 'package:linky_project_0318/features/user/user_exports.dart';
@@ -26,11 +27,17 @@ class ProfileEditController extends StateNotifier<ProfileEditState> {
       final profile = await repo.getMyProfile();
       state = state.copyWith(
         isLoading: false,
-        nickname: profile.nickname,
         email: profile.email,
+        nickname: profile.nickname,
         bio: profile.bio,
+        currentPassword: '',
+        password: '',
+        passwordConfirm: '',
+        emailError: null,
         nicknameError: null,
-        bioError: null,
+        currentPasswordError: null,
+        passwordError: null,
+        passwordConfirmError: null,
       );
     } catch (_) {
       state = state.copyWith(isLoading: false);
@@ -43,35 +50,70 @@ class ProfileEditController extends StateNotifier<ProfileEditState> {
     }
   }
 
+  void onEmailChanged(String value) {
+    state = state.copyWith(email: value, emailError: null);
+  }
+
   void onNicknameChanged(String value) {
     state = state.copyWith(nickname: value, nicknameError: null);
   }
 
-  void onBioChanged(String value) {
-    state = state.copyWith(bio: value, bioError: null);
+  void onCurrentPasswordChanged(String value) {
+    state = state.copyWith(currentPassword: value, currentPasswordError: null);
+  }
+
+  void onPasswordChanged(String value) {
+    state = state.copyWith(password: value, passwordError: null);
+  }
+
+  void onPasswordConfirmChanged(String value) {
+    state = state.copyWith(
+      passwordConfirm: value,
+      passwordConfirmError: null,
+    );
   }
 
   bool _validate() {
-    final nickname = state.nickname.trim();
-    final bio = state.bio.trim();
+    final emailError = Validators.validateEmail(state.email);
+    final nicknameError = Validators.validateNickname(state.nickname);
+    final currentPasswordError =
+        Validators.validatePassword(state.currentPassword);
+    final passwordError = Validators.validatePassword(state.password);
+    final passwordConfirmError = Validators.validatePasswordConfirmation(
+      password: state.password,
+      confirmation: state.passwordConfirm,
+    );
 
-    String? nicknameError;
-    String? bioError;
-
-    if (nickname.isEmpty) {
-      nicknameError = 'ニックネームを入力してください';
-    } else if (nickname.length < 2 || nickname.length > 12) {
-      nicknameError = 'ニックネームは2〜12文字で入力してください';
-    }
-
-    if (bio.length > 120) {
-      bioError = '自己紹介は120文字以内で入力してください';
-    }
-
-    if (nicknameError != null || bioError != null) {
-      state = state.copyWith(nicknameError: nicknameError, bioError: bioError);
+    if (emailError != null ||
+        nicknameError != null ||
+        currentPasswordError != null ||
+        passwordError != null ||
+        passwordConfirmError != null) {
+      state = state.copyWith(
+        emailError: emailError,
+        nicknameError: nicknameError,
+        currentPasswordError: currentPasswordError,
+        passwordError: passwordError,
+        passwordConfirmError: passwordConfirmError,
+      );
       return false;
     }
+
+    // 現在のパスワードと新しいパスワードが同じ場合は更新不可。
+    if (state.currentPassword.trim() == state.password.trim()) {
+      state = state.copyWith(
+        passwordError:
+            CommonDialogMessages.newPasswordMustBeDifferentFromCurrent,
+      );
+      _emitDialog(
+        const LinkyDialogEvent(
+          type: LinkyDialogType.warning,
+          message: CommonDialogMessages.newPasswordMustBeDifferentFromCurrent,
+        ),
+      );
+      return false;
+    }
+
     return true;
   }
 
@@ -85,17 +127,23 @@ class ProfileEditController extends StateNotifier<ProfileEditState> {
       await repo.updateMyProfile(
         UserProfile(
           nickname: state.nickname.trim(),
-          email: state.email,
-          bio: state.bio.trim(),
+          email: state.email.trim(),
+          // TODO(api): プロフィール編集でパスワード更新APIが追加されたら連携する。
+          // 現状はモックのため、自己紹介は既存値を保持する。
+          bio: state.bio,
         ),
       );
       _emitDialog(
         const LinkyDialogEvent(
           type: LinkyDialogType.info,
-          message: 'プロフィールを保存しました。',
+          message: CommonDialogMessages.profileUpdated,
         ),
       );
     } catch (_) {
+      // TODO(api): サーバー連携後、API失敗時のエラーコードを判定してメッセージを出し分ける。
+      // - 例：ニックネーム重複（errorCode: 2000）の場合は
+      //   - state.nicknameError を設定（フィールド下に表示）
+      //   - LinkyDialogType.warning のダイアログも表示
       _emitDialog(
         const LinkyDialogEvent(
           type: LinkyDialogType.error,

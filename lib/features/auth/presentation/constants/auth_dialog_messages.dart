@@ -15,6 +15,15 @@ class AuthDialogMessages {
 ・特殊文字を含めるとより安全です。
 ''';
 
+  // ---- 新規登録：入力ルール ----
+  static const String editProfileInputRuleTitle = '入力ルール';
+  static const String editProfileInputRuleBody = '''
+・ニックネームは半角・全角を問わず、2〜12文字で入力してください。
+・パスワードは8文字以上で入力してください。
+・パスワードは英大・数字を含めてください。
+・特殊文字を含めるとより安全です。
+''';
+
   // ---- パスワード再設定：説明文 ----
   static const String passwordResetDescription = '''
 ・8文字以上で入力してください。

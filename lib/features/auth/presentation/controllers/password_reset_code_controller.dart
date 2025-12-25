@@ -9,6 +9,8 @@ import 'package:linky_project_0318/core/constants/dialog_type.dart';
 import 'package:linky_project_0318/core/ui/events/linky_dialog_event.dart';
 import 'package:linky_project_0318/features/auth/presentation/auth_dialog_event_providers.dart';
 
+import '../../../../core/constants/common_dialog_messages.dart';
+
 /// パスワード再設定の「認証コード入力」画面用コントローラ。
 ///
 /// 4桁のコード入力値とバリデーション、ローディング状態を管理する。
@@ -105,7 +107,7 @@ class PasswordResetCodeController extends StateNotifier<PasswordResetCodeState> 
         _emitDialog(
           const LinkyDialogEvent(
             type: LinkyDialogType.error,
-            message: '認証コードの確認に失敗しました。\n時間をおいて再度お試しください。',
+            message: CommonDialogMessages.verifyResetCodeFailed,
           ),
         );
       },
@@ -137,7 +139,7 @@ class PasswordResetCodeController extends StateNotifier<PasswordResetCodeState> 
           _emitDialog(
             const LinkyDialogEvent(
               type: LinkyDialogType.info,
-              message: '認証コードを再送信しました。',
+              message: CommonDialogMessages.resendResetCodeSucceeded,
             ),
           );
           return true;
@@ -150,7 +152,7 @@ class PasswordResetCodeController extends StateNotifier<PasswordResetCodeState> 
         _emitDialog(
           const LinkyDialogEvent(
             type: LinkyDialogType.error,
-            message: '再送信に失敗しました。\n時間をおいて再度お試しください。',
+            message: CommonDialogMessages.resendResetCodeFailed,
           ),
         );
         return false;

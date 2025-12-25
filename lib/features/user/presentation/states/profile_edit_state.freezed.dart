@@ -19,11 +19,18 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$ProfileEditState {
   bool get isLoading => throw _privateConstructorUsedError;
   bool get isSaving => throw _privateConstructorUsedError;
-  String get nickname => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
+  String get nickname =>
+      throw _privateConstructorUsedError; // 画面には出さないが、更新APIの都合で保持しておく（モックのため）
   String get bio => throw _privateConstructorUsedError;
+  String get currentPassword => throw _privateConstructorUsedError;
+  String get password => throw _privateConstructorUsedError;
+  String get passwordConfirm => throw _privateConstructorUsedError;
+  String? get emailError => throw _privateConstructorUsedError;
   String? get nicknameError => throw _privateConstructorUsedError;
-  String? get bioError => throw _privateConstructorUsedError;
+  String? get currentPasswordError => throw _privateConstructorUsedError;
+  String? get passwordError => throw _privateConstructorUsedError;
+  String? get passwordConfirmError => throw _privateConstructorUsedError;
 
   /// Create a copy of ProfileEditState
   /// with the given fields replaced by the non-null parameter values.
@@ -42,11 +49,17 @@ abstract class $ProfileEditStateCopyWith<$Res> {
   $Res call({
     bool isLoading,
     bool isSaving,
-    String nickname,
     String email,
+    String nickname,
     String bio,
+    String currentPassword,
+    String password,
+    String passwordConfirm,
+    String? emailError,
     String? nicknameError,
-    String? bioError,
+    String? currentPasswordError,
+    String? passwordError,
+    String? passwordConfirmError,
   });
 }
 
@@ -67,11 +80,17 @@ class _$ProfileEditStateCopyWithImpl<$Res, $Val extends ProfileEditState>
   $Res call({
     Object? isLoading = null,
     Object? isSaving = null,
-    Object? nickname = null,
     Object? email = null,
+    Object? nickname = null,
     Object? bio = null,
+    Object? currentPassword = null,
+    Object? password = null,
+    Object? passwordConfirm = null,
+    Object? emailError = freezed,
     Object? nicknameError = freezed,
-    Object? bioError = freezed,
+    Object? currentPasswordError = freezed,
+    Object? passwordError = freezed,
+    Object? passwordConfirmError = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -83,25 +102,49 @@ class _$ProfileEditStateCopyWithImpl<$Res, $Val extends ProfileEditState>
                 ? _value.isSaving
                 : isSaving // ignore: cast_nullable_to_non_nullable
                       as bool,
-            nickname: null == nickname
-                ? _value.nickname
-                : nickname // ignore: cast_nullable_to_non_nullable
-                      as String,
             email: null == email
                 ? _value.email
                 : email // ignore: cast_nullable_to_non_nullable
+                      as String,
+            nickname: null == nickname
+                ? _value.nickname
+                : nickname // ignore: cast_nullable_to_non_nullable
                       as String,
             bio: null == bio
                 ? _value.bio
                 : bio // ignore: cast_nullable_to_non_nullable
                       as String,
+            currentPassword: null == currentPassword
+                ? _value.currentPassword
+                : currentPassword // ignore: cast_nullable_to_non_nullable
+                      as String,
+            password: null == password
+                ? _value.password
+                : password // ignore: cast_nullable_to_non_nullable
+                      as String,
+            passwordConfirm: null == passwordConfirm
+                ? _value.passwordConfirm
+                : passwordConfirm // ignore: cast_nullable_to_non_nullable
+                      as String,
+            emailError: freezed == emailError
+                ? _value.emailError
+                : emailError // ignore: cast_nullable_to_non_nullable
+                      as String?,
             nicknameError: freezed == nicknameError
                 ? _value.nicknameError
                 : nicknameError // ignore: cast_nullable_to_non_nullable
                       as String?,
-            bioError: freezed == bioError
-                ? _value.bioError
-                : bioError // ignore: cast_nullable_to_non_nullable
+            currentPasswordError: freezed == currentPasswordError
+                ? _value.currentPasswordError
+                : currentPasswordError // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            passwordError: freezed == passwordError
+                ? _value.passwordError
+                : passwordError // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            passwordConfirmError: freezed == passwordConfirmError
+                ? _value.passwordConfirmError
+                : passwordConfirmError // ignore: cast_nullable_to_non_nullable
                       as String?,
           )
           as $Val,
@@ -121,11 +164,17 @@ abstract class _$$ProfileEditStateImplCopyWith<$Res>
   $Res call({
     bool isLoading,
     bool isSaving,
-    String nickname,
     String email,
+    String nickname,
     String bio,
+    String currentPassword,
+    String password,
+    String passwordConfirm,
+    String? emailError,
     String? nicknameError,
-    String? bioError,
+    String? currentPasswordError,
+    String? passwordError,
+    String? passwordConfirmError,
   });
 }
 
@@ -145,11 +194,17 @@ class __$$ProfileEditStateImplCopyWithImpl<$Res>
   $Res call({
     Object? isLoading = null,
     Object? isSaving = null,
-    Object? nickname = null,
     Object? email = null,
+    Object? nickname = null,
     Object? bio = null,
+    Object? currentPassword = null,
+    Object? password = null,
+    Object? passwordConfirm = null,
+    Object? emailError = freezed,
     Object? nicknameError = freezed,
-    Object? bioError = freezed,
+    Object? currentPasswordError = freezed,
+    Object? passwordError = freezed,
+    Object? passwordConfirmError = freezed,
   }) {
     return _then(
       _$ProfileEditStateImpl(
@@ -161,25 +216,49 @@ class __$$ProfileEditStateImplCopyWithImpl<$Res>
             ? _value.isSaving
             : isSaving // ignore: cast_nullable_to_non_nullable
                   as bool,
-        nickname: null == nickname
-            ? _value.nickname
-            : nickname // ignore: cast_nullable_to_non_nullable
-                  as String,
         email: null == email
             ? _value.email
             : email // ignore: cast_nullable_to_non_nullable
+                  as String,
+        nickname: null == nickname
+            ? _value.nickname
+            : nickname // ignore: cast_nullable_to_non_nullable
                   as String,
         bio: null == bio
             ? _value.bio
             : bio // ignore: cast_nullable_to_non_nullable
                   as String,
+        currentPassword: null == currentPassword
+            ? _value.currentPassword
+            : currentPassword // ignore: cast_nullable_to_non_nullable
+                  as String,
+        password: null == password
+            ? _value.password
+            : password // ignore: cast_nullable_to_non_nullable
+                  as String,
+        passwordConfirm: null == passwordConfirm
+            ? _value.passwordConfirm
+            : passwordConfirm // ignore: cast_nullable_to_non_nullable
+                  as String,
+        emailError: freezed == emailError
+            ? _value.emailError
+            : emailError // ignore: cast_nullable_to_non_nullable
+                  as String?,
         nicknameError: freezed == nicknameError
             ? _value.nicknameError
             : nicknameError // ignore: cast_nullable_to_non_nullable
                   as String?,
-        bioError: freezed == bioError
-            ? _value.bioError
-            : bioError // ignore: cast_nullable_to_non_nullable
+        currentPasswordError: freezed == currentPasswordError
+            ? _value.currentPasswordError
+            : currentPasswordError // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        passwordError: freezed == passwordError
+            ? _value.passwordError
+            : passwordError // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        passwordConfirmError: freezed == passwordConfirmError
+            ? _value.passwordConfirmError
+            : passwordConfirmError // ignore: cast_nullable_to_non_nullable
                   as String?,
       ),
     );
@@ -192,11 +271,17 @@ class _$ProfileEditStateImpl implements _ProfileEditState {
   const _$ProfileEditStateImpl({
     this.isLoading = true,
     this.isSaving = false,
-    this.nickname = '',
     this.email = '',
+    this.nickname = '',
     this.bio = '',
+    this.currentPassword = '',
+    this.password = '',
+    this.passwordConfirm = '',
+    this.emailError,
     this.nicknameError,
-    this.bioError,
+    this.currentPasswordError,
+    this.passwordError,
+    this.passwordConfirmError,
   });
 
   @override
@@ -207,21 +292,37 @@ class _$ProfileEditStateImpl implements _ProfileEditState {
   final bool isSaving;
   @override
   @JsonKey()
-  final String nickname;
+  final String email;
   @override
   @JsonKey()
-  final String email;
+  final String nickname;
+  // 画面には出さないが、更新APIの都合で保持しておく（モックのため）
   @override
   @JsonKey()
   final String bio;
   @override
+  @JsonKey()
+  final String currentPassword;
+  @override
+  @JsonKey()
+  final String password;
+  @override
+  @JsonKey()
+  final String passwordConfirm;
+  @override
+  final String? emailError;
+  @override
   final String? nicknameError;
   @override
-  final String? bioError;
+  final String? currentPasswordError;
+  @override
+  final String? passwordError;
+  @override
+  final String? passwordConfirmError;
 
   @override
   String toString() {
-    return 'ProfileEditState(isLoading: $isLoading, isSaving: $isSaving, nickname: $nickname, email: $email, bio: $bio, nicknameError: $nicknameError, bioError: $bioError)';
+    return 'ProfileEditState(isLoading: $isLoading, isSaving: $isSaving, email: $email, nickname: $nickname, bio: $bio, currentPassword: $currentPassword, password: $password, passwordConfirm: $passwordConfirm, emailError: $emailError, nicknameError: $nicknameError, currentPasswordError: $currentPasswordError, passwordError: $passwordError, passwordConfirmError: $passwordConfirmError)';
   }
 
   @override
@@ -233,14 +334,26 @@ class _$ProfileEditStateImpl implements _ProfileEditState {
                 other.isLoading == isLoading) &&
             (identical(other.isSaving, isSaving) ||
                 other.isSaving == isSaving) &&
+            (identical(other.email, email) || other.email == email) &&
             (identical(other.nickname, nickname) ||
                 other.nickname == nickname) &&
-            (identical(other.email, email) || other.email == email) &&
             (identical(other.bio, bio) || other.bio == bio) &&
+            (identical(other.currentPassword, currentPassword) ||
+                other.currentPassword == currentPassword) &&
+            (identical(other.password, password) ||
+                other.password == password) &&
+            (identical(other.passwordConfirm, passwordConfirm) ||
+                other.passwordConfirm == passwordConfirm) &&
+            (identical(other.emailError, emailError) ||
+                other.emailError == emailError) &&
             (identical(other.nicknameError, nicknameError) ||
                 other.nicknameError == nicknameError) &&
-            (identical(other.bioError, bioError) ||
-                other.bioError == bioError));
+            (identical(other.currentPasswordError, currentPasswordError) ||
+                other.currentPasswordError == currentPasswordError) &&
+            (identical(other.passwordError, passwordError) ||
+                other.passwordError == passwordError) &&
+            (identical(other.passwordConfirmError, passwordConfirmError) ||
+                other.passwordConfirmError == passwordConfirmError));
   }
 
   @override
@@ -248,11 +361,17 @@ class _$ProfileEditStateImpl implements _ProfileEditState {
     runtimeType,
     isLoading,
     isSaving,
-    nickname,
     email,
+    nickname,
     bio,
+    currentPassword,
+    password,
+    passwordConfirm,
+    emailError,
     nicknameError,
-    bioError,
+    currentPasswordError,
+    passwordError,
+    passwordConfirmError,
   );
 
   /// Create a copy of ProfileEditState
@@ -271,11 +390,17 @@ abstract class _ProfileEditState implements ProfileEditState {
   const factory _ProfileEditState({
     final bool isLoading,
     final bool isSaving,
-    final String nickname,
     final String email,
+    final String nickname,
     final String bio,
+    final String currentPassword,
+    final String password,
+    final String passwordConfirm,
+    final String? emailError,
     final String? nicknameError,
-    final String? bioError,
+    final String? currentPasswordError,
+    final String? passwordError,
+    final String? passwordConfirmError,
   }) = _$ProfileEditStateImpl;
 
   @override
@@ -283,15 +408,27 @@ abstract class _ProfileEditState implements ProfileEditState {
   @override
   bool get isSaving;
   @override
-  String get nickname;
-  @override
   String get email;
+  @override
+  String get nickname; // 画面には出さないが、更新APIの都合で保持しておく（モックのため）
   @override
   String get bio;
   @override
+  String get currentPassword;
+  @override
+  String get password;
+  @override
+  String get passwordConfirm;
+  @override
+  String? get emailError;
+  @override
   String? get nicknameError;
   @override
-  String? get bioError;
+  String? get currentPasswordError;
+  @override
+  String? get passwordError;
+  @override
+  String? get passwordConfirmError;
 
   /// Create a copy of ProfileEditState
   /// with the given fields replaced by the non-null parameter values.

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:linky_project_0318/core/constants/dialog_type.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 
@@ -15,6 +16,8 @@ Future<void> showLinkyDialog({
   required String message,
   String closeText = 'とじる',
   LinkyDialogType type = LinkyDialogType.info,
+  String? svgAssetPath,
+
 }) {
   return showDialog<void>(
     context: context,
@@ -31,7 +34,7 @@ Future<void> showLinkyDialog({
           break;
         case LinkyDialogType.error:
           borderColor = cs.error;
-          textColor = cs.error;
+          textColor = cs.onSurfaceVariant;
           break;
         case LinkyDialogType.info:
           borderColor = cs.primary;
@@ -43,7 +46,7 @@ Future<void> showLinkyDialog({
         child: Material(
           color: Colors.transparent,
           child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 24),
+            margin: const EdgeInsets.symmetric(horizontal: 20),
             padding: const EdgeInsets.fromLTRB(20, 24, 20, 32),
             decoration: BoxDecoration(
               color: cs.surface,
@@ -52,22 +55,34 @@ Future<void> showLinkyDialog({
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                if (svgAssetPath != null) ...[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 24),
+                    child: SvgPicture.asset(
+                      svgAssetPath,
+                      width: 70,
+                      height: 70,
+                    ),
+                  ),
+                ],
                 if (title != null && title.isNotEmpty) ...[
+                  //タイトル
                   Text(
                     title,
                     textAlign: TextAlign.center,
-                    style: AppTextStyles.heading24.copyWith(
+                    style: AppTextStyles.heading20.copyWith(
                       color: cs.onSurface,
                     ),
                   ),
                   const SizedBox(height: 24),
                 ],
+                //本文
                 Text(
                   message,
-                  textAlign: TextAlign.left,
-                  style: AppTextStyles.body16.copyWith(
+                  textAlign: TextAlign.center,
+                  style: AppTextStyles.body14.copyWith(
                     color: textColor,
-                    height: 1.5
+                    height: 2
                   ),
                 ),
                 const SizedBox(height: 24),
