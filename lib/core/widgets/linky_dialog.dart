@@ -34,7 +34,7 @@ Future<void> showLinkyDialog({
           break;
         case LinkyDialogType.error:
           borderColor = cs.error;
-          textColor = cs.error;
+          textColor = cs.onSurfaceVariant;
           break;
         case LinkyDialogType.info:
           borderColor = cs.primary;
@@ -79,7 +79,7 @@ Future<void> showLinkyDialog({
                 //本文
                 Text(
                   message,
-                  textAlign: TextAlign.left,
+                  textAlign: TextAlign.center,
                   style: AppTextStyles.body14.copyWith(
                     color: textColor,
                     height: 2
