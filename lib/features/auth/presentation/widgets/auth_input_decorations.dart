@@ -33,6 +33,10 @@ class AuthInputDecorations {
         borderRadius: BorderRadius.circular(10),
         borderSide: BorderSide(color: cs.outlineVariant),
       ),
+      disabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: BorderSide(color: cs.outlineVariant),
+      ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
         borderSide: BorderSide(color: cs.primary, width: 1),

@@ -15,11 +15,13 @@ class AuthLabeledTextField extends StatelessWidget {
     super.key,
     required this.label,
     required this.hintText,
-    required this.onChanged,
+    this.onChanged,
+    this.controller,
     this.errorText,
     this.keyboardType,
     this.obscureText = false,
     this.suffixIcon,
+    this.enabled = true,
     this.isRequired = false,
     this.requiredMark,
     this.autofillHints,
@@ -29,12 +31,14 @@ class AuthLabeledTextField extends StatelessWidget {
 
   final String label;
   final String hintText;
-  final ValueChanged<String> onChanged;
+  final ValueChanged<String>? onChanged;
+  final TextEditingController? controller;
   final String? errorText;
 
   final TextInputType? keyboardType;
   final bool obscureText;
   final Widget? suffixIcon;
+  final bool enabled;
 
   /// 必須マークを表示するかどうか。
   final bool isRequired;
@@ -57,6 +61,8 @@ class AuthLabeledTextField extends StatelessWidget {
       labelStyle: AppTextStyles.body14.copyWith(color: cs.onSurfaceVariant),
       labelSpacing: 8,
       child: TextField(
+        controller: controller,
+        enabled: enabled,
         keyboardType: keyboardType,
         obscureText: obscureText,
         onChanged: onChanged,
