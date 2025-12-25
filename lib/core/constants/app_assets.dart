@@ -20,6 +20,8 @@ class AppAssets {
   static const googleLogoSvg = '$_common/google_logo.svg';
   static const userLogoSvg = '$_common/user_logo.svg';
   static const alertTriangleLogoSvg = '$_common/alert_triangle_logo.svg';
+  static const failXLogoSvg = '$_common/red_x_logo.svg';
+  static const warningLogoSvg = '$_common/warning_logo.svg';
   static const darkModeLogoSvg = '$_common/dark_mode_logo.svg';
   static const lightModeLogoSvg = '$_common/light_mode_logo.svg';
   static const guestSignupLogoSvg = '$_common/guest_signup_logo.svg';
@@ -28,6 +30,7 @@ class AppAssets {
   static const imageLogoSvg = '$_common/image_logo.svg';
   static const bestLogoSvg = '$_common/best_logo.svg';
   static const userCheckLogoSvg = '$_common/user_check_logo.svg';
+  static const editProfileSuccessSvg = '$_common/edit_profile_success_logo.svg';
 
   // ---- common (png) ----
   static const passwordResetLogoPng = '$_common/password_reset_logo.png';
