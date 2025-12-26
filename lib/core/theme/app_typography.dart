@@ -37,9 +37,15 @@ class AppTextStyles {
   static TextStyle get body14 =>
       GoogleFonts.openSans(fontSize: 14, fontWeight: FontWeight.bold);
 
-  /// 補足情報やラベル用の小さなテキスト（12px, bold）。
+  /// 一般的な本文（12px, bold）。
+  /// 補足情報やラベル用の小さなテキスト。
   static TextStyle get body12 =>
       GoogleFonts.openSans(fontSize: 12, fontWeight: FontWeight.bold);
+
+  /// 一般的な本文（10px, bold）。
+  /// 補足情報やラベル用の小さなテキスト。
+  static TextStyle get body10 =>
+      GoogleFonts.openSans(fontSize: 10, fontWeight: FontWeight.bold);
 
   /// 一般的な本文（8px, bold）。
   /// 補足テキストやサブ説明に使用します。
