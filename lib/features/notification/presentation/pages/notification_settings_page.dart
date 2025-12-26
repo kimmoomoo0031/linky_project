@@ -16,7 +16,7 @@ class NotificationSettingsPage extends ConsumerWidget {
     final asyncSettings = ref.watch(notificationSettingsControllerProvider);
 
     return Scaffold(
-      appBar: const LinkyAppBar(title: '通知一覧', showBackButton: true),
+      appBar: const LinkyAppBar(title: '通知設定', showBackButton: true),
       body: asyncSettings.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, st) => Center(
