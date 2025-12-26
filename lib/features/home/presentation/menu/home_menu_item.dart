@@ -22,7 +22,7 @@ extension HomeMenuItemX on HomeMenuItem {
       case HomeMenuItem.notificationSettings:
         return '通知設定';
       case HomeMenuItem.loungeRequest:
-        return 'ラウンジ申請';
+        return 'ラウンジ作成';
       case HomeMenuItem.logout:
         return 'ログアウト';
       case HomeMenuItem.withdraw:

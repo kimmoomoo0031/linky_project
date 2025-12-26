@@ -31,6 +31,7 @@ class AppAssets {
   static const bestLogoSvg = '$_common/best_logo.svg';
   static const userCheckLogoSvg = '$_common/user_check_logo.svg';
   static const editProfileSuccessSvg = '$_common/edit_profile_success_logo.svg';
+  static const loungeAnnouncementReadSvg = '$_common/lounge_announcement_read_logo.svg';
 
   // ---- common (png) ----
   static const passwordResetLogoPng = '$_common/password_reset_logo.png';
