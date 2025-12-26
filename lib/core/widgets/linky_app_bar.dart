@@ -64,7 +64,7 @@ class LinkyAppBar extends StatelessWidget implements PreferredSizeWidget {
         preferredSize: const Size.fromHeight(1),
         child: Container(
           height: 1,
-          color: cs.outlineVariant.withAlpha(77),
+          color: cs.outlineVariant,
         ),
       ),
     );
