@@ -156,6 +156,8 @@ class _HomeMenuActionHandler {
         onNavigate('/profileEdit');
         return;
       case HomeMenuItem.notificationSettings:
+        onNavigate('/notificationSettings');
+        return;
       case HomeMenuItem.loungeRequest:
       case HomeMenuItem.withdraw:
         // 未実装（見た目は通常にする）
