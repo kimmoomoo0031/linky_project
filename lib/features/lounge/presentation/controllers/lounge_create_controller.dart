@@ -157,7 +157,15 @@ class LoungeCreateController extends StateNotifier<LoungeCreateState> {
     state = state.copyWith(isSubmitting: true);
     try {
       // TODO(api): ラウンジ作成 API を呼び出し、成功したらラウンジ詳細へ遷移する。
-      await Future<void>.delayed(const Duration(milliseconds: 350));
+      // TODO(api): バックエンドのエラーをフロントで分類して扱えるようにする（文字列ベタ出しを避ける）。
+      //   - ネットワーク系（オフライン/タイムアウト等）: CommonDialogMessages.networkError を表示
+      //   - サーバー系（5xx等）: CommonDialogMessages.serverError を表示
+      //   - ビジネスエラー（例: ラウンジ名重複）: errorCode を解析して nameError 等のフィールドエラーに反映
+      //   - バリデーションエラー（fieldErrors が返る場合）: 各フィールドにマッピング
+      //   - 想定外: CommonDialogMessages.unexpectedError を表示
+      // TODO(api): 可能なら UseCase/Result（例: CreateLoungeResult）を導入し、
+      //   Controller は Result → UI(state/ダイアログ) のマッピングに専念させる。
+      await Future<void>.delayed(const Duration(milliseconds: 400));
       _emitDialog(
         const LinkyDialogEvent(
           type: LinkyDialogType.info,
