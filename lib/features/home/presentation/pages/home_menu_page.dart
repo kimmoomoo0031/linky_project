@@ -167,8 +167,7 @@ class _HomeMenuActionHandler {
       case HomeMenuItem.logout:
         if (logoutState.isLoading) return; // 連打抑止
         onClose();
-        final repo = ref.read(authRepositoryProvider);
-        await ref.read(authSessionControllerProvider.notifier).logout(repo);
+        await ref.read(authSessionControllerProvider.notifier).logout();
         onNavigate('/login', replace: true);
         return;
     }

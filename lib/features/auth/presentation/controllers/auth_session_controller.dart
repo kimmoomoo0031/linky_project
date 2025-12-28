@@ -1,8 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:linky_project_0318/core/router/app_router.dart';
-import 'package:linky_project_0318/features/auth/domain/repositories/auth_repository.dart';
+import 'package:linky_project_0318/features/auth/di/auth_di.dart';
 
 /// セッション操作（ログアウト等）を扱う Controller.
 ///
@@ -13,17 +11,17 @@ class AuthSessionController extends AsyncNotifier<void> {
     // no-op
   }
 
-  Future<void> logout(AuthRepository repo) async {
+  /// ログアウト処理（サーバー通知 / ローカルセッション破棄など）はここで行う。
+  /// 画面遷移は UI 側の責務にする（A方針）。
+  Future<void> logout() async {
     // 連打抑止
     if (state.isLoading) return;
 
+    final repo = ref.read(authRepositoryProvider);
     state = const AsyncLoading();
     try {
       await repo.logout();
       state = const AsyncData(null);
-
-      // ルート遷移（UIに依存しない）
-      appRouter.go('/login');
     } catch (e, st) {
       state = AsyncError(e, st);
       rethrow;
