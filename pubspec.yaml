@@ -19,7 +19,7 @@ dependencies:
 
   # Image (pick/crop/resize)
   image_picker: ^1.1.2
-  image_cropper: ^8.1.0
+  image_cropper: ^11.0.0
   image: ^4.3.0
   characters: ^1.4.0
 
