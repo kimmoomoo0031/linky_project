@@ -132,6 +132,8 @@ class _LinkyDialogShell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+    final dialogTitle = title;
+    final iconAssetPath = svgAssetPath;
     final Color borderColor;
     final Color textColor;
 
@@ -190,20 +192,20 @@ class _LinkyDialogShell extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                if (svgAssetPath != null) ...[
+                if (iconAssetPath != null) ...[
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 24),
                     child: SvgPicture.asset(
-                      svgAssetPath!,
+                      iconAssetPath,
                       width: 70,
                       height: 70,
                     ),
                   ),
                 ],
-                if (title != null && title!.isNotEmpty) ...[
+                if (dialogTitle != null && dialogTitle.isNotEmpty) ...[
                   // タイトル
                   Text(
-                    title!,
+                    dialogTitle,
                     textAlign: TextAlign.center,
                     style: AppTextStyles.heading20.copyWith(
                       color: cs.onSurface,
