@@ -44,6 +44,11 @@ class LoungeCreatePage extends ConsumerWidget {
         title: event.title,
         message: event.message,
         type: event.type,
+        svgAssetPath: switch (event.type) {
+          LinkyDialogType.error => AppAssets.failXLogoSvg,
+          LinkyDialogType.warning => AppAssets.warningLogoSvg,
+          _ => AppAssets.editProfileSuccessSvg,
+        },
       );
       ref.read(loungeCreateDialogEventProvider.notifier).state = null;
 
