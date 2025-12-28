@@ -277,13 +277,15 @@ class _LineLoginButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return AuthActionButton(
       label: 'LINEでログイン',
       icon: SvgPicture.asset(AppAssets.lineLogoSvg, width: 20, height: 20),
       onPressed: onPressed,
-      backgroundColor: AppColors.lineButton,
-      textColor: AppColors.primaryWhite,
-      style: AuthActionButtonStyle.filled,
+      backgroundColor: cs.surface,
+      textColor: cs.onSurface,
+      borderColor: cs.outlineVariant,
+      style: AuthActionButtonStyle.outlined,
     );
   }
 }

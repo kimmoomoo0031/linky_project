@@ -3,8 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:linky_project_0318/core/constants/app_assets.dart';
-import 'package:linky_project_0318/core/theme/app_typography.dart';
+import 'package:linky_project_0318/core/constants/dialog_type.dart';
 import 'package:linky_project_0318/core/theme/theme_mode_provider.dart';
+import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
 import 'package:linky_project_0318/core/widgets/linky_divider.dart';
 import 'package:linky_project_0318/features/auth/auth_exports.dart';
 import 'package:linky_project_0318/features/auth/presentation/pages/guest_gate_page.dart';
@@ -83,7 +84,7 @@ class HomeMenuPage extends ConsumerWidget {
                               me: me,
                               items: items,
                               titleColorFor: (item) => item.titleColor(cs),
-                              onTapItem: handler.handle,
+                              onTapItem: (item) => handler.handle(context, item),
                             ),
                     ),
                   ],
@@ -147,7 +148,7 @@ class _HomeMenuActionHandler {
   final HomeMenuNavigate onNavigate;
   final AsyncValue<void> logoutState;
 
-  Future<void> handle(HomeMenuItem item) async {
+  Future<void> handle(BuildContext context, HomeMenuItem item) async {
     switch (item) {
       case HomeMenuItem.myPosts:
         onNavigate('/myPosts');
@@ -166,9 +167,19 @@ class _HomeMenuActionHandler {
         return;
       case HomeMenuItem.logout:
         if (logoutState.isLoading) return; // 連打抑止
+        final ok = await showLinkyConfirmDialog(
+          context: context,
+          title: 'ログアウト確認',
+          message: 'ログアウトしますか？',
+          confirmText: 'ログアウト',
+          cancelText: 'キャンセル',
+          type: LinkyDialogType.warning,
+          isDestructive: true,
+        );
+        if (!ok) return;
+
         onClose();
-        final repo = ref.read(authRepositoryProvider);
-        await ref.read(authSessionControllerProvider.notifier).logout(repo);
+        await ref.read(authSessionControllerProvider.notifier).logout();
         onNavigate('/login', replace: true);
         return;
     }

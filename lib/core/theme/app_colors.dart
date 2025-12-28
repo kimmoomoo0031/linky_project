@@ -20,9 +20,6 @@ class AppColors {
   /// ホワイト背景 (#FFFFFF)。
   static const Color primaryWhite = Color(0xFFFFFFFF);
 
-  /// Lineでログインボタン (#06C755)。
-  static const Color lineButton = Color(0xFF06C755);
-
   /// ライトモードベストロゴ (#9A825)。
   static const Color lightModelBestLogo = Color(0xFFF9A825);
 
