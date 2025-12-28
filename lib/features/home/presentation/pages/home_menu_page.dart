@@ -39,7 +39,7 @@ class HomeMenuPage extends ConsumerWidget {
       HomeMenuItem.myPosts,
       HomeMenuItem.profileEdit,
       HomeMenuItem.notificationSettings,
-      HomeMenuItem.loungeRequest,
+      HomeMenuItem.createLounge,
       HomeMenuItem.logout,
       HomeMenuItem.withdraw,
     ];
@@ -158,7 +158,9 @@ class _HomeMenuActionHandler {
       case HomeMenuItem.notificationSettings:
         onNavigate('/notificationSettings');
         return;
-      case HomeMenuItem.loungeRequest:
+      case HomeMenuItem.createLounge:
+        onNavigate('/loungeCreate');
+        return;
       case HomeMenuItem.withdraw:
         // 未実装（見た目は通常にする）
         return;

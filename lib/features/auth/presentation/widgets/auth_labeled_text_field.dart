@@ -27,6 +27,8 @@ class AuthLabeledTextField extends StatelessWidget {
     this.autofillHints,
     this.inputFormatters,
     this.textInputAction,
+    this.minLines,
+    this.maxLines,
   });
 
   final String label;
@@ -50,6 +52,8 @@ class AuthLabeledTextField extends StatelessWidget {
   final Iterable<String>? autofillHints;
   final List<TextInputFormatter>? inputFormatters;
   final TextInputAction? textInputAction;
+  final int? minLines;
+  final int? maxLines;
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +73,8 @@ class AuthLabeledTextField extends StatelessWidget {
         autofillHints: autofillHints,
         inputFormatters: inputFormatters,
         textInputAction: textInputAction,
+        minLines: minLines,
+        maxLines: maxLines ?? (obscureText ? 1 : null),
         decoration: AuthInputDecorations.textField(
           context: context,
           hintText: hintText,
