@@ -7,7 +7,7 @@ enum HomeMenuItem {
   myPosts,
   profileEdit,
   notificationSettings,
-  loungeRequest,
+  createLounge,
   logout,
   withdraw,
 }
@@ -21,7 +21,7 @@ extension HomeMenuItemX on HomeMenuItem {
         return 'プロフィール編集';
       case HomeMenuItem.notificationSettings:
         return '通知設定';
-      case HomeMenuItem.loungeRequest:
+      case HomeMenuItem.createLounge:
         return 'ラウンジ作成';
       case HomeMenuItem.logout:
         return 'ログアウト';

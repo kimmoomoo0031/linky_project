@@ -19,4 +19,10 @@
     <style name="NormalTheme" parent="@android:style/Theme.Black.NoTitleBar">
         <item name="android:windowBackground">?android:colorBackground</item>
     </style>
+
+    <!-- image_cropper(uCrop) 画面専用テーマ（ダーク） -->
+    <style name="Theme.UCrop" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:windowLayoutInDisplayCutoutMode">never</item>
+        <item name="android:windowTranslucentStatus">false</item>
+    </style>
 </resources>

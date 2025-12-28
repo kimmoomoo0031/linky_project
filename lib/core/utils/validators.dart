@@ -1,4 +1,6 @@
 import 'package:linky_project_0318/core/utils/regex.dart';
+import 'package:characters/characters.dart';
+import 'package:linky_project_0318/core/constants/lounge_create_constants.dart';
 
 class Validators {
   Validators._();
@@ -37,6 +39,44 @@ class Validators {
       return 'ニックネームは2〜12文字で入力してください';
     }
     // 必要になれば、文字数や使用可能文字などのルールをここに追加する。
+    return null;
+  }
+
+  /// ラウンジ名バリデーション
+  static String? validateLoungeName(String value) {
+    final trimmed = value.trim();
+    if (trimmed.isEmpty) {
+      return 'ラウンジ名を入力してください';
+    }
+
+    final len = trimmed.characters.length;
+    if (len < LoungeCreateConstants.nameMinLength ||
+        len > LoungeCreateConstants.nameMaxLength) {
+      return 'ラウンジ名は${LoungeCreateConstants.nameMinLength}〜${LoungeCreateConstants.nameMaxLength}文字で入力してください';
+    }
+
+    if (!RegexPatterns.loungeAllowed.hasMatch(trimmed)) {
+      return 'ラウンジ名は英字・日本語・「-」のみ入力できます';
+    }
+    return null;
+  }
+
+  /// ラウンジ紹介バリデーション
+  static String? validateLoungeDescription(String value) {
+    final trimmed = value.trim();
+    if (trimmed.isEmpty) {
+      return 'ラウンジ紹介を入力してください';
+    }
+
+    final len = trimmed.characters.length;
+    if (len < LoungeCreateConstants.descriptionMinLength ||
+        len > LoungeCreateConstants.descriptionMaxLength) {
+      return 'ラウンジ紹介は${LoungeCreateConstants.descriptionMinLength}〜${LoungeCreateConstants.descriptionMaxLength}文字で入力してください';
+    }
+
+    if (!RegexPatterns.loungeAllowed.hasMatch(trimmed)) {
+      return 'ラウンジ紹介は英字・日本語・「-」のみ入力できます';
+    }
     return null;
   }
 

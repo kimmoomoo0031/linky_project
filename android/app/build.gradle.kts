@@ -7,7 +7,8 @@ plugins {
 
 android {
     namespace = "com.example.linky_project_0318"
-    compileSdk = flutter.compileSdkVersion
+    // image_cropper v11 が compileSdk 36 を要求するため明示的に指定する（後方互換あり）
+    compileSdk = 36
     // plugin が要求する NDK のうち、最大バージョンに合わせる（後方互換あり）
     ndkVersion = "27.0.12077973"
 

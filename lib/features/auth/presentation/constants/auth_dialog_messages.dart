@@ -31,6 +31,13 @@ class AuthDialogMessages {
 ・特殊文字を含めるとより安全です。
 ''';
 
+  // ---- ラウンジ作成：説明文 ----
+  static const String makeLoungeDescription = '''
+・カバー画像は1枚のみ登録できます。
+・登録した画像は、ラウンジアイコンとして表示されます。
+・同じ名前のラウンジは作成できません。
+''';
+
   // ---- 認証コード/再設定フロー ----
   static const String resetEmailSent = 'パスワード再設定用のコードを送信しました。';
   static const String invalidResetCode = '認証コードが無効です。\nもう一度やり直してください。';

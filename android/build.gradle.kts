@@ -16,6 +16,13 @@ subprojects {
     project.evaluationDependsOn(":app")
 }
 
+// Kotlin の JVM ターゲットをサブプロジェクトで統一する（ビルドの一貫性のため）。
+subprojects {
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+        kotlinOptions { jvmTarget = JavaVersion.VERSION_11.toString() }
+    }
+}
+
 tasks.register<Delete>("clean") {
     delete(rootProject.layout.buildDirectory)
 }

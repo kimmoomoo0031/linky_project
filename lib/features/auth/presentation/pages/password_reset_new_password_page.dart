@@ -4,9 +4,9 @@ import 'package:go_router/go_router.dart';
 import 'package:linky_project_0318/features/auth/presentation/constants/auth_dialog_messages.dart';
 
 import 'package:linky_project_0318/core/constants/dialog_type.dart';
-import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
 import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
+import 'package:linky_project_0318/core/widgets/linky_info_box.dart';
 import 'package:linky_project_0318/features/auth/auth_exports.dart';
 import 'package:linky_project_0318/features/auth/presentation/auth_dialog_event_providers.dart';
 import 'package:linky_project_0318/features/auth/presentation/states/password_reset_new_password_state.dart';
@@ -134,24 +134,8 @@ class _PasswordRuleBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: cs.outlineVariant),
-        color: cs.surface,
-      ),
-      child: Transform.translate(
-        offset: const Offset(0, 8),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          child: Text(
-            AuthDialogMessages.passwordResetDescription,
-            style: AppTextStyles.body12.copyWith(color: cs.onSurfaceVariant),
-            textAlign: TextAlign.left,
-          ),
-        ),
-      ),
+    return const LinkyInfoBox(
+      text: AuthDialogMessages.passwordResetDescription,
     );
   }
 }
