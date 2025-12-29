@@ -1,15 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:linky_project_0318/core/enums/auth_action_button_style.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
-
-/// 認証画面で使用するアクションボタンのスタイル種別。
-enum AuthActionButtonStyle {
-  /// 塗りつぶしボタン（ElevatedButton 風）。
-  filled,
-
-  /// アウトラインボタン（OutlinedButton 風）。
-  outlined,
-}
 
 /// 認証画面（ログイン/新規登録 など）で使用する共通アクションボタン。
 /// LINE ログイン / Google ログイン / ゲストログイン など、

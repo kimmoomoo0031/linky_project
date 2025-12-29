@@ -1,4 +1,4 @@
-import 'package:linky_project_0318/core/constants/dialog_type.dart';
+import 'package:linky_project_0318/core/dialog_type_exports.dart';
 
 /// ダイアログ表示のための「1回限りのイベント」データ。
 ///

@@ -6,6 +6,7 @@ import 'package:linky_project_0318/core/constants/app_assets.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/auth_action_button.dart';
+import 'package:linky_project_0318/core/enums/auth_action_button_style.dart';
 
 /// 利用規約画面（WebView 版）。
 ///
