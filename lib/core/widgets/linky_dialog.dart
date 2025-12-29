@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:linky_project_0318/core/constants/dialog_type.dart';
+import 'package:linky_project_0318/core/dialog_type_exports.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 
 /// アプリ共通のシンプルなダイアログ。

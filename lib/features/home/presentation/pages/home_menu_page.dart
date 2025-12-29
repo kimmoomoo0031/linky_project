@@ -3,14 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:linky_project_0318/core/constants/app_assets.dart';
-import 'package:linky_project_0318/core/constants/dialog_type.dart';
+import 'package:linky_project_0318/core/dialog_type_exports.dart';
 import 'package:linky_project_0318/core/theme/theme_mode_provider.dart';
 import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
 import 'package:linky_project_0318/core/widgets/linky_divider.dart';
 import 'package:linky_project_0318/features/auth/auth_exports.dart';
 import 'package:linky_project_0318/features/auth/presentation/pages/guest_gate_page.dart';
 import 'package:linky_project_0318/features/home/home_exports.dart';
-import 'package:linky_project_0318/features/home/presentation/menu/home_menu_item.dart';
+import 'package:linky_project_0318/features/home/presentation/menu/home_menu_item_exports.dart';
 import 'package:linky_project_0318/features/home/presentation/pages/logged_in_menu_view.dart';
 
 typedef HomeMenuNavigate = void Function(String path, {bool replace});

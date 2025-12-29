@@ -8,6 +8,7 @@ import 'package:linky_project_0318/core/theme/app_colors.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/gradient_text.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/auth_action_button.dart';
+import 'package:linky_project_0318/core/enums/auth_action_button_style.dart';
 
 /// 新規登録完了画面。
 class RegisterSuccessPage extends ConsumerWidget {

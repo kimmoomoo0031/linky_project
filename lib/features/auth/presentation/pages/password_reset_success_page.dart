@@ -9,6 +9,7 @@ import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/gradient_text.dart';
 import 'package:linky_project_0318/features/auth/presentation/constants/auth_dialog_messages.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/auth_action_button.dart';
+import 'package:linky_project_0318/core/enums/auth_action_button_style.dart';
 
 /// パスワード再設定完了画面。
 class PasswordResetSuccessPage extends ConsumerWidget {

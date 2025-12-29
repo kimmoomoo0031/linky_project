@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:linky_project_0318/core/enums/fetch_more_result.dart';
 
 /// ラウンジ検索の1行分の表示モデル（モック）。
 class LoungeSearchItem {
@@ -44,16 +45,6 @@ class LoungeSearchViewData {
       isFetchingMore: isFetchingMore ?? this.isFetchingMore,
     );
   }
-}
-
-/// 追加取得の結果。
-enum FetchMoreResult {
-  /// 取得してリストが増えた
-  fetched,
-  /// これ以上取得できない
-  noMore,
-  /// 取得しなかった（実行中、または状態が不正）
-  skipped,
 }
 
 /// ラウンジ検索（モック）用の Controller。

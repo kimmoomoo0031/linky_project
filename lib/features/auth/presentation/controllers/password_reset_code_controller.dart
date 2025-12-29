@@ -5,7 +5,7 @@ import 'package:linky_project_0318/core/utils/validators.dart';
 
 import 'package:linky_project_0318/core/utils/regex.dart';
 import 'package:linky_project_0318/features/auth/presentation/states/password_reset_code_state.dart';
-import 'package:linky_project_0318/core/constants/dialog_type.dart';
+import 'package:linky_project_0318/core/dialog_type_exports.dart';
 import 'package:linky_project_0318/core/ui/events/linky_dialog_event.dart';
 import 'package:linky_project_0318/features/auth/presentation/auth_dialog_event_providers.dart';
 
