@@ -31,10 +31,6 @@ class LoungeCreatePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final cs = Theme.of(context).colorScheme;
-    final state = ref.watch(loungeCreateControllerProvider);
-    final controller = ref.read(loungeCreateControllerProvider.notifier);
-
     // ダイアログ表示イベント（1回限り）
     ref.listen(loungeCreateDialogEventProvider, (previous, next) async {
       final event = next;
@@ -66,98 +62,166 @@ class LoungeCreatePage extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              LinkyInfoBox(text: AuthDialogMessages.makeLoungeDescription),
-              const SizedBox(height: 16),
-              Text(
-                'カバー画像を追加（任意）',
-                style: AppTextStyles.body14.copyWith(
-                  color: cs.onSurfaceVariant,
-                ),
-              ),
-              const SizedBox(height: 8),
-              _CoverImagePicker(
-                thumbnailBytes: state.thumbnailBytes,
-                onTap: controller.pickCoverImage,
-                size: LoungeCreateConstants.coverImageSize,
-              ),
-              const SizedBox(height: 6),
-              Text(
-                '未設定の場合は、デフォルト画像が表示されます。',
-                style: AppTextStyles.body12.copyWith(
-                  color: cs.onSurfaceVariant,
-                ),
-              ),
-              if (state.coverImageError != null) ...[
-                const SizedBox(height: 6),
-                Text(
-                  state.coverImageError!,
-                  style: AppTextStyles.body12.copyWith(color: cs.error),
-                ),
-              ],
-
-              const SizedBox(height: 20),
-
-              AuthLabeledTextField(
-                label: 'ラウンジ名',
-                hintText: '日本生活',
-                isRequired: true,
-                requiredMark: SvgPicture.asset(
-                  AppAssets.asteriskLogoSvg,
-                  width: 8,
-                  height: 8,
-                ),
-                errorText: state.nameError,
-                onChanged: controller.onNameChanged,
-                textInputAction: TextInputAction.next,
-              ),
-              const SizedBox(height: 6),
-              _RuleAndCounterRow(
-                ruleText: LoungeCreateConstants.nameRuleText,
-                counterText:
-                    '${state.nameCount}/${LoungeCreateConstants.nameMaxLength}',
-                isOver: state.isNameOverLimit,
-              ),
-
-              const SizedBox(height: 20),
-
-              AuthLabeledTextField(
-                label: 'ラウンジ紹介',
-                hintText: '日本での生活を共有できる場所です',
-                isRequired: true,
-                requiredMark: SvgPicture.asset(
-                  AppAssets.asteriskLogoSvg,
-                  width: 8,
-                  height: 8,
-                ),
-                errorText: state.descriptionError,
-                onChanged: controller.onDescriptionChanged,
-                textInputAction: TextInputAction.newline,
-                minLines: 4,
-                maxLines: 6,
-              ),
-              const SizedBox(height: 6),
-              _RuleAndCounterRow(
-                ruleText: LoungeCreateConstants.descriptionRuleText,
-                counterText:
-                    '${state.descriptionCount}/${LoungeCreateConstants.descriptionMaxLength}',
-                isOver: state.isDescriptionOverLimit,
-              ),
-
-              const SizedBox(height: 32),
-
-              AuthActionButton(
-                label: '作成する',
-                onPressed: state.isSubmitting ? null : controller.submit,
-                backgroundColor: cs.primary,
-                textColor: cs.onPrimary,
-                style: AuthActionButtonStyle.filled,
-                isLoading: state.isSubmitting,
-              ),
+            children: const [
+              // 画面上部の案内文
+              _LoungeCreateInfoSection(),
+              SizedBox(height: 16),
+              // カバー画像（任意）
+              _LoungeCreateCoverSection(),
+              SizedBox(height: 20),
+              // ラウンジ名（必須 + ルール/カウンター）
+              _LoungeCreateNameSection(),
+              SizedBox(height: 20),
+              // ラウンジ紹介（必須 + ルール/カウンター）
+              _LoungeCreateDescriptionSection(),
+              SizedBox(height: 32),
+              // 作成ボタン
+              _LoungeCreateActionSection(),
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class _LoungeCreateInfoSection extends StatelessWidget {
+  const _LoungeCreateInfoSection();
+
+  @override
+  Widget build(BuildContext context) {
+    return LinkyInfoBox(text: AuthDialogMessages.makeLoungeDescription);
+  }
+}
+
+class _LoungeCreateCoverSection extends ConsumerWidget {
+  const _LoungeCreateCoverSection();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final cs = Theme.of(context).colorScheme;
+    final state = ref.watch(loungeCreateControllerProvider);
+    final controller = ref.read(loungeCreateControllerProvider.notifier);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+          'カバー画像を追加（任意）',
+          style: AppTextStyles.body14.copyWith(color: cs.onSurfaceVariant),
+        ),
+        const SizedBox(height: 8),
+        _CoverImagePicker(
+          thumbnailBytes: state.thumbnailBytes,
+          onTap: controller.pickCoverImage,
+          size: LoungeCreateConstants.coverImageSize,
+        ),
+        const SizedBox(height: 6),
+        Text(
+          '未設定の場合は、デフォルト画像が表示されます。',
+          style: AppTextStyles.body12.copyWith(color: cs.onSurfaceVariant),
+        ),
+        if (state.coverImageError != null) ...[
+          const SizedBox(height: 6),
+          Text(
+            state.coverImageError!,
+            style: AppTextStyles.body12.copyWith(color: cs.error),
+          ),
+        ],
+      ],
+    );
+  }
+}
+
+class _LoungeCreateNameSection extends ConsumerWidget {
+  const _LoungeCreateNameSection();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(loungeCreateControllerProvider);
+    final controller = ref.read(loungeCreateControllerProvider.notifier);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        AuthLabeledTextField(
+          label: 'ラウンジ名',
+          hintText: '日本生活',
+          isRequired: true,
+          requiredMark: SvgPicture.asset(
+            AppAssets.asteriskLogoSvg,
+            width: 8,
+            height: 8,
+          ),
+          errorText: state.nameError,
+          onChanged: controller.onNameChanged,
+          textInputAction: TextInputAction.next,
+        ),
+        const SizedBox(height: 6),
+        _RuleAndCounterRow(
+          ruleText: LoungeCreateConstants.nameRuleText,
+          counterText: '${state.nameCount}/${LoungeCreateConstants.nameMaxLength}',
+          isOver: state.isNameOverLimit,
+        ),
+      ],
+    );
+  }
+}
+
+class _LoungeCreateDescriptionSection extends ConsumerWidget {
+  const _LoungeCreateDescriptionSection();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(loungeCreateControllerProvider);
+    final controller = ref.read(loungeCreateControllerProvider.notifier);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        AuthLabeledTextField(
+          label: 'ラウンジ紹介',
+          hintText: '日本での生活を共有できる場所です',
+          isRequired: true,
+          requiredMark: SvgPicture.asset(
+            AppAssets.asteriskLogoSvg,
+            width: 8,
+            height: 8,
+          ),
+          errorText: state.descriptionError,
+          onChanged: controller.onDescriptionChanged,
+          textInputAction: TextInputAction.newline,
+          minLines: 4,
+          maxLines: 6,
+        ),
+        const SizedBox(height: 6),
+        _RuleAndCounterRow(
+          ruleText: LoungeCreateConstants.descriptionRuleText,
+          counterText:
+              '${state.descriptionCount}/${LoungeCreateConstants.descriptionMaxLength}',
+          isOver: state.isDescriptionOverLimit,
+        ),
+      ],
+    );
+  }
+}
+
+class _LoungeCreateActionSection extends ConsumerWidget {
+  const _LoungeCreateActionSection();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final cs = Theme.of(context).colorScheme;
+    final state = ref.watch(loungeCreateControllerProvider);
+    final controller = ref.read(loungeCreateControllerProvider.notifier);
+
+    return AuthActionButton(
+      label: '作成する',
+      onPressed: state.isSubmitting ? null : controller.submit,
+      backgroundColor: cs.primary,
+      textColor: cs.onPrimary,
+      style: AuthActionButtonStyle.filled,
+      isLoading: state.isSubmitting,
     );
   }
 }
