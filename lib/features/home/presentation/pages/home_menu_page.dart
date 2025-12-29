@@ -163,7 +163,8 @@ class _HomeMenuActionHandler {
         onNavigate('/loungeCreate');
         return;
       case HomeMenuItem.withdraw:
-        // 未実装（見た目は通常にする）
+        onClose();
+        onNavigate('/withdraw');
         return;
       case HomeMenuItem.logout:
         if (logoutState.isLoading) return; // 連打抑止

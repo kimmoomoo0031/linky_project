@@ -57,10 +57,11 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
           _ => AppAssets.editProfileSuccessSvg,
         },
       );
+      // 成功ダイアログ表示後は画面を戻す。
+      if (!context.mounted) return;
+
       ref.read(profileEditDialogEventProvider.notifier).state = null;
 
-      // 成功ダイアログ表示後は画面を戻す。
-      if (!mounted) return;
       if (event.type == LinkyDialogType.info &&
           event.message == CommonDialogMessages.profileUpdated) {
         Navigator.of(context).pop();
