@@ -25,7 +25,6 @@ class LoginPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(loginControllerProvider);
     final controller = ref.read(loginControllerProvider.notifier);
-    final cs = Theme.of(context).colorScheme;
 
     // ダイアログ表示イベント（1回限り）。
     ref.listen(loginDialogEventProvider, (previous, next) async {

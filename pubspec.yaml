@@ -41,6 +41,9 @@ dependencies:
   #svg
   flutter_svg: ^2.0.10+1
 
+  # Dropdown (menu offset / positioning)
+  dropdown_button2: ^2.3.9
+
   # Fonts
   google_fonts: ^6.2.1
 

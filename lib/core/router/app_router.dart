@@ -12,6 +12,8 @@ import 'package:linky_project_0318/features/auth/presentation/pages/password_res
 import 'package:linky_project_0318/features/home/presentation/pages/home_main_page.dart';
 import 'package:linky_project_0318/features/post/presentation/pages/my_posts_page.dart';
 import 'package:linky_project_0318/features/user/presentation/pages/profile_edit_page.dart';
+import 'package:linky_project_0318/features/user/presentation/pages/withdraw_completed_page.dart';
+import 'package:linky_project_0318/features/user/presentation/pages/withdraw_page.dart';
 import 'package:linky_project_0318/features/lounge/presentation/pages/lounge_search_page.dart';
 import 'package:linky_project_0318/features/lounge/presentation/pages/lounge_create_page.dart';
 import 'package:linky_project_0318/features/notification/presentation/pages/notification_settings_page.dart';
@@ -53,6 +55,18 @@ final GoRouter appRouter = GoRouter(
       name: 'profileEdit',
       builder: (BuildContext context, GoRouterState state) =>
           const ProfileEditPage(),
+    ),
+    GoRoute(
+      path: '/withdraw',
+      name: 'withdraw',
+      builder: (BuildContext context, GoRouterState state) =>
+          const WithdrawPage(),
+    ),
+    GoRoute(
+      path: '/withdrawCompleted',
+      name: 'withdrawCompleted',
+      builder: (BuildContext context, GoRouterState state) =>
+          const WithdrawCompletedPage(),
     ),
     GoRoute(
       path: '/notificationSettings',

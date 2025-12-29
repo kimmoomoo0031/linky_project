@@ -29,6 +29,8 @@ class AppAssets {
   static const searchLogoSvg = '$_common/search_logo.svg';
   static const imageLogoSvg = '$_common/image_logo.svg';
   static const selectImageLogoSvg = '$_common/select_image_logo.svg';
+  static const arrowDownLogoSvg = '$_common/arrow_down_logo.svg';
+  static const arrowUpLogoSvg = '$_common/arrow_up_logo.svg';
   static const bestLogoSvg = '$_common/best_logo.svg';
   static const userCheckLogoSvg = '$_common/user_check_logo.svg';
   static const editProfileSuccessSvg = '$_common/edit_profile_success_logo.svg';
