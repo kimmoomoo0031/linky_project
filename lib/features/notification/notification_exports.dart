@@ -4,5 +4,6 @@
 export 'di/notification_di.dart';
 
 export 'presentation/providers/notification_settings_providers.dart';
+export 'presentation/providers/notification_list_providers.dart';
 
 
