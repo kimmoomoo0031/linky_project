@@ -13,6 +13,8 @@ class LinkyAppBar extends StatelessWidget implements PreferredSizeWidget {
     super.key,
     required this.title,
     this.showBackButton = true,
+    this.showClearNotificationButton = false,
+    this.onClearNotificationPressed,
     this.onBackPressed,
     this.actions,
   });
@@ -30,11 +32,34 @@ class LinkyAppBar extends StatelessWidget implements PreferredSizeWidget {
   /// 右側に表示するアクションボタン群。
   final List<Widget>? actions;
 
+  /// 通知一覧を空っぽにするかどうか。
+  final bool showClearNotificationButton;
+  final VoidCallback? onClearNotificationPressed;
+
+
+  List<Widget>? _notificationBuildActions() {
+    final list = <Widget>[
+      ...?actions,
+      if (showClearNotificationButton)
+        IconButton(
+          onPressed: onClearNotificationPressed,
+          icon: SvgPicture.asset(
+            AppAssets.clearNotificationLogoSvg,
+            width: 30,
+            height: 30,
+          ),
+        ),
+    ];
+
+    return list.isEmpty ? null : list;
+  }
+
   @override
   Size get preferredSize => const Size.fromHeight(56);
 
   @override
   Widget build(BuildContext context) {
+
     final canPop = Navigator.of(context).canPop();
     final cs = Theme.of(context).colorScheme;
     final isLight = Theme.of(context).brightness == Brightness.light;
@@ -59,7 +84,7 @@ class LinkyAppBar extends StatelessWidget implements PreferredSizeWidget {
           color: isLight ? AppColors.primaryGray : cs.onSurface,
         ),
       ),
-      actions: actions,
+      actions: _notificationBuildActions(),
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(1),
         child: Container(

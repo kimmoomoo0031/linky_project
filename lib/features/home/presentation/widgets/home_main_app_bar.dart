@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:linky_project_0318/core/constants/app_assets.dart';
 
@@ -23,7 +24,7 @@ class HomeMainAppBar extends StatelessWidget implements PreferredSizeWidget {
         centerTitle: true,
         leading: IconButton(
           onPressed: () {
-            // TODO: 通知画面
+            context.push('/notifications');
           },
           icon: SvgPicture.asset(
             AppAssets.bellLogoSvg,

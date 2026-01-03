@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 
 import 'package:linky_project_0318/core/constants/app_assets.dart';
 import 'package:linky_project_0318/core/constants/withdraw_constants.dart';
-import 'package:linky_project_0318/core/theme/app_typography.dart';
 
 /// 退会完了後の遷移用画面（ロゴ + インディケータ → ログインへ）。
 ///
