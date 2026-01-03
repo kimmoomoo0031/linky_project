@@ -12,6 +12,7 @@ import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
 import 'package:linky_project_0318/core/widgets/linky_divider.dart';
 import 'package:linky_project_0318/core/widgets/linky_search_bar.dart';
+import 'package:linky_project_0318/core/widgets/linky_snack_bar.dart';
 import 'package:linky_project_0318/features/lounge/presentation/controllers/lounge_search_controller.dart';
 
 /// ラウンジ検索画面。
@@ -71,15 +72,18 @@ class _LoungeSearchPageState extends ConsumerState<LoungeSearchPage> {
     final pos = _scrollController.position;
     if (pos.maxScrollExtent <= 0) return;
 
+    // - リセット条件: そこから 100px 以上離れたら（= maxScrollExtent - 300 より上に戻ったら）
+    if (_noMoreSnackShown && pos.pixels < pos.maxScrollExtent - 300) {
+      _noMoreSnackShown = false;
+    }
+
     // 末尾付近で追加取得
     if (pos.pixels >= pos.maxScrollExtent - 200) {
       final result =
           await ref.read(loungeSearchControllerProvider.notifier).fetchMore();
       if (result == FetchMoreResult.noMore && mounted && !_noMoreSnackShown) {
         _noMoreSnackShown = true;
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('最後のページです。')),
-        );
+        showLinkySnackBar(context, message: '最後のページです。');
       }
     }
   }

@@ -85,7 +85,7 @@ class LoungeSearchController extends AsyncNotifier<LoungeSearchViewData> {
     if (_isFetchingMore) return FetchMoreResult.skipped;
     final cur = state.valueOrNull;
     if (cur == null) return FetchMoreResult.skipped;
-    if (!cur.hasNext) return FetchMoreResult.skipped;
+    if (!cur.hasNext) return FetchMoreResult.noMore;
 
     _isFetchingMore = true;
     try {
