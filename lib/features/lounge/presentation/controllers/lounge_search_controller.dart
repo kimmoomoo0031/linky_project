@@ -153,9 +153,4 @@ class LoungeSearchController extends AsyncNotifier<LoungeSearchViewData> {
   }
 }
 
-/// ラウンジ検索画面向け Provider。
-final loungeSearchControllerProvider = AsyncNotifierProvider<LoungeSearchController, LoungeSearchViewData>(
-  LoungeSearchController.new,
-);
-
 

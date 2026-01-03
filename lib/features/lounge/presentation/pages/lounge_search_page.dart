@@ -13,7 +13,7 @@ import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
 import 'package:linky_project_0318/core/widgets/linky_divider.dart';
 import 'package:linky_project_0318/core/widgets/linky_search_bar.dart';
 import 'package:linky_project_0318/core/widgets/linky_snack_bar.dart';
-import 'package:linky_project_0318/features/lounge/presentation/controllers/lounge_search_controller.dart';
+import 'package:linky_project_0318/features/lounge/presentation/providers/lounge_search_providers.dart';
 
 /// ラウンジ検索画面。
 ///
