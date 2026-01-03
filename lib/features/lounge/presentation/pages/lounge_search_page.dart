@@ -3,6 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:linky_project_0318/core/debug/app_log.dart';
+import 'package:linky_project_0318/core/debug/trace_id.dart';
+import 'package:linky_project_0318/core/error/app_error.dart';
+import 'package:linky_project_0318/core/error/app_error_context.dart';
 import 'package:linky_project_0318/core/enums/fetch_more_result.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
@@ -113,12 +117,26 @@ class _LoungeSearchPageState extends ConsumerState<LoungeSearchPage> {
               Expanded(
                 child: async.when(
                   loading: () => const Center(child: CircularProgressIndicator()),
-                  error: (e, st) => Center(
-                    child: Text(
-                      'error: $e',
-                      style: AppTextStyles.body14.copyWith(color: cs.error),
-                    ),
-                  ),
+                  error: (e, st) {
+                    final traceId = TraceId.newId();
+                    AppLog.err(
+                      feature: 'LOUNGE',
+                      action: 'SEARCH',
+                      traceId: traceId,
+                      ms: 0,
+                      error: e,
+                      stackTrace: st,
+                    );
+                    final msg = AppError.from(e).userMessage(
+                      contextLabel: AppErrorContext.loungeSearch,
+                    );
+                    return Center(
+                      child: Text(
+                        msg,
+                        style: AppTextStyles.body14.copyWith(color: cs.error),
+                      ),
+                    );
+                  },
                   data: (data) {
                     if (data.totalCount == 0) {
                       return Center(
