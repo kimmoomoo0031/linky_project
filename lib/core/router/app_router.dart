@@ -17,6 +17,7 @@ import 'package:linky_project_0318/features/user/presentation/pages/withdraw_pag
 import 'package:linky_project_0318/features/lounge/presentation/pages/lounge_search_page.dart';
 import 'package:linky_project_0318/features/lounge/presentation/pages/lounge_create_page.dart';
 import 'package:linky_project_0318/features/notification/presentation/pages/notification_settings_page.dart';
+import 'package:linky_project_0318/features/notification/presentation/pages/notification_list_page.dart';
 
 import 'package:linky_project_0318/features/auth/presentation/pages/terms_of_service_page.dart';
 
@@ -73,6 +74,12 @@ final GoRouter appRouter = GoRouter(
       name: 'notificationSettings',
       builder: (BuildContext context, GoRouterState state) =>
           const NotificationSettingsPage(),
+    ),
+    GoRoute(
+      path: '/notifications',
+      name: 'notifications',
+      builder: (BuildContext context, GoRouterState state) =>
+          const NotificationListPage(),
     ),
     GoRoute(
       path: '/loungeSearch',
