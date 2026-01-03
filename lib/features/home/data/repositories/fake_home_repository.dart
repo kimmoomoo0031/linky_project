@@ -27,7 +27,7 @@ class FakeHomeRepository implements HomeRepository {
     final titles = [
       '日本生活',
       'エンジニア',
-      '東京に住んでる\n人々の集まり',
+      '東京に住んでる人々の集まり',
       '韓国グルメ',
       '英会話',
       '週末旅行',

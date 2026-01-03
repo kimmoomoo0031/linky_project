@@ -16,6 +16,7 @@ import 'package:linky_project_0318/features/user/presentation/pages/withdraw_com
 import 'package:linky_project_0318/features/user/presentation/pages/withdraw_page.dart';
 import 'package:linky_project_0318/features/lounge/presentation/pages/lounge_search_page.dart';
 import 'package:linky_project_0318/features/lounge/presentation/pages/lounge_create_page.dart';
+import 'package:linky_project_0318/features/lounge/presentation/pages/lounge_main_page.dart';
 import 'package:linky_project_0318/features/notification/presentation/pages/notification_settings_page.dart';
 import 'package:linky_project_0318/features/notification/presentation/pages/notification_list_page.dart';
 
@@ -92,6 +93,19 @@ final GoRouter appRouter = GoRouter(
       name: 'loungeCreate',
       builder: (BuildContext context, GoRouterState state) =>
           const LoungeCreatePage(),
+    ),
+    GoRoute(
+      path: '/lounge/:id',
+      name: 'loungeMain',
+      builder: (BuildContext context, GoRouterState state) {
+        final id = int.tryParse(state.pathParameters['id'] ?? '') ?? 0;
+        final title = (state.extra as String?) ?? 'ラウンジ';
+        return LoungeMainPage(
+          loungeId: id,
+          loungeTitle: title,
+          showBottomNav: true,
+        );
+      },
     ),
     GoRoute(
       path: '/terms',

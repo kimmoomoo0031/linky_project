@@ -11,11 +11,13 @@ class HomeLatestViewedPager extends StatefulWidget {
     required this.items,
     required this.onFetchMore,
     required this.hasNext,
+    required this.onTapItem,
   });
 
   final List<LoungePreview> items;
   final VoidCallback onFetchMore;
   final bool hasNext;
+  final ValueChanged<LoungePreview> onTapItem;
 
   @override
   State<HomeLatestViewedPager> createState() => _HomeLatestViewedPagerState();
@@ -123,7 +125,7 @@ class _HomeLatestViewedPagerState extends State<HomeLatestViewedPager> {
                             fallbackThumbnail: SvgPicture.asset(
                               AppAssets.linkyLogoSvg,
                             ),
-                            onTap: () {},
+                            onTap: () => widget.onTapItem(item),
                           );
                         },
                       ),

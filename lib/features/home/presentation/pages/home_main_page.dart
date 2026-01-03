@@ -89,6 +89,9 @@ class _HomeMainPageState extends ConsumerState<HomeMainPage> {
                       .read(homeControllerProvider.notifier)
                       .fetchMoreLatest(),
                   hasNext: data.latestHasNext,
+                  onTapItem: (lounge) {
+                    context.push('/lounge/${lounge.id}', extra: lounge.title);
+                  },
                 ),
                 const SizedBox(height: 16),
                 const HomeSectionTitle('ベスト投稿'),
