@@ -143,9 +143,9 @@ class LoungeCard extends StatelessWidget {
 
     return Material(
       color: Colors.transparent,
-      child: InkWell(
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
         onTap: onTap,
-        borderRadius: radius,
         child: LayoutBuilder(
           builder: (context, constraints) {
             // Grid などから渡される「タイルの実サイズ」が端数になると、
