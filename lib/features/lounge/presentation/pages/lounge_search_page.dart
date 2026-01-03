@@ -9,6 +9,7 @@ import 'package:linky_project_0318/core/error/app_error.dart';
 import 'package:linky_project_0318/core/error/app_error_context.dart';
 import 'package:linky_project_0318/core/enums/fetch_more_result.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
+import 'package:linky_project_0318/core/utils/infinite_scroll_helper.dart';
 import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
 import 'package:linky_project_0318/core/widgets/linky_divider.dart';
 import 'package:linky_project_0318/core/widgets/linky_search_bar.dart';
@@ -70,15 +71,20 @@ class _LoungeSearchPageState extends ConsumerState<LoungeSearchPage> {
   void _onScroll() async {
     if (!_scrollController.hasClients) return;
     final pos = _scrollController.position;
-    if (pos.maxScrollExtent <= 0) return;
+    if (!InfiniteScrollHelper.hasScrollableExtent(pos)) return;
 
-    // - リセット条件: そこから 100px 以上離れたら（= maxScrollExtent - 300 より上に戻ったら）
-    if (_noMoreSnackShown && pos.pixels < pos.maxScrollExtent - 300) {
+    // UX: 「最後のページです」スナックバーは、底付近から少し離れたら再度表示できるようにリセットする。
+    if (InfiniteScrollHelper.shouldResetNoMoreSnack(
+      pos: pos,
+      snackShown: _noMoreSnackShown,
+      showThresholdPx: 200,
+      resetExtraPx: 100, // 100px 離れたらリセット
+    )) {
       _noMoreSnackShown = false;
     }
 
     // 末尾付近で追加取得
-    if (pos.pixels >= pos.maxScrollExtent - 200) {
+    if (InfiniteScrollHelper.isNearBottom(pos, thresholdPx: 200)) {
       final result =
           await ref.read(loungeSearchControllerProvider.notifier).fetchMore();
       if (result == FetchMoreResult.noMore && mounted && !_noMoreSnackShown) {
