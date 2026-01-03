@@ -3,12 +3,17 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:linky_project_0318/core/debug/app_log.dart';
+import 'package:linky_project_0318/core/debug/trace_id.dart';
+import 'package:linky_project_0318/core/error/app_error.dart';
+import 'package:linky_project_0318/core/error/app_error_context.dart';
 import 'package:linky_project_0318/core/enums/fetch_more_result.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
 import 'package:linky_project_0318/core/widgets/linky_divider.dart';
 import 'package:linky_project_0318/core/widgets/linky_search_bar.dart';
-import 'package:linky_project_0318/features/lounge/presentation/controllers/lounge_search_controller.dart';
+import 'package:linky_project_0318/core/widgets/linky_snack_bar.dart';
+import 'package:linky_project_0318/features/lounge/presentation/providers/lounge_search_providers.dart';
 
 /// ラウンジ検索画面。
 ///
@@ -67,15 +72,18 @@ class _LoungeSearchPageState extends ConsumerState<LoungeSearchPage> {
     final pos = _scrollController.position;
     if (pos.maxScrollExtent <= 0) return;
 
+    // - リセット条件: そこから 100px 以上離れたら（= maxScrollExtent - 300 より上に戻ったら）
+    if (_noMoreSnackShown && pos.pixels < pos.maxScrollExtent - 300) {
+      _noMoreSnackShown = false;
+    }
+
     // 末尾付近で追加取得
     if (pos.pixels >= pos.maxScrollExtent - 200) {
       final result =
           await ref.read(loungeSearchControllerProvider.notifier).fetchMore();
       if (result == FetchMoreResult.noMore && mounted && !_noMoreSnackShown) {
         _noMoreSnackShown = true;
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('最後のページです。')),
-        );
+        showLinkySnackBar(context, message: '最後のページです。');
       }
     }
   }
@@ -113,12 +121,26 @@ class _LoungeSearchPageState extends ConsumerState<LoungeSearchPage> {
               Expanded(
                 child: async.when(
                   loading: () => const Center(child: CircularProgressIndicator()),
-                  error: (e, st) => Center(
-                    child: Text(
-                      'error: $e',
-                      style: AppTextStyles.body14.copyWith(color: cs.error),
-                    ),
-                  ),
+                  error: (e, st) {
+                    final traceId = TraceId.newId();
+                    AppLog.err(
+                      feature: 'LOUNGE',
+                      action: 'SEARCH',
+                      traceId: traceId,
+                      ms: 0,
+                      error: e,
+                      stackTrace: st,
+                    );
+                    final msg = AppError.from(e).userMessage(
+                      contextLabel: AppErrorContext.loungeSearch,
+                    );
+                    return Center(
+                      child: Text(
+                        msg,
+                        style: AppTextStyles.body14.copyWith(color: cs.error),
+                      ),
+                    );
+                  },
                   data: (data) {
                     if (data.totalCount == 0) {
                       return Center(

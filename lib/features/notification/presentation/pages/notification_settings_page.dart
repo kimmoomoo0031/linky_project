@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:linky_project_0318/core/debug/app_log.dart';
+import 'package:linky_project_0318/core/debug/trace_id.dart';
+import 'package:linky_project_0318/core/error/app_error.dart';
+import 'package:linky_project_0318/core/error/app_error_context.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
 import 'package:linky_project_0318/core/widgets/linky_divider.dart';
@@ -19,12 +23,26 @@ class NotificationSettingsPage extends ConsumerWidget {
       appBar: const LinkyAppBar(title: '通知設定', showBackButton: true),
       body: asyncSettings.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, st) => Center(
-          child: Text(
-            'error: $e',
-            style: AppTextStyles.body14.copyWith(color: cs.error),
-          ),
-        ),
+        error: (e, st) {
+          final traceId = TraceId.newId();
+          AppLog.err(
+            feature: 'NOTIFICATION',
+            action: 'SETTINGS',
+            traceId: traceId,
+            ms: 0,
+            error: e,
+            stackTrace: st,
+          );
+          final msg = AppError.from(e).userMessage(
+            contextLabel: AppErrorContext.notificationSettings,
+          );
+          return Center(
+            child: Text(
+              msg,
+              style: AppTextStyles.body14.copyWith(color: cs.error),
+            ),
+          );
+        },
         data: (settings) {
           return ListView(
             children: [
