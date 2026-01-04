@@ -40,14 +40,14 @@ class LinkyBottomNavBar extends StatelessWidget {
           label: 'ラウンジ',
         ),
         NavigationDestination(
-          icon: Icon(Icons.search_outlined),
-          selectedIcon: Icon(Icons.search),
-          label: '検索',
-        ),
-        NavigationDestination(
           icon: Icon(Icons.star_outline),
           selectedIcon: Icon(Icons.star),
           label: 'ベスト',
+        ),
+        NavigationDestination(
+          icon: Icon(Icons.search_outlined),
+          selectedIcon: Icon(Icons.search),
+          label: '検索',
         ),
         NavigationDestination(
           icon: Icon(Icons.edit_outlined),
