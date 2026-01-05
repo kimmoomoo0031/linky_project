@@ -5,7 +5,6 @@ import 'package:linky_project_0318/core/enums/fetch_more_result.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/utils/infinite_scroll_helper.dart';
 import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
-import 'package:linky_project_0318/core/widgets/linky_bottom_nav_bar.dart';
 import 'package:linky_project_0318/core/widgets/paged_list.dart';
 import 'package:linky_project_0318/core/widgets/linky_snack_bar.dart';
 import 'package:linky_project_0318/features/lounge/presentation/controllers/lounge_main_controller.dart';
@@ -15,18 +14,16 @@ import 'package:linky_project_0318/features/post/presentation/widgets/post_list_
 ///
 /// - AppBar にラウンジ名を表示
 /// - 投稿一覧は最新順
-/// - ボトムナビは共通ウィジェットを使用（遷移はまだ未実装でOK）
+/// - ボトムナビは Shell 側で制御する
 class LoungeMainPage extends ConsumerStatefulWidget {
   const LoungeMainPage({
     super.key,
     required this.loungeId,
     required this.loungeTitle,
-    this.showBottomNav = true,
   });
 
   final int loungeId;
   final String loungeTitle;
-  final bool showBottomNav;
 
   @override
   ConsumerState<LoungeMainPage> createState() => _LoungeMainPageState();
@@ -118,12 +115,6 @@ class _LoungeMainPageState extends ConsumerState<LoungeMainPage> {
       appBar: LinkyAppBar(
         title: widget.loungeTitle,
         showBackButton: true,
-      ),
-      bottomNavigationBar: LinkyBottomNavBar(
-        show: widget.showBottomNav,
-        currentIndex: 1,
-        // NOTE: ルーティングはまだ未実装のため no-op
-        onTap: null,
       ),
       body: SafeArea(
         child: asyncData.when(

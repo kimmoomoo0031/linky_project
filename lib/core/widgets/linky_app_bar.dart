@@ -58,16 +58,18 @@ class LinkyAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final canPop = Navigator.of(context).canPop();
+    final canPop = context.canPop();
     final cs = Theme.of(context).colorScheme;
     final isLight = Theme.of(context).brightness == Brightness.light;
 
     return AppBar(
       automaticallyImplyLeading: false,
       centerTitle: true,
-      leading: showBackButton && canPop
+      leading: showBackButton && (canPop || onBackPressed != null)
           ? IconButton(
-              onPressed: onBackPressed ?? () => context.pop(),
+              onPressed: onBackPressed ?? () {
+                if (context.canPop()) context.pop();
+              },
               icon: SvgPicture.asset(
                 AppAssets.backLogoSvg,
                 width: 20,
