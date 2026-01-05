@@ -9,6 +9,7 @@ class AppErrorContext {
   static const home = 'ホーム';
   static const myPosts = '投稿';
   static const loungeSearch = '検索';
+  static const loungeMain = 'ラウンジ';
 }
 
 

@@ -36,7 +36,6 @@ class LinkyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool showClearNotificationButton;
   final VoidCallback? onClearNotificationPressed;
 
-
   List<Widget>? _notificationBuildActions() {
     final list = <Widget>[
       ...?actions,
@@ -59,17 +58,18 @@ class LinkyAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    final canPop = Navigator.of(context).canPop();
+    final canPop = context.canPop();
     final cs = Theme.of(context).colorScheme;
     final isLight = Theme.of(context).brightness == Brightness.light;
 
     return AppBar(
       automaticallyImplyLeading: false,
       centerTitle: true,
-      leading: showBackButton && canPop
+      leading: showBackButton && (canPop || onBackPressed != null)
           ? IconButton(
-              onPressed: onBackPressed ?? () =>  context.pop(),
+              onPressed: onBackPressed ?? () {
+                if (context.canPop()) context.pop();
+              },
               icon: SvgPicture.asset(
                 AppAssets.backLogoSvg,
                 width: 20,
@@ -83,14 +83,13 @@ class LinkyAppBar extends StatelessWidget implements PreferredSizeWidget {
         style: AppTextStyles.body16Bold.copyWith(
           color: isLight ? AppColors.primaryGray : cs.onSurface,
         ),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
       ),
       actions: _notificationBuildActions(),
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(1),
-        child: Container(
-          height: 1,
-          color: cs.outlineVariant,
-        ),
+        child: Container(height: 1, color: cs.outlineVariant),
       ),
     );
   }

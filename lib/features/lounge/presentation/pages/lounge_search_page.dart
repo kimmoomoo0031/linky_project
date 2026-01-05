@@ -9,11 +9,14 @@ import 'package:linky_project_0318/core/error/app_error.dart';
 import 'package:linky_project_0318/core/error/app_error_context.dart';
 import 'package:linky_project_0318/core/enums/fetch_more_result.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
+import 'package:linky_project_0318/core/utils/infinite_scroll_helper.dart';
 import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
 import 'package:linky_project_0318/core/widgets/linky_divider.dart';
 import 'package:linky_project_0318/core/widgets/linky_search_bar.dart';
 import 'package:linky_project_0318/core/widgets/linky_snack_bar.dart';
+import 'package:linky_project_0318/core/widgets/paged_list.dart';
 import 'package:linky_project_0318/features/lounge/presentation/providers/lounge_search_providers.dart';
+import 'package:linky_project_0318/features/lounge/presentation/controllers/lounge_search_controller.dart';
 
 /// ラウンジ検索画面。
 ///
@@ -70,15 +73,20 @@ class _LoungeSearchPageState extends ConsumerState<LoungeSearchPage> {
   void _onScroll() async {
     if (!_scrollController.hasClients) return;
     final pos = _scrollController.position;
-    if (pos.maxScrollExtent <= 0) return;
+    if (!InfiniteScrollHelper.hasScrollableExtent(pos)) return;
 
-    // - リセット条件: そこから 100px 以上離れたら（= maxScrollExtent - 300 より上に戻ったら）
-    if (_noMoreSnackShown && pos.pixels < pos.maxScrollExtent - 300) {
+    // UX: 「最後のページです」スナックバーは、底付近から少し離れたら再度表示できるようにリセットする。
+    if (InfiniteScrollHelper.shouldResetNoMoreSnack(
+      pos: pos,
+      snackShown: _noMoreSnackShown,
+      showThresholdPx: 200,
+      resetExtraPx: 100, // 100px 離れたらリセット
+    )) {
       _noMoreSnackShown = false;
     }
 
     // 末尾付近で追加取得
-    if (pos.pixels >= pos.maxScrollExtent - 200) {
+    if (InfiniteScrollHelper.isNearBottom(pos, thresholdPx: 200)) {
       final result =
           await ref.read(loungeSearchControllerProvider.notifier).fetchMore();
       if (result == FetchMoreResult.noMore && mounted && !_noMoreSnackShown) {
@@ -86,6 +94,56 @@ class _LoungeSearchPageState extends ConsumerState<LoungeSearchPage> {
         showLinkySnackBar(context, message: '最後のページです。');
       }
     }
+  }
+
+  Widget _buildList(BuildContext context, LoungeSearchViewData data) {
+    final cs = Theme.of(context).colorScheme;
+    final showBottomLoader = data.isFetchingMore;
+    final itemCount = data.items.length + (showBottomLoader ? 1 : 0);
+
+    return ListView.separated(
+      controller: _scrollController,
+      itemCount: itemCount,
+      separatorBuilder: (_, __) => const LinkyDivider(height: 1, thickness: 1),
+      itemBuilder: (context, i) {
+        if (showBottomLoader && i == itemCount - 1) {
+          return const LinkyListBottomLoader();
+        }
+
+        final item = data.items[i];
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 14),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  item.name,
+                  style: AppTextStyles.body12.copyWith(
+                    color: cs.onSurface,
+                  ),
+                ),
+              ),
+              Text(
+                '全投稿数：${item.totalPostCount}',
+                style: AppTextStyles.body12.copyWith(
+                  color: cs.onSurfaceVariant,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildDataBody(BuildContext context, LoungeSearchViewData data) {
+    if (data.totalCount == 0) {
+      return const LinkyListEmptyState(
+        message: '検索結果がありません。',
+        fontSize: 16,
+      );
+    }
+    return _buildList(context, data);
   }
 
   @override
@@ -142,59 +200,7 @@ class _LoungeSearchPageState extends ConsumerState<LoungeSearchPage> {
                     );
                   },
                   data: (data) {
-                    if (data.totalCount == 0) {
-                      return Center(
-                        child: Text(
-                          '検索結果がありません。',
-                          style: AppTextStyles.body12.copyWith(
-                            color: cs.onSurfaceVariant,
-                            fontSize: 16
-                          ),
-                        ),
-                      );
-                    }
-
-                    final showBottomLoader = data.isFetchingMore;
-                    final itemCount =
-                        data.items.length + (showBottomLoader ? 1 : 0);
-
-                    return ListView.separated(
-                      controller: _scrollController,
-                      itemCount: itemCount,
-                      separatorBuilder: (_, __) =>
-                          const LinkyDivider(height: 1, thickness: 1),
-                      itemBuilder: (context, i) {
-                        if (showBottomLoader && i == itemCount - 1) {
-                          return const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 16),
-                            child: Center(child: CircularProgressIndicator()),
-                          );
-                        }
-
-                        final item = data.items[i];
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 14),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  item.name,
-                                  style: AppTextStyles.body12.copyWith(
-                                    color: cs.onSurface,
-                                  ),
-                                ),
-                              ),
-                              Text(
-                                '全投稿数：${item.totalPostCount}',
-                                style: AppTextStyles.body12.copyWith(
-                                  color: cs.onSurfaceVariant,
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    );
+                    return _buildDataBody(context, data);
                   },
                 ),
               ),
