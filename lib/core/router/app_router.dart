@@ -70,7 +70,17 @@ final GoRouter appRouter = GoRouter(
         GoRoute(
           path: '/tabs/lounge',
           name: 'loungeTab',
-          builder: (context, state) => const LoungeInfoPage(),
+          redirect: (context, state) {
+            final idStr = state.uri.queryParameters['loungeId'];
+            final loungeId = int.tryParse(idStr ?? '');
+            if (loungeId == null) return '/home';
+            return null;
+          },
+          builder: (context, state) {
+            final idStr = state.uri.queryParameters['loungeId'];
+            final loungeId = int.parse(idStr!);
+            return LoungeInfoPage(loungeId: loungeId);
+          },
         ),
         GoRoute(
           path: '/tabs/best',

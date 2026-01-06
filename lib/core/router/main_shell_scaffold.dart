@@ -24,6 +24,17 @@ class MainShellScaffold extends StatelessWidget {
   static const int _idxSearch = 3;
   static const int _idxCreate = 4;
 
+  int? _tryParseLoungeIdFromLocation() {
+    // location は query を含む可能性があるので path を抜き出す
+    final path = Uri.tryParse(location)?.path ?? location;
+    if (!path.startsWith('/lounge/')) return null;
+
+    final segs = path.split('/').where((e) => e.isNotEmpty).toList();
+    // /lounge/:id
+    if (segs.length < 2) return null;
+    return int.tryParse(segs[1]);
+  }
+
   ///自分が選択したアイコンを表示するためのメソッド
   int _currentIndexFromLocation() {
     // ラウンジ詳細中は「ホーム選択中」に見せる（要件）
@@ -41,7 +52,11 @@ class MainShellScaffold extends StatelessWidget {
       case _idxLounge:
         // タブは go() で切替（履歴を積まない）
         if (!location.startsWith('/tabs/lounge')) {
-          context.go('/tabs/lounge');
+          final loungeId = _tryParseLoungeIdFromLocation();
+          // 想定: このタブはラウンジ詳細画面（/lounge/:id）からのみ表示される。
+          // loungeId が取れない場合は何もしない（不正な遷移を防ぐ）。
+          if (loungeId == null) return;
+          context.go('/tabs/lounge?loungeId=$loungeId');
         }
         return;
       case _idxBest:
