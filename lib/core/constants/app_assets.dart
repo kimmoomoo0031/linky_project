@@ -105,6 +105,10 @@ class AppAssets {
   /// パスワードリセット用の画像（パスワードリセット関連画面）。
   static const passwordResetLogoPng = '$_common/password_reset_logo.png';
 
+  // ---- ラウンジ (svg) ----
+  /// ラウンジ画像未登録時のデフォルト画像（SVG）。
+  static const loungeDefaultImgSvg = '$_common/lounge_default_img.svg';
+
   // ---- html ----
   static const termsOfServiceJaHtml = '$_html/terms_of_service_ja.html';
 }
