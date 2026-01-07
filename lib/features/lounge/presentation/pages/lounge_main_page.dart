@@ -8,6 +8,7 @@ import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
 import 'package:linky_project_0318/core/widgets/paged_list.dart';
 import 'package:linky_project_0318/core/widgets/linky_snack_bar.dart';
 import 'package:linky_project_0318/features/lounge/presentation/controllers/lounge_main_controller.dart';
+import 'package:linky_project_0318/features/lounge/presentation/providers/lounge_main_providers.dart';
 import 'package:linky_project_0318/features/post/presentation/widgets/post_list_item.dart';
 
 /// ラウンジメイン画面（モック）。

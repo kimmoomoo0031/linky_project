@@ -8,6 +8,7 @@ import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
 import 'package:linky_project_0318/core/utils/linky_formatters.dart';
 import 'package:linky_project_0318/features/lounge/presentation/controllers/lounge_info_controller.dart';
+import 'package:linky_project_0318/features/lounge/presentation/providers/lounge_info_providers.dart';
 import 'package:linky_project_0318/core/theme/app_colors.dart';
 
 /// ラウンジ情報ページ（未実装の殻）。

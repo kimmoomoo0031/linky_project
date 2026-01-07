@@ -46,8 +46,3 @@ class LoungeInfoController extends FamilyAsyncNotifier<LoungeInfoViewData, int> 
     );
   }
 }
-
-final loungeInfoControllerProvider = AsyncNotifierProviderFamily<
-    LoungeInfoController, LoungeInfoViewData, int>(LoungeInfoController.new);
-
-

@@ -15,7 +15,7 @@ import 'package:linky_project_0318/core/widgets/linky_info_box.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/auth_action_button.dart';
 import 'package:linky_project_0318/core/enums/auth_action_button_style.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/auth_labeled_text_field.dart';
-import 'package:linky_project_0318/features/lounge/presentation/controllers/lounge_create_controller.dart';
+import 'package:linky_project_0318/features/lounge/presentation/providers/lounge_create_providers.dart';
 import 'package:linky_project_0318/features/lounge/presentation/lounge_dialog_event_providers.dart';
 import 'package:linky_project_0318/features/lounge/presentation/states/lounge_create_state.dart';
 

@@ -116,8 +116,3 @@ class LoungeMainController extends FamilyAsyncNotifier<LoungeMainViewData, int> 
   }
 }
 
-/// ラウンジメイン（投稿一覧）Provider。
-final loungeMainControllerProvider = AsyncNotifierProviderFamily<
-    LoungeMainController, LoungeMainViewData, int>(LoungeMainController.new);
-
-
