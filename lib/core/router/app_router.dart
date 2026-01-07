@@ -62,41 +62,31 @@ final GoRouter appRouter = GoRouter(
     ShellRoute(
       builder: (context, state, child) {
         return MainShellScaffold(
-          location: state.uri.path,
+          // query（例: ?tab=best）も含めて渡し、タブ状態を正しく判定できるようにする
+          location: state.uri.toString(),
           child: child,
         );
       },
       routes: [
-        GoRoute(
-          path: '/tabs/lounge',
-          name: 'loungeTab',
-          redirect: (context, state) {
-            final idStr = state.uri.queryParameters['loungeId'];
-            final loungeId = int.tryParse(idStr ?? '');
-            if (loungeId == null) return '/home';
-            return null;
-          },
-          builder: (context, state) {
-            final idStr = state.uri.queryParameters['loungeId'];
-            final loungeId = int.parse(idStr!);
-            return LoungeInfoPage(loungeId: loungeId);
-          },
-        ),
-        GoRoute(
-          path: '/tabs/best',
-          name: 'bestTab',
-          builder: (context, state) => const LoungeBestPage(),
-        ),
         GoRoute(
           path: '/lounge/:id',
           name: 'loungeMain',
           builder: (BuildContext context, GoRouterState state) {
             final id = int.tryParse(state.pathParameters['id'] ?? '') ?? 0;
             final title = (state.extra as String?) ?? 'ラウンジ';
-            return LoungeMainPage(
-              loungeId: id,
-              loungeTitle: title,
-            );
+            final tab = state.uri.queryParameters['tab'] ?? 'home';
+            switch (tab) {
+              case 'info':
+                return LoungeInfoPage(loungeId: id);
+              case 'best':
+                return LoungeBestPage(loungeId: id);
+              case 'home':
+              default:
+                return LoungeMainPage(
+                  loungeId: id,
+                  loungeTitle: title,
+                );
+            }
           },
         ),
       ],

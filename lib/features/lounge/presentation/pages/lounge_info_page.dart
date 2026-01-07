@@ -30,8 +30,7 @@ class LoungeInfoPage extends ConsumerWidget {
         title: 'ラウンジ情報',
         showBackButton: true,
         onBackPressed: () {
-          ///TODO routeがマジックナンバーとなってるので対応
-          context.go('/lounge/$id', extra: loungeTitle);
+          context.go('/lounge/$id?tab=home', extra: loungeTitle);
         },
       ),
       body: SafeArea(
