@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../theme/app_colors.dart';
+
 /// アプリ共通のボトムナビゲーション。
 ///
 /// - 今は遷移未実装のため、[onTap] が null の場合は no-op にする
@@ -26,39 +28,51 @@ class LinkyBottomNavBar extends StatelessWidget {
     if (!show) return const SizedBox.shrink();
 
     final selected = currentIndex.clamp(0, 4);
-    return NavigationBar(
-      selectedIndex: selected,
-      onDestinationSelected: (i) {
-        if (i == selected) return;
-        (onTap ?? (_) {})(i);
-      },
-      destinations: const [
-        NavigationDestination(
-          icon: Icon(Icons.home_outlined),
-          selectedIcon: Icon(Icons.home),
-          label: 'ホーム',
-        ),
-        NavigationDestination(
-          icon: Icon(Icons.meeting_room_outlined),
-          selectedIcon: Icon(Icons.meeting_room),
-          label: 'ラウンジ',
-        ),
-        NavigationDestination(
-          icon: Icon(Icons.star_outline),
-          selectedIcon: Icon(Icons.star),
-          label: 'ベスト',
-        ),
-        NavigationDestination(
-          icon: Icon(Icons.search_outlined),
-          selectedIcon: Icon(Icons.search),
-          label: '検索',
-        ),
-        NavigationDestination(
-          icon: Icon(Icons.edit_outlined),
-          selectedIcon: Icon(Icons.edit),
-          label: '投稿',
-        ),
-      ],
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primaryGray,
+            blurRadius: 8,
+            offset: const Offset(0, -1),
+          )
+        ]
+      ),
+      child: NavigationBar(
+        selectedIndex: selected,
+        onDestinationSelected: (i) {
+          if (i == selected) return;
+          (onTap ?? (_) {})(i);
+        },
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(Icons.home_outlined),
+            selectedIcon: Icon(Icons.home),
+            label: 'ホーム',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.meeting_room_outlined),
+            selectedIcon: Icon(Icons.meeting_room),
+            label: 'ラウンジ',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.star_outline),
+            selectedIcon: Icon(Icons.star),
+            label: 'ベスト',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.search_outlined),
+            selectedIcon: Icon(Icons.search),
+            label: '検索',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.edit_outlined),
+            selectedIcon: Icon(Icons.edit),
+            label: '投稿',
+          ),
+        ],
+      ),
     );
   }
 }
