@@ -52,7 +52,7 @@ class _HomeLatestViewedPagerState extends State<HomeLatestViewedPager> {
           LayoutBuilder(
             builder: (context, constraints) {
               const crossAxisCount = 4;
-              const mainAxisSpacing = 12.0;
+              const mainAxisSpacing = 20.0;
               const crossAxisSpacing = 12.0;
               // PageViewのページ境界でカード枠線が“ピタッと接触”して見えるのを防ぐため、
               // 各ページの中身に左右インセットを入れて必ず“隙間”を作る。
