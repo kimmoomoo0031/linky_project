@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:go_router/go_router.dart';
 
 import 'package:linky_project_0318/core/constants/app_assets.dart';
+import 'package:linky_project_0318/core/router/router_extensions.dart';
 
 class HomeMainAppBar extends StatelessWidget implements PreferredSizeWidget {
   const HomeMainAppBar({super.key, required this.onPressedMenu});
@@ -24,7 +24,7 @@ class HomeMainAppBar extends StatelessWidget implements PreferredSizeWidget {
         centerTitle: true,
         leading: IconButton(
           onPressed: () {
-            context.push('/notifications');
+            context.pushNotifications();
           },
           icon: SvgPicture.asset(
             AppAssets.bellLogoSvg,

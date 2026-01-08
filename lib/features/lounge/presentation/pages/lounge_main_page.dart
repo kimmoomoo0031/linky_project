@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:go_router/go_router.dart';
 import 'package:linky_project_0318/core/enums/fetch_more_result.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/utils/infinite_scroll_helper.dart';
+import 'package:linky_project_0318/core/router/router_extensions.dart';
 import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
 import 'package:linky_project_0318/core/widgets/paged_list.dart';
 import 'package:linky_project_0318/core/widgets/linky_snack_bar.dart';
@@ -116,6 +118,13 @@ class _LoungeMainPageState extends ConsumerState<LoungeMainPage> {
       appBar: LinkyAppBar(
         title: widget.loungeTitle,
         showBackButton: true,
+        onBackPressed: () {
+          if (context.canPop()) {
+            context.pop();
+            return;
+          }
+          context.goHome();
+        },
       ),
       body: SafeArea(
         child: asyncData.when(

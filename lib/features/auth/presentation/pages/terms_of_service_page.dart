@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import 'package:linky_project_0318/core/constants/app_assets.dart';
+import 'package:linky_project_0318/core/router/router_extensions.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/auth_action_button.dart';
@@ -59,7 +60,7 @@ class _TermsOfServicePageState extends State<TermsOfServicePage> {
         child: _TermsBody(
           webViewController: _webViewController,
           canAgree: canAgree,
-          onPressedAgree: canAgree ? () => context.push('/signUp') : null,
+          onPressedAgree: canAgree ? context.pushSignUp : null,
           onPressedDisagree: () => context.pop(false),
         ),
       ),

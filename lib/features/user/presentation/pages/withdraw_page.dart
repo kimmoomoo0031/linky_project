@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:go_router/go_router.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:linky_project_0318/core/constants/app_assets.dart';
 import 'package:linky_project_0318/core/constants/withdraw_constants.dart';
 import 'package:linky_project_0318/core/dialog_type_exports.dart';
 import 'package:linky_project_0318/core/enums/withdraw_reason.dart';
+import 'package:linky_project_0318/core/router/router_extensions.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/labeled_field.dart';
 import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
@@ -183,7 +183,7 @@ class _WithdrawActionSection extends ConsumerWidget {
                 svgAssetPath: AppAssets.linkyLogoSvg,
               );
               if (!context.mounted) return;
-              context.go('/withdrawCompleted');
+              context.goWithdrawCompleted();
             }
           : null,
       backgroundColor: cs.error,

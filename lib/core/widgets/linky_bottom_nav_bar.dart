@@ -25,9 +25,13 @@ class LinkyBottomNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     if (!show) return const SizedBox.shrink();
 
+    final selected = currentIndex.clamp(0, 4);
     return NavigationBar(
-      selectedIndex: currentIndex.clamp(0, 4),
-      onDestinationSelected: onTap ?? (_) {},
+      selectedIndex: selected,
+      onDestinationSelected: (i) {
+        if (i == selected) return;
+        (onTap ?? (_) {})(i);
+      },
       destinations: const [
         NavigationDestination(
           icon: Icon(Icons.home_outlined),

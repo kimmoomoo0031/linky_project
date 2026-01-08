@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:linky_project_0318/features/auth/presentation/constants/auth_dialog_messages.dart';
 
 import 'package:linky_project_0318/core/dialog_type_exports.dart';
+import 'package:linky_project_0318/core/router/router_extensions.dart';
 import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
 import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
 import 'package:linky_project_0318/core/widgets/linky_info_box.dart';
@@ -52,7 +52,7 @@ class PasswordResetNewPasswordPage extends ConsumerWidget {
         // 成功時はダイアログを出さず、完了画面へ遷移する。
         ref.read(passwordResetNewPasswordDialogEventProvider.notifier).state = null;
         if (context.mounted) {
-          context.go('/passwordResetSuccess');
+          context.goPasswordResetSuccess();
         }
         return;
       }

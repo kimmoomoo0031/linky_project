@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:linky_project_0318/core/enums/lounge_tab.dart';
+import 'package:linky_project_0318/core/router/router_extensions.dart';
 import 'package:linky_project_0318/core/widgets/linky_bottom_nav_bar.dart';
 
 /// ボトムナビゲーションを表示する「メインShell」。
@@ -41,9 +43,9 @@ class MainShellScaffold extends StatelessWidget {
     final path = _uri?.path ?? location;
 
     if (path.startsWith('/lounge/')) {
-      final tab = _uri?.queryParameters['tab'] ?? 'home';
-      if (tab == 'info') return _idxLounge;
-      if (tab == 'best') return _idxBest;
+      final tab = LoungeTabX.fromQuery(_uri?.queryParameters['tab']);
+      if (tab == LoungeTab.info) return _idxLounge;
+      if (tab == LoungeTab.best) return _idxBest;
       return _idxHome;
     }
     return _idxHome;
@@ -53,23 +55,28 @@ class MainShellScaffold extends StatelessWidget {
     final loungeId = _tryParseLoungeIdFromLocation();
     switch (index) {
       case _idxHome:
-        context.go('/home');
+        if (loungeId != null) {
+          // ラウンジ内なら「ラウンジHOME」タブへ戻す（ボトムナビ仕様）
+          context.goLounge(loungeId, tab: LoungeTab.home);
+        } else {
+          context.goHome();
+        }
         return;
       case _idxLounge:
         // ラウンジ内のみ有効（要件）
         if (loungeId == null) return;
-        context.go('/lounge/$loungeId?tab=info');
+        context.goLounge(loungeId, tab: LoungeTab.info);
         return;
       case _idxBest:
         // ラウンジ内のみ有効（要件）
         if (loungeId == null) return;
-        context.go('/lounge/$loungeId?tab=best');
+        context.goLounge(loungeId, tab: LoungeTab.best);
         return;
       case _idxSearch:
-        context.push('/loungePostSearch');
+        context.pushLoungePostSearch();
         return;
       case _idxCreate:
-        context.push('/post/create');
+        context.pushPostCreate();
         return;
       default:
         return;

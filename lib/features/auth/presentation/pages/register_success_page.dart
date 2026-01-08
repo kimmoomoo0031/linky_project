@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:go_router/go_router.dart';
 
 import 'package:linky_project_0318/core/constants/app_assets.dart';
 import 'package:linky_project_0318/core/theme/app_colors.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
+import 'package:linky_project_0318/core/router/router_extensions.dart';
 import 'package:linky_project_0318/core/widgets/gradient_text.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/auth_action_button.dart';
 import 'package:linky_project_0318/core/enums/auth_action_button_style.dart';
@@ -19,7 +19,7 @@ class RegisterSuccessPage extends ConsumerWidget {
     return Scaffold(
       body: SafeArea(
         child: _RegisterSuccessScrollContent(
-          onPressedGoToLogin: () => context.go('/login'),
+          onPressedGoToLogin: context.goLogin,
         ),
       ),
     );

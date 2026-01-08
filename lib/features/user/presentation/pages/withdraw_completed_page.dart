@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:go_router/go_router.dart';
 
 import 'package:linky_project_0318/core/constants/app_assets.dart';
 import 'package:linky_project_0318/core/constants/withdraw_constants.dart';
+import 'package:linky_project_0318/core/router/router_extensions.dart';
 
 /// 退会完了後の遷移用画面（ロゴ + インディケータ → ログインへ）。
 ///
@@ -33,7 +33,7 @@ class _WithdrawCompletedPageState extends State<WithdrawCompletedPage> {
       const Duration(milliseconds: WithdrawConstants.completedDelayMs),
       () {
       if (!mounted) return;
-      context.go('/login');
+      context.goLogin();
       },
     );
   }
