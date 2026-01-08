@@ -119,6 +119,9 @@ class _LoungeMainPageState extends ConsumerState<LoungeMainPage> {
         title: widget.loungeTitle,
         showBackButton: true,
         onBackPressed: () {
+          // ラウンジホームの戻る挙動:
+          // - 通常は直前画面（ラウンジリスト等）へ戻す。
+          // - タブ切替(go)後などでスタックが無い場合は /home にフォールバックする。
           if (context.canPop()) {
             context.pop();
             return;

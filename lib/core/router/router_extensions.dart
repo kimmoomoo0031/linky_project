@@ -5,10 +5,19 @@ import 'package:linky_project_0318/core/enums/lounge_tab.dart';
 import 'package:linky_project_0318/core/router/app_route_names.dart';
 import 'package:linky_project_0318/features/auth/presentation/pages/password_reset_new_password_page.dart';
 
+
 /// ルーティング呼び出しを1箇所に集約するための拡張。
 ///
-/// - 画面側は `context.goLounge(...)` のような “意図” ベースの API を使う
-/// - URL 文字列（`/lounge/$id?tab=...`）の直書きを禁止できる
+/// 【チームルール】
+/// - go: タブ切替/状態の置き換え（履歴を積まない）
+/// - push: 詳細/フロー（戻るで元の画面に戻りたい）
+///
+/// 【禁止】
+/// - context.go('/...'), context.push('/...') の URL 直書き
+/// - tab を 'info' など文字列で直書き（enum→query 変換を使う）
+///
+/// 【extra】
+/// - extra は “表示用の補助情報” のみ（無くても URL(path/query) + API で復元できること）
 extension LinkyRouterX on BuildContext {
   void goHome() {
     goNamed(AppRouteNames.home);
