@@ -131,6 +131,7 @@ class _RegisterScrollContent extends StatelessWidget {
           const SizedBox(height: 32),
           _RegisterButton(
             isLoading: state.isLoading,
+            enabled: state.canSubmit,
             onPressed: onPressedSubmit,
           ),
           const SizedBox(height: 20),
@@ -171,10 +172,12 @@ class _HelpIconButton extends StatelessWidget {
 class _RegisterButton extends StatelessWidget {
   const _RegisterButton({
     required this.isLoading,
+    required this.enabled,
     required this.onPressed,
   });
 
   final bool isLoading;
+  final bool enabled;
   final VoidCallback onPressed;
 
   @override
@@ -182,7 +185,7 @@ class _RegisterButton extends StatelessWidget {
     final cs = Theme.of(context).colorScheme;
     return AuthActionButton(
       label: '登録する',
-      onPressed: onPressed,
+      onPressed: enabled ? onPressed : null,
       backgroundColor: cs.primary,
       textColor: cs.onPrimary,
       style: AuthActionButtonStyle.filled,

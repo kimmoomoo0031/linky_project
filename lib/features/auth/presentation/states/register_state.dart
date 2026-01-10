@@ -1,4 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:linky_project_0318/core/utils/form_gate.dart';
+import 'package:linky_project_0318/core/utils/validators.dart';
 
 part 'register_state.freezed.dart';
 
@@ -16,6 +18,24 @@ class RegisterState with _$RegisterState {
     String? passwordError,
     String? passwordConfirmError,
   }) = _RegisterState;
+}
+
+extension RegisterStateX on RegisterState {
+  bool get canSubmit {
+    final emailOk = Validators.validateEmail(email) == null;
+    final nicknameOk = Validators.validateNickname(nickname) == null;
+    final passwordOk = Validators.validatePassword(password) == null;
+    final confirmOk = Validators.validatePasswordConfirmation(
+          password: password,
+          confirmation: passwordConfirm,
+        ) ==
+        null;
+
+    return FormGate.canSubmit(
+      isBusy: isLoading,
+      conditions: [emailOk, nicknameOk, passwordOk, confirmOk],
+    );
+  }
 }
 
 

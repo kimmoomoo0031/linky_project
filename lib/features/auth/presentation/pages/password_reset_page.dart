@@ -98,6 +98,7 @@ class _PasswordResetScrollContent extends StatelessWidget {
           const SizedBox(height: 48),
           _SubmitButtonSection(
             isLoading: state.isLoading,
+            enabled: state.canSubmit,
             onPressed: onPressedSubmit,
           ),
           const SizedBox(height: 24),
@@ -167,10 +168,12 @@ class _EmailInputSection extends StatelessWidget {
 class _SubmitButtonSection extends StatelessWidget {
   const _SubmitButtonSection({
     required this.isLoading,
+    required this.enabled,
     required this.onPressed,
   });
 
   final bool isLoading;
+  final bool enabled;
   final VoidCallback onPressed;
 
   @override
@@ -178,7 +181,7 @@ class _SubmitButtonSection extends StatelessWidget {
     final cs = Theme.of(context).colorScheme;
     return AuthActionButton(
       label: '送信する',
-      onPressed: onPressed,
+      onPressed: enabled ? onPressed : null,
       backgroundColor: cs.primary,
       textColor: cs.onPrimary,
       style: AuthActionButtonStyle.filled,
