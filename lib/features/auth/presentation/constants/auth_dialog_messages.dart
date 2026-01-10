@@ -40,6 +40,12 @@ class AuthDialogMessages {
 
   // ---- 認証コード/再設定フロー ----
   static const String resetEmailSent = 'パスワード再設定用のコードを送信しました。';
+
+  // OTP（認証番号）入力画面：入力値が間違っている場合
+  static const String invalidOtpCodeTitle = '無効な認証番号';
+  static const String invalidOtpCodeMessage =
+      '入力された認証番号が正しくありません。\nもう一度確認してください。';
+
   static const String invalidResetCode = '認証コードが無効です。\nもう一度やり直してください。';
   static const String resetPasswordSuccess = '新しいパスワードを設定しました。';
   static const String passwordResetCompleted = 'パスワード設定が完了しました！';
