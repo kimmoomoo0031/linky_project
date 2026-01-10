@@ -6,6 +6,7 @@ import 'package:linky_project_0318/core/debug/app_log.dart';
 import 'package:linky_project_0318/core/debug/trace_id.dart';
 import 'package:linky_project_0318/core/error/app_error.dart';
 import 'package:linky_project_0318/core/error/app_error_context.dart';
+import 'package:linky_project_0318/core/router/router_extensions.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/linky_search_bar.dart';
 import 'package:linky_project_0318/features/home/home_exports.dart';
@@ -94,7 +95,7 @@ class _HomeMainPageState extends ConsumerState<HomeMainPage> {
                 LinkySearchBar(
                   hintText: 'ラウンジ検索',
                   readOnly: true,
-                  onTap: () => context.push('/loungeSearch'),
+                  onTap: () => context.pushLoungeSearch()
                 ),
                 const SizedBox(height: 16),
                 const HomeSectionTitle('最新閲覧'),
@@ -106,7 +107,10 @@ class _HomeMainPageState extends ConsumerState<HomeMainPage> {
                       .fetchMoreLatest(),
                   hasNext: data.latestHasNext,
                   onTapItem: (lounge) {
-                    context.push('/lounge/${lounge.id}', extra: lounge.title);
+                    context.pushLounge(
+                      lounge.id,
+                      loungeTitle: lounge.title,
+                    );
                   },
                 ),
                 const SizedBox(height: 16),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 import 'package:linky_project_0318/core/widgets/gradient_text.dart';
+import 'package:linky_project_0318/core/router/router_extensions.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/theme/app_colors.dart';
 import 'package:linky_project_0318/core/theme/theme_mode_provider.dart';
@@ -42,7 +42,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
     if (!mounted) return;
 
     //ログイン画面へ遷移。
-    context.go('/login');
+    context.goLogin();
   }
 
   @override

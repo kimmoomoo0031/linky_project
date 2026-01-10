@@ -151,7 +151,7 @@ class LoungeCard extends StatelessWidget {
             // Grid などから渡される「タイルの実サイズ」が端数になると、
             // 子の高さ合計が 0.x px だけズレて RenderFlex overflow が出ることがある。
             // ここでは constraints から各領域の高さを算出し、合計が必ず一致するようにする。
-            const desiredTitleHeight = 32.0; // 2行分の目安
+            const desiredTitleHeight = 36.0; // 2行分の目安
             final h = constraints.maxHeight;
             final w = constraints.maxWidth;
 
@@ -191,13 +191,15 @@ class LoungeCard extends StatelessWidget {
                     padding: const EdgeInsets.only(top: _titleSpacing),
                     child: Align(
                       alignment: Alignment.topCenter,
-                      child: Text(
-                        title,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.center,
-                        style: AppTextStyles.body12
-                            .copyWith(color: cs.onSurfaceVariant),
+                      child: Expanded(
+                        child: Text(
+                          title,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
+                          style: AppTextStyles.body12
+                              .copyWith(color: cs.onSurfaceVariant),
+                        ),
                       ),
                     ),
                   ),

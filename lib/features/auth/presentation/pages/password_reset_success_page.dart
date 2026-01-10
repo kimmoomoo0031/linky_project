@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:go_router/go_router.dart';
 
 import 'package:linky_project_0318/core/constants/app_assets.dart';
 import 'package:linky_project_0318/core/theme/app_colors.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
+import 'package:linky_project_0318/core/router/router_extensions.dart';
 import 'package:linky_project_0318/core/widgets/gradient_text.dart';
 import 'package:linky_project_0318/features/auth/presentation/constants/auth_dialog_messages.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/auth_action_button.dart';
@@ -43,7 +43,7 @@ class PasswordResetSuccessPage extends ConsumerWidget {
                 const SizedBox(height: 24),
                 AuthActionButton(
                   label: 'ログイン画面へ',
-                  onPressed: () => context.go('/login'),
+                  onPressed: context.goLogin,
                   backgroundColor: cs.primary,
                   textColor: cs.onPrimary,
                   style: AuthActionButtonStyle.filled,

@@ -3,11 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:linky_project_0318/core/enums/lounge_tab.dart';
 import 'package:linky_project_0318/core/constants/app_assets.dart';
+import 'package:linky_project_0318/core/router/router_extensions.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
 import 'package:linky_project_0318/core/utils/linky_formatters.dart';
 import 'package:linky_project_0318/features/lounge/presentation/controllers/lounge_info_controller.dart';
+import 'package:linky_project_0318/features/lounge/presentation/providers/lounge_info_providers.dart';
 import 'package:linky_project_0318/core/theme/app_colors.dart';
 
 /// ラウンジ情報ページ（未実装の殻）。
@@ -30,7 +33,7 @@ class LoungeInfoPage extends ConsumerWidget {
         title: 'ラウンジ情報',
         showBackButton: true,
         onBackPressed: () {
-          context.go('/lounge/$id?tab=home', extra: loungeTitle);
+          context.goLounge(id, tab: LoungeTab.home, loungeTitle: loungeTitle);
         },
       ),
       body: SafeArea(

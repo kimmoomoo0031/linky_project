@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:linky_project_0318/core/dialog_type_exports.dart';
 import 'package:linky_project_0318/core/constants/app_assets.dart';
+import 'package:linky_project_0318/core/router/router_extensions.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
 import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
@@ -46,7 +47,7 @@ class RegisterPage extends ConsumerWidget {
     // 登録成功（isSuccess == true）になったタイミングで成功画面へ遷移する。
     ref.listen(registerControllerProvider, (previous, next) async {
       if (previous?.isSuccess != true && next.isSuccess) {
-        context.go('/signUpSuccess');
+        context.goSignUpSuccess();
       }
     });
 

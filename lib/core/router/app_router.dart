@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:linky_project_0318/core/enums/lounge_tab.dart';
+import 'package:linky_project_0318/core/router/app_route_names.dart';
 import 'package:linky_project_0318/core/router/main_shell_scaffold.dart';
 import 'package:linky_project_0318/features/app/presentation/pages/splash_page.dart';
 import 'package:linky_project_0318/features/auth/presentation/pages/login_page.dart';
@@ -38,19 +40,19 @@ final GoRouter appRouter = GoRouter(
   routes: <RouteBase>[
     GoRoute(
       path: '/splash',
-      name: 'splash',
+      name: AppRouteNames.splash,
       builder: (BuildContext context, GoRouterState state) =>
           const SplashPage(),
     ),
     GoRoute(
       path: '/login',
-      name: 'login',
+      name: AppRouteNames.login,
       builder: (BuildContext context, GoRouterState state) =>
           const LoginPage(),
     ),
     GoRoute(
       path: '/home',
-      name: 'home',
+      name: AppRouteNames.home,
       builder: (BuildContext context, GoRouterState state) =>
           const HomeMainPage(),
     ),
@@ -70,18 +72,17 @@ final GoRouter appRouter = GoRouter(
       routes: [
         GoRoute(
           path: '/lounge/:id',
-          name: 'loungeMain',
+          name: AppRouteNames.lounge,
           builder: (BuildContext context, GoRouterState state) {
             final id = int.tryParse(state.pathParameters['id'] ?? '') ?? 0;
             final title = (state.extra as String?) ?? 'ラウンジ';
-            final tab = state.uri.queryParameters['tab'] ?? 'home';
+            final tab = LoungeTabX.fromQuery(state.uri.queryParameters['tab']);
             switch (tab) {
-              case 'info':
+              case LoungeTab.info:
                 return LoungeInfoPage(loungeId: id);
-              case 'best':
+              case LoungeTab.best:
                 return LoungeBestPage(loungeId: id);
-              case 'home':
-              default:
+              case LoungeTab.home:
                 return LoungeMainPage(
                   loungeId: id,
                   loungeTitle: title,
@@ -95,54 +96,54 @@ final GoRouter appRouter = GoRouter(
     // ラウンジ内の投稿検索（ボトムナビ非表示）
     GoRoute(
       path: '/loungePostSearch',
-      name: 'loungePostSearch',
+      name: AppRouteNames.loungePostSearch,
       builder: (context, state) => const LoungePostSearchPage(),
     ),
     GoRoute(
       path: '/myPosts',
-      name: 'myPosts',
+      name: AppRouteNames.myPosts,
       builder: (BuildContext context, GoRouterState state) =>
           const MyPostsPage(),
     ),
     GoRoute(
       path: '/profileEdit',
-      name: 'profileEdit',
+      name: AppRouteNames.profileEdit,
       builder: (BuildContext context, GoRouterState state) =>
           const ProfileEditPage(),
     ),
     GoRoute(
       path: '/withdraw',
-      name: 'withdraw',
+      name: AppRouteNames.withdraw,
       builder: (BuildContext context, GoRouterState state) =>
           const WithdrawPage(),
     ),
     GoRoute(
       path: '/withdrawCompleted',
-      name: 'withdrawCompleted',
+      name: AppRouteNames.withdrawCompleted,
       builder: (BuildContext context, GoRouterState state) =>
           const WithdrawCompletedPage(),
     ),
     GoRoute(
       path: '/notificationSettings',
-      name: 'notificationSettings',
+      name: AppRouteNames.notificationSettings,
       builder: (BuildContext context, GoRouterState state) =>
           const NotificationSettingsPage(),
     ),
     GoRoute(
       path: '/notifications',
-      name: 'notifications',
+      name: AppRouteNames.notifications,
       builder: (BuildContext context, GoRouterState state) =>
           const NotificationListPage(),
     ),
     GoRoute(
       path: '/loungeSearch',
-      name: 'loungeSearch',
+      name: AppRouteNames.loungeSearch,
       builder: (BuildContext context, GoRouterState state) =>
           const LoungeSearchPage(),
     ),
     GoRoute(
       path: '/loungeCreate',
-      name: 'loungeCreate',
+      name: AppRouteNames.loungeCreate,
       builder: (BuildContext context, GoRouterState state) =>
           const LoungeCreatePage(),
     ),
@@ -150,36 +151,36 @@ final GoRouter appRouter = GoRouter(
     // 投稿作成（ボトムナビ非表示）
     GoRoute(
       path: '/post/create',
-      name: 'postCreate',
+      name: AppRouteNames.postCreate,
       builder: (context, state) => const PostCreatePage(),
     ),
     GoRoute(
       path: '/terms',
-      name: 'terms',
+      name: AppRouteNames.terms,
       builder: (BuildContext context, GoRouterState state) =>
       const TermsOfServicePage(),
     ),
     GoRoute(
       path: '/signUp',
-      name: 'signUp',
+      name: AppRouteNames.signUp,
       builder: (BuildContext context, GoRouterState state) =>
       const RegisterPage(),
     ),
     GoRoute(
       path: '/signUpSuccess',
-      name: 'signUpSuccess',
+      name: AppRouteNames.signUpSuccess,
       builder: (BuildContext context, GoRouterState state) =>
       const RegisterSuccessPage(),
     ),
     GoRoute(
       path: '/passwordReset',
-      name: 'passwordReset',
+      name: AppRouteNames.passwordReset,
       builder: (BuildContext context, GoRouterState state) =>
           const PasswordResetPage(),
     ),
     GoRoute(
       path: '/passwordResetCode',
-      name: 'passwordResetCode',
+      name: AppRouteNames.passwordResetCode,
       builder: (BuildContext context, GoRouterState state) =>
           PasswordResetCodePage(
         email: (state.extra as String?) ?? '',
@@ -187,7 +188,7 @@ final GoRouter appRouter = GoRouter(
     ),
     GoRoute(
       path: '/passwordResetNewPassword',
-      name: 'passwordResetNewPassword',
+      name: AppRouteNames.passwordResetNewPassword,
       builder: (BuildContext context, GoRouterState state) {
         final args = state.extra as PasswordResetNewPasswordArgs?;
         return PasswordResetNewPasswordPage(
@@ -198,7 +199,7 @@ final GoRouter appRouter = GoRouter(
     ),
     GoRoute(
       path: '/passwordResetSuccess',
-      name: 'passwordResetSuccess',
+      name: AppRouteNames.passwordResetSuccess,
       builder: (BuildContext context, GoRouterState state) =>
           const PasswordResetSuccessPage(),
     ),

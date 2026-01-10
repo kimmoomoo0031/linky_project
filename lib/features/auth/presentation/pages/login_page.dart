@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:linky_project_0318/core/constants/app_assets.dart';
+import 'package:linky_project_0318/core/router/router_extensions.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/gradient_text.dart';
 import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
@@ -42,7 +43,7 @@ class LoginPage extends ConsumerWidget {
     // ログイン成功（isSuccess == true）になったタイミングでホームへ遷移する。
     ref.listen(loginControllerProvider, (previous, next) {
       if (previous?.isSuccess != true && next.isSuccess) {
-        context.go('/home');
+        context.goHome();
       }
     });
 
@@ -53,11 +54,11 @@ class LoginPage extends ConsumerWidget {
           controller: controller,
           onPressedForgotPassword: () {
             controller.clearValidationErrors();
-            context.push('/passwordReset');
+            context.pushPasswordReset();
           },
           onPressedSignUp: () {
             controller.clearValidationErrors();
-            context.push('/terms');
+            context.pushTerms();
           },
           onPressedLineLogin: () {
             // TODO: LINE ログイン

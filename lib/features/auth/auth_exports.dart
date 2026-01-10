@@ -6,7 +6,6 @@ export 'di/auth_di.dart';
 
 export 'presentation/providers/auth_session_providers.dart';
 export 'presentation/providers/login_providers.dart';
-export 'presentation/providers/password_reset_new_password_providers.dart';
 export 'presentation/providers/password_reset_providers.dart';
 export 'presentation/providers/register_providers.dart';
 

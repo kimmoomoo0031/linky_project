@@ -185,9 +185,3 @@ class LoungeCreateController extends StateNotifier<LoungeCreateState> {
   }
 }
 
-final loungeCreateControllerProvider =
-    StateNotifierProvider.autoDispose<LoungeCreateController, LoungeCreateState>(
-  (ref) => LoungeCreateController(ref),
-);
-
-

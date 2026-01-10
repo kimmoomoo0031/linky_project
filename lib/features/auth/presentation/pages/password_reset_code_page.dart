@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:linky_project_0318/core/router/router_extensions.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
 import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
@@ -59,12 +60,9 @@ class _PasswordResetCodePageState extends ConsumerState<PasswordResetCodePage> {
     // 認証コード検証が成功したら「新しいパスワード設定」画面へ遷移する。
     ref.listen(passwordResetCodeControllerProvider, (previous, next) {
       if (previous?.isSuccess != true && next.isSuccess) {
-        context.push(
-          '/passwordResetNewPassword',
-          extra: PasswordResetNewPasswordArgs(
-            email: widget.email,
-            code: next.combinedCode,
-          ),
+        context.pushPasswordResetNewPassword(
+          email: widget.email,
+          code: next.combinedCode,
         );
       }
     });
