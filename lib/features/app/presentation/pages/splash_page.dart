@@ -53,7 +53,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
           alignment: Alignment.center,
           children: [
             GradientText(
-              'つながる・見つける・楽しむ',
+              '気になる話題から\nつながりがはじまる',
               gradient: AppColors.linky45degGradient,
               style: AppTextStyles.splashTitleTextStyle24,
             ),
