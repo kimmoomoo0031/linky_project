@@ -8,7 +8,7 @@ import 'package:linky_project_0318/core/ui/events/linky_dialog_event.dart';
 import 'package:linky_project_0318/features/auth/domain/usecases/login_usecase.dart';
 import 'package:linky_project_0318/features/auth/domain/usecases/login_result.dart';
 import 'package:linky_project_0318/features/auth/presentation/auth_dialog_event_providers.dart';
-import 'package:linky_project_0318/core/constants/common_dialog_messages.dart';
+import 'package:linky_project_0318/core/constants/dialog_messages.dart';
 import 'package:linky_project_0318/core/dialog_type_exports.dart';
 
 class LoginController extends StateNotifier<LoginState> {

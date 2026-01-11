@@ -18,7 +18,7 @@ import 'package:linky_project_0318/features/home/presentation/widgets/home_best_
 import 'package:linky_project_0318/features/home/presentation/widgets/home_latest_viewed_pager.dart';
 import 'package:linky_project_0318/features/home/presentation/widgets/home_main_app_bar.dart';
 import 'package:linky_project_0318/features/home/presentation/widgets/home_section_title.dart';
-import 'package:linky_project_0318/core/constants/common_dialog_messages.dart';
+import 'package:linky_project_0318/core/constants/dialog_messages.dart';
 import 'package:linky_project_0318/core/enums/linky_dialog_type.dart';
 
 /// ホーム画面（メイン側）。

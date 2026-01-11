@@ -2,15 +2,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:linky_project_0318/core/debug/app_log.dart';
 import 'package:linky_project_0318/core/debug/logged_action.dart';
 import 'package:linky_project_0318/core/utils/validators.dart';
-
 import 'package:linky_project_0318/core/utils/regex.dart';
 import 'package:linky_project_0318/features/auth/presentation/states/password_reset_code_state.dart';
 import 'package:linky_project_0318/core/dialog_type_exports.dart';
 import 'package:linky_project_0318/core/ui/events/linky_dialog_event.dart';
 import 'package:linky_project_0318/features/auth/presentation/auth_dialog_event_providers.dart';
 import 'package:linky_project_0318/features/auth/presentation/constants/auth_dialog_messages.dart';
-
-import '../../../../core/constants/common_dialog_messages.dart';
+import 'package:linky_project_0318/core/constants/dialog_messages.dart';
 
 /// パスワード再設定の「認証コード入力」画面用コントローラ。
 ///

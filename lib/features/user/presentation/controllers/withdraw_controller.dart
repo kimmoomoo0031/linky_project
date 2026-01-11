@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:linky_project_0318/core/constants/common_dialog_messages.dart';
+import 'package:linky_project_0318/core/constants/dialog_messages.dart';
 import 'package:linky_project_0318/core/dialog_type_exports.dart';
 import 'package:linky_project_0318/core/enums/withdraw_reason.dart';
 import 'package:linky_project_0318/core/ui/events/linky_dialog_event.dart';
