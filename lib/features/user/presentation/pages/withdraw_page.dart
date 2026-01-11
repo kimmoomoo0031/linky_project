@@ -164,7 +164,6 @@ class _WithdrawActionSection extends ConsumerWidget {
                 title: '退会確認',
                 message: '取り消しできません。\n本当に退会しますか？',
                 confirmText: '退会',
-                cancelText: 'キャンセル',
                 type: LinkyDialogType.confirm,
                 isDestructive: true,
               );

@@ -149,7 +149,6 @@ class _HomeLatestViewedSection extends ConsumerWidget {
           context: context,
           message: '最近閲覧から削除しますか？',
           confirmText: '削除',
-          cancelText: 'キャンセル',
           type: LinkyDialogType.confirm,
           isDestructive: true,
           barrierDismissible: true,

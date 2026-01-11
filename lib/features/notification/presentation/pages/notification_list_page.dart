@@ -37,7 +37,6 @@ class NotificationListPage extends ConsumerWidget {
             title: '未読の通知を既読にしますか？',
             message: '未読の通知がすべて既読になります。',
             confirmText: '既読する',
-            cancelText: 'キャンセル',
             type: LinkyDialogType.confirm,
             isDestructive: false,
           );

@@ -173,7 +173,6 @@ class _HomeMenuActionHandler {
           title: 'ログアウト確認',
           message: 'ログアウトしますか？',
           confirmText: 'ログアウト',
-          cancelText: 'キャンセル',
           type: LinkyDialogType.confirm,
           isDestructive: true,
         );
