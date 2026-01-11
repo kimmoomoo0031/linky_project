@@ -22,6 +22,11 @@ abstract class HomeRepository {
     required int pageSize,
   });
 
+  /// 最新閲覧（最近閲覧）から指定したラウンジを削除する。
+  ///
+  /// - サーバー側は `DELETE /lounges/recent/{loungeId}` を想定（冪等）。
+  Future<void> deleteLatestViewed({required int loungeId});
+
   Future<List<BestPost>> getBestPosts({required int limit});
 }
 

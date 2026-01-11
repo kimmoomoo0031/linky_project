@@ -22,7 +22,7 @@ class FakeHomeRepository implements HomeRepository {
     isGuest: true,
   );
 
-  static final List<LoungePreview> _latestPool = List.generate(18, (i) {
+  static final List<LoungePreview> _latestPool = List.generate(60, (i) {
     final id = i + 1;
     final titles = [
       '日本生活',
@@ -74,6 +74,13 @@ class FakeHomeRepository implements HomeRepository {
     final items = _latestPool.sublist(start, end);
     final hasNext = end < _latestPool.length;
     return LoungePreviewPage(items: items, hasNext: hasNext);
+  }
+
+  @override
+  Future<void> deleteLatestViewed({required int loungeId}) async {
+    // モックなので少し待たせて「通信っぽさ」を出す。
+    await Future<void>.delayed(const Duration(milliseconds: 250));
+    _latestPool.removeWhere((e) => e.id == loungeId);
   }
 
   @override

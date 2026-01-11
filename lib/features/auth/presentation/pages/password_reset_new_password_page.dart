@@ -117,7 +117,7 @@ class _PasswordResetNewPasswordScrollContent extends StatelessWidget {
           const SizedBox(height: 32),
           AuthActionButton(
             label: '設定する',
-            onPressed: onPressedSubmit,
+            onPressed: state.canSubmit ? onPressedSubmit : null,
             backgroundColor: cs.primary,
             textColor: cs.onPrimary,
             style: AuthActionButtonStyle.filled,

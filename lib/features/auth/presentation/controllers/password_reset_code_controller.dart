@@ -8,6 +8,7 @@ import 'package:linky_project_0318/features/auth/presentation/states/password_re
 import 'package:linky_project_0318/core/dialog_type_exports.dart';
 import 'package:linky_project_0318/core/ui/events/linky_dialog_event.dart';
 import 'package:linky_project_0318/features/auth/presentation/auth_dialog_event_providers.dart';
+import 'package:linky_project_0318/features/auth/presentation/constants/auth_dialog_messages.dart';
 
 import '../../../../core/constants/common_dialog_messages.dart';
 
@@ -94,7 +95,20 @@ class PasswordResetCodeController extends StateNotifier<PasswordResetCodeState> 
         state = state.copyWith(isLoading: true, isSuccess: false);
         try {
           // TODO(api): 認証コード検証用の UseCase を呼び出す。
+          // 現在はモック：1234 のみ有効とする。
           await Future.delayed(const Duration(seconds: 1));
+
+          if (state.combinedCode != '1234') {
+            _emitDialog(
+              const LinkyDialogEvent(
+                type: LinkyDialogType.error,
+                title: AuthDialogMessages.invalidOtpCodeTitle,
+                message: AuthDialogMessages.invalidOtpCodeMessage,
+              ),
+            );
+            state = state.copyWith(isSuccess: false);
+            return;
+          }
 
           state = state.copyWith(isSuccess: true);
         } finally {

@@ -120,6 +120,7 @@ class _LoginScrollContent extends StatelessWidget {
           const SizedBox(height: 16),
           _LoginButton(
             isLoading: state.isLoading,
+            enabled: state.canSubmit,
             onPressed: controller.submit,
           ),
           const SizedBox(height: 32),
@@ -226,10 +227,12 @@ class _ForgotPasswordLink extends StatelessWidget {
 class _LoginButton extends StatelessWidget {
   const _LoginButton({
     required this.isLoading,
+    required this.enabled,
     required this.onPressed,
   });
 
   final bool isLoading;
+  final bool enabled;
   final VoidCallback onPressed;
 
   @override
@@ -237,7 +240,7 @@ class _LoginButton extends StatelessWidget {
     final cs = Theme.of(context).colorScheme;
     return AuthActionButton(
       label: 'ログイン',
-      onPressed: onPressed,
+      onPressed: enabled ? onPressed : null,
       backgroundColor: cs.primary,
       textColor: cs.onPrimary,
       borderColor: Colors.transparent,

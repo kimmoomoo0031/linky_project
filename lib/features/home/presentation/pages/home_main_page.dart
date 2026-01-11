@@ -8,8 +8,11 @@ import 'package:linky_project_0318/core/error/app_error.dart';
 import 'package:linky_project_0318/core/error/app_error_context.dart';
 import 'package:linky_project_0318/core/router/router_extensions.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
+import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
 import 'package:linky_project_0318/core/widgets/linky_search_bar.dart';
+import 'package:linky_project_0318/core/widgets/linky_snack_bar.dart';
 import 'package:linky_project_0318/features/home/home_exports.dart';
+import 'package:linky_project_0318/features/home/domain/entities/lounge_preview.dart';
 import 'package:linky_project_0318/features/home/presentation/pages/home_menu_page.dart';
 import 'package:linky_project_0318/features/home/presentation/widgets/home_best_posts_list.dart';
 import 'package:linky_project_0318/features/home/presentation/widgets/home_latest_viewed_pager.dart';
@@ -100,18 +103,9 @@ class _HomeMainPageState extends ConsumerState<HomeMainPage> {
                 const SizedBox(height: 16),
                 const HomeSectionTitle('最新閲覧'),
                 const SizedBox(height: 16),
-                HomeLatestViewedPager(
+                _HomeLatestViewedSection(
                   items: data.latestViewed,
-                  onFetchMore: () => ref
-                      .read(homeControllerProvider.notifier)
-                      .fetchMoreLatest(),
                   hasNext: data.latestHasNext,
-                  onTapItem: (lounge) {
-                    context.pushLounge(
-                      lounge.id,
-                      loungeTitle: lounge.title,
-                    );
-                  },
                 ),
                 const SizedBox(height: 16),
                 const HomeSectionTitle('ベスト投稿'),
@@ -122,6 +116,55 @@ class _HomeMainPageState extends ConsumerState<HomeMainPage> {
           );
         },
       ),
+    );
+  }
+}
+
+class _HomeLatestViewedSection extends ConsumerWidget {
+  const _HomeLatestViewedSection({
+    required this.items,
+    required this.hasNext,
+  });
+
+  final List<LoungePreview> items;
+  final bool hasNext;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return HomeLatestViewedPager(
+      items: items,
+      onFetchMore: () =>
+          ref.read(homeControllerProvider.notifier).fetchMoreLatest(),
+      hasNext: hasNext,
+      onTapItem: (lounge) {
+        context.pushLounge(
+          lounge.id,
+          loungeTitle: lounge.title,
+        );
+      },
+      onLongPressItem: (lounge) async {
+        final ok = await showLinkyConfirmDialog(
+          context: context,
+          message: '最近閲覧から削除しますか？',
+          confirmText: '削除',
+          cancelText: 'キャンセル',
+          isDestructive: true,
+          barrierDismissible: true,
+        );
+        if (!ok) return;
+
+        try {
+          await ref
+              .read(homeControllerProvider.notifier)
+              .removeLatestViewed(loungeId: lounge.id);
+        } catch (_) {
+          if (!context.mounted) return;
+          showLinkySnackBar(
+            context,
+            message: '削除に失敗しました。もう一度お試しください。',
+          );
+        }
+      },
     );
   }
 }
