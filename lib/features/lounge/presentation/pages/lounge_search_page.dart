@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:linky_project_0318/core/constants/app_strings.dart';
 import 'package:linky_project_0318/core/debug/app_log.dart';
 import 'package:linky_project_0318/core/debug/trace_id.dart';
 import 'package:linky_project_0318/core/error/app_error.dart';
@@ -165,7 +166,7 @@ class _LoungeSearchPageState extends ConsumerState<LoungeSearchPage> {
                 builder: (context, value, _) {
                   final hasText = value.text.trim().isNotEmpty;
                   return LinkySearchBar(
-                    hintText: 'ラウンジ検索',
+                    hintText: AppHints.loungeSearch,
                     controller: _textController,
                     focusNode: _focusNode,
                     autofocus: true,

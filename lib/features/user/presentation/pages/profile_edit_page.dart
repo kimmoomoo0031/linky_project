@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:linky_project_0318/core/constants/app_assets.dart';
 import 'package:linky_project_0318/core/constants/dialog_messages.dart';
+import 'package:linky_project_0318/core/constants/app_strings.dart';
 import 'package:linky_project_0318/core/dialog_type_exports.dart';
 import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
 import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
@@ -202,7 +203,7 @@ class _EmailField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AuthLabeledTextField(
-      label: 'メールアドレス',
+      label: AppLabels.email,
       hintText: '',
       controller: controller,
       enabled: false,
@@ -226,8 +227,8 @@ class _NicknameField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AuthLabeledTextField(
-      label: 'ニックネーム',
-      hintText: 'リンゴ',
+      label: AppLabels.nickname,
+      hintText: AppHints.nickname,
       controller: controller,
       errorText: errorText,
       onChanged: onChanged,
@@ -254,7 +255,7 @@ class _CurrentPasswordField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AuthPasswordField(
-      label: '現在のパスワード',
+      label: AppLabels.currentPassword,
       onChanged: onChanged,
       errorText: errorText,
       isRequired: true,
@@ -278,7 +279,7 @@ class _PasswordField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AuthPasswordField(
-      label: '新しいパスワード',
+      label: AppLabels.newPassword,
       onChanged: onChanged,
       errorText: errorText,
       isRequired: true,
@@ -302,7 +303,7 @@ class _PasswordConfirmField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AuthPasswordField(
-      label: 'パスワード再確認',
+      label: AppLabels.passwordConfirm,
       onChanged: onChanged,
       errorText: errorText,
       isRequired: true,

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:linky_project_0318/core/constants/app_assets.dart';
+import 'package:linky_project_0318/core/constants/app_strings.dart';
 import 'package:linky_project_0318/core/router/router_extensions.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/gradient_text.dart';
@@ -170,8 +171,8 @@ class _EmailField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AuthLabeledTextField(
-      label: 'メールアドレス',
-      hintText: 'yamada@example.com',
+      label: AppLabels.email,
+      hintText: AppHints.email,
       keyboardType: TextInputType.emailAddress,
       errorText: errorText,
       onChanged: onChanged,
@@ -190,7 +191,7 @@ class _PasswordField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AuthPasswordField(
-      label: 'パスワード',
+      label: AppLabels.password,
       errorText: errorText,
       onChanged: onChanged,
       textInputAction: TextInputAction.done,

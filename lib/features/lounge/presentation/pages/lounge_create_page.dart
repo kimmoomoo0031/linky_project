@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 
 import 'package:linky_project_0318/core/constants/app_assets.dart';
 import 'package:linky_project_0318/core/dialog_type_exports.dart';
+import 'package:linky_project_0318/core/constants/app_strings.dart';
 import 'package:linky_project_0318/core/constants/lounge_constants.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
@@ -145,8 +146,8 @@ class _LoungeCreateNameSection extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         AuthLabeledTextField(
-          label: 'ラウンジ名',
-          hintText: '日本生活',
+          label: AppLabels.loungeName,
+          hintText: AppHints.loungeNameExample,
           isRequired: true,
           requiredMark: SvgPicture.asset(
             AppAssets.asteriskLogoSvg,
@@ -180,8 +181,8 @@ class _LoungeCreateDescriptionSection extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         AuthLabeledTextField(
-          label: 'ラウンジ紹介',
-          hintText: '日本での生活を共有できる場所です',
+          label: AppLabels.loungeDescription,
+          hintText: AppHints.loungeDescriptionExample,
           isRequired: true,
           requiredMark: SvgPicture.asset(
             AppAssets.asteriskLogoSvg,

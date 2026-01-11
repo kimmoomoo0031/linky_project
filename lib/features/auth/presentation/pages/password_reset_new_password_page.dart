@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:linky_project_0318/features/auth/presentation/constants/auth_dialog_messages.dart';
 
 import 'package:linky_project_0318/core/dialog_type_exports.dart';
+import 'package:linky_project_0318/core/constants/app_strings.dart';
 import 'package:linky_project_0318/core/router/router_extensions.dart';
 import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
 import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
@@ -155,7 +156,7 @@ class _NewPasswordFieldState extends State<_NewPasswordField> {
   @override
   Widget build(BuildContext context) {
     return AuthPasswordField(
-      label: '新しいパスワード',
+      label: AppLabels.newPassword,
       errorText: widget.errorText,
       onChanged: widget.onChanged,
       textInputAction: TextInputAction.next,
@@ -182,7 +183,7 @@ class _NewPasswordConfirmFieldState extends State<_NewPasswordConfirmField> {
   @override
   Widget build(BuildContext context) {
     return AuthPasswordField(
-      label: '新しいパスワード再確認',
+      label: AppLabels.newPasswordConfirm,
       errorText: widget.errorText,
       onChanged: widget.onChanged,
       textInputAction: TextInputAction.done,

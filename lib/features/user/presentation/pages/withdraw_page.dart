@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:linky_project_0318/core/constants/app_assets.dart';
+import 'package:linky_project_0318/core/constants/app_strings.dart';
 import 'package:linky_project_0318/core/constants/mypage_constants.dart';
 import 'package:linky_project_0318/core/dialog_type_exports.dart';
 import 'package:linky_project_0318/core/enums/withdraw_reason.dart';
@@ -110,8 +111,8 @@ class _WithdrawPasswordSection extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         AuthPasswordField(
-          label: '現在のパスワード',
-          hintText: '現在のパスワードを入力してください',
+          label: AppLabels.currentPassword,
+          hintText: AppHints.currentPassword,
           isRequired: true,
           requiredMark: SvgPicture.asset(
             AppAssets.asteriskLogoSvg,
@@ -208,7 +209,7 @@ class _WithdrawReasonField extends StatelessWidget {
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
     return LabeledField(
-      label: '退会理由を教えてください',
+      label: AppLabels.withdrawReason,
       isRequired: true,
       requiredMark: SvgPicture.asset(
         AppAssets.asteriskLogoSvg,
@@ -225,7 +226,7 @@ class _WithdrawReasonField extends StatelessWidget {
           errorText: errorText,
         ).copyWith(contentPadding: EdgeInsets.zero),
         hint: Text(
-          '退会理由を教えてください',
+          AppLabels.withdrawReason,
           style: AppTextStyles.body12.copyWith(color: cs.outlineVariant),
         ),
         dropdownStyleData: const DropdownStyleData(offset: Offset(0, 0)),
