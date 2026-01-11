@@ -1,4 +1,6 @@
-/// 退会（アカウント削除）関連の文言・設定値を集約する。
+/// マイページ（Mypage）関連の定数を集約する。
+///
+/// ※ 現状は退会（アカウント削除）画面の文言・設定値をここに配置する。
 class WithdrawConstants {
   const WithdrawConstants._();
 
@@ -19,7 +21,8 @@ class WithdrawConstants {
   static const int completedDelayMs = 3000;
   static const int completedAnimMs = 300;
   static const double completedBeginScale = 0.98;
-  static const String completedContext = '退会が完了しました。\n今までLinkyをご利用いただきまして、誠にありがとうございました。';
+  static const String completedContext =
+      '退会が完了しました。\n今までLinkyをご利用いただきまして、誠にありがとうございました。';
 }
 
 

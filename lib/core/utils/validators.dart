@@ -1,6 +1,6 @@
 import 'package:linky_project_0318/core/utils/regex.dart';
 import 'package:characters/characters.dart';
-import 'package:linky_project_0318/core/constants/lounge_create_constants.dart';
+import 'package:linky_project_0318/core/constants/lounge_constants.dart';
 
 class Validators {
   Validators._();
