@@ -94,17 +94,17 @@ class LoginController extends StateNotifier<LoginState> {
             },
             networkError: () {
               _emitDialog(
-                const LinkyDialogEvent(
+                  LinkyDialogEvent(
                   type: LinkyDialogType.error,
-                  message: CommonDialogMessages.networkError,
+                  message: CommonMessages.errors.network.message,
                 ),
               );
             },
             serverError: () {
               _emitDialog(
-                const LinkyDialogEvent(
+                  LinkyDialogEvent(
                   type: LinkyDialogType.error,
-                  message: CommonDialogMessages.serverError,
+                  message: CommonMessages.errors.server.message,
                 ),
               );
             },
@@ -115,9 +115,9 @@ class LoginController extends StateNotifier<LoginState> {
       },
       onException: (e, st) {
         _emitDialog(
-          const LinkyDialogEvent(
+            LinkyDialogEvent(
             type: LinkyDialogType.error,
-            message: CommonDialogMessages.unexpectedError,
+            message: CommonMessages.errors.unexpected.message,
           ),
         );
       },

@@ -64,7 +64,7 @@ class _ProfileEditPageState extends ConsumerState<ProfileEditPage> {
       ref.read(profileEditDialogEventProvider.notifier).state = null;
 
       if (event.type == LinkyDialogType.info &&
-          event.message == CommonDialogMessages.profileUpdated) {
+          event.message == CommonMessages.success.profileUpdated.message) {
         Navigator.of(context).pop();
       }
     });

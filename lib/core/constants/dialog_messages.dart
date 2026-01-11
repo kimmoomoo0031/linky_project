@@ -1,43 +1,86 @@
-/// アプリ全体で共通に使うダイアログ文言。
+/// アプリ全体で共通に使うメッセージ（ダイアログ/スナックバー両対応）。
+class AppMessage {
+  const AppMessage({
+    required this.message,
+    this.title,
+  });
+
+  final String message;
+  final String? title;
+}
+
+/// アプリ共通メッセージ一覧。
 ///
-/// feature 固有の文言は `features/.../constants` に置く。
-class CommonDialogMessages {
-  const CommonDialogMessages._();
+/// 例: `CommonMessages.errors.network.message`
+class CommonMessages {
+  const CommonMessages._();
 
-  /// ---- 共通：エラーメッセージ（ダイアログ用）----
-  static const String networkError =
-      'ネットワークエラーが発生しました。\n通信状況を確認してから、もう一度お試しください。';
+  static const errors = _CommonErrorMessages();
+  static const success = _CommonSuccessMessages();
+  static const failures = _CommonFailureMessages();
+}
 
-  static const String serverError =
-      'サーバーエラーが発生しました。\nしばらく時間をおいて再度お試しください。';
+/// 共通：エラーメッセージ（ダイアログ/スナックバー用）
+class _CommonErrorMessages {
+  const _CommonErrorMessages();
 
-  static const String unexpectedError =
-      '予期せぬエラーが発生しました。\nしばらく時間をおいて再度お試しください。';
+  final network = const AppMessage(
+    title: '通信エラー',
+    message: 'ネットワークエラーが発生しました。\n通信状況を確認してから、もう一度お試しください。',
+  );
 
-  static const String deleteError =
-      '削除に失敗しました。もう一度お試しください。';
+  final server = const AppMessage(
+    title: 'サーバーエラー',
+    message: 'サーバーエラーが発生しました。\nしばらく時間をおいて再度お試しください。',
+  );
 
-  /// ---- 共通：成功メッセージ（ダイアログ用）----
+  final unexpected = const AppMessage(
+    title: 'エラー',
+    message: '予期せぬエラーが発生しました。\nしばらく時間をおいて再度お試しください。',
+  );
+
+  final deleteFailed = const AppMessage(
+    title: '削除失敗',
+    message: '削除に失敗しました。もう一度お試しください。',
+  );
+}
+
+/// 共通：成功メッセージ（ダイアログ/スナックバー用）
+class _CommonSuccessMessages {
+  const _CommonSuccessMessages();
 
   /// 更新成功。
-  static const String profileUpdated = 'プロフィールの編集が完了しました。';
+  final profileUpdated = const AppMessage(
+    message: 'プロフィールの編集が完了しました。',
+  );
 
   /// 認証コード再送信成功。
-  static const String resendResetCodeSucceeded = '認証コードを再送信しました。';
+  final resendResetCodeSucceeded = const AppMessage(
+    message: '認証コードを再送信しました。',
+  );
+}
 
-  /// ---- 共通：失敗メッセージ（ダイアログ用）----
+/// 共通：失敗メッセージ（ダイアログ/スナックバー用）
+class _CommonFailureMessages {
+  const _CommonFailureMessages();
 
   /// 認証コード確認失敗。
-  static const String verifyResetCodeFailed =
-      '認証コードの確認に失敗しました。\n時間をおいて再度お試しください。';
+  final verifyResetCodeFailed = const AppMessage(
+    title: '失敗',
+    message: '認証コードの確認に失敗しました。\n時間をおいて再度お試しください。',
+  );
 
   /// 認証コード再送信失敗。
-  static const String resendResetCodeFailed =
-      '再送信に失敗しました。\n時間をおいて再度お試しください。';
+  final resendResetCodeFailed = const AppMessage(
+    title: '失敗',
+    message: '再送信に失敗しました。\n時間をおいて再度お試しください。',
+  );
 
-  ///新しいパスワード設定失敗
-  static const String newPasswordMustBeDifferentFromCurrent =
-      '新しいパスワードは現在のパスワードと異なるものを入力してください。';
+  /// 新しいパスワード設定失敗
+  final newPasswordMustBeDifferentFromCurrent = const AppMessage(
+    title: '入力エラー',
+    message: '新しいパスワードは現在のパスワードと異なるものを入力してください。',
+  );
 }
 
 

@@ -164,7 +164,7 @@ class _HomeLatestViewedSection extends ConsumerWidget {
           if (!context.mounted) return;
           showLinkySnackBar(
             context,
-            message: CommonDialogMessages.deleteError,
+            message: CommonMessages.errors.deleteFailed.message,
           );
         }
       },

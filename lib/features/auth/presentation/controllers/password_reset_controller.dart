@@ -69,9 +69,9 @@ class PasswordResetController extends StateNotifier<PasswordResetState> {
       },
       onException: (e, st) {
         _emitDialog(
-          const LinkyDialogEvent(
+            LinkyDialogEvent(
             type: LinkyDialogType.error,
-            message: CommonDialogMessages.unexpectedError,
+            message: CommonMessages.errors.unexpected.message,
           ),
         );
       },

@@ -141,18 +141,18 @@ class RegisterController extends StateNotifier<RegisterState> {
       networkError: () {
         state = state.copyWith(isSuccess: false);
         _emitDialog(
-          const LinkyDialogEvent(
+            LinkyDialogEvent(
             type: LinkyDialogType.error,
-            message: CommonDialogMessages.networkError,
+            message: CommonMessages.errors.network.message,
           ),
         );
       },
       serverError: () {
         state = state.copyWith(isSuccess: false);
         _emitDialog(
-          const LinkyDialogEvent(
+            LinkyDialogEvent(
             type: LinkyDialogType.error,
-            message: CommonDialogMessages.serverError,
+            message: CommonMessages.errors.server.message,
           ),
         );
       },
@@ -165,9 +165,9 @@ class RegisterController extends StateNotifier<RegisterState> {
       isSuccess: false,
     );
     _emitDialog(
-      const LinkyDialogEvent(
+        LinkyDialogEvent(
         type: LinkyDialogType.error,
-        message: CommonDialogMessages.unexpectedError,
+        message: CommonMessages.errors.unexpected.message,
       ),
     );
   }

@@ -131,17 +131,17 @@ class PasswordResetNewPasswordController
       },
       networkError: () {
         _emitDialog(
-          const LinkyDialogEvent(
+            LinkyDialogEvent(
             type: LinkyDialogType.error,
-            message: CommonDialogMessages.networkError,
+            message: CommonMessages.errors.network.message,
           ),
         );
       },
       serverError: () {
         _emitDialog(
-          const LinkyDialogEvent(
+            LinkyDialogEvent(
             type: LinkyDialogType.error,
-            message: CommonDialogMessages.serverError,
+            message: CommonMessages.errors.server.message,
           ),
         );
       },
@@ -151,9 +151,9 @@ class PasswordResetNewPasswordController
   /// 想定外の例外発生時のエラーハンドリング。
   void _handleUnexpectedError() {
     _emitDialog(
-      const LinkyDialogEvent(
+        LinkyDialogEvent(
         type: LinkyDialogType.error,
-        message: CommonDialogMessages.unexpectedError,
+        message: CommonMessages.errors.unexpected.message,
       ),
     );
   }

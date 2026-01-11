@@ -55,9 +55,9 @@ class WithdrawController extends StateNotifier<WithdrawState> {
       return true;
     } catch (_) {
       _emitDialog(
-        const LinkyDialogEvent(
+          LinkyDialogEvent(
           type: LinkyDialogType.error,
-          message: CommonDialogMessages.unexpectedError,
+          message: CommonMessages.errors.unexpected.message,
         ),
       );
       return false;

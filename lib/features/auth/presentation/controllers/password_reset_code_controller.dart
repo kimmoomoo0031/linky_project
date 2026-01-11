@@ -117,9 +117,9 @@ class PasswordResetCodeController extends StateNotifier<PasswordResetCodeState> 
       onException: (e, st) {
         state = state.copyWith(isSuccess: false);
         _emitDialog(
-          const LinkyDialogEvent(
+            LinkyDialogEvent(
             type: LinkyDialogType.error,
-            message: CommonDialogMessages.verifyResetCodeFailed,
+            message: CommonMessages.failures.verifyResetCodeFailed.message,
           ),
         );
       },
@@ -149,9 +149,9 @@ class PasswordResetCodeController extends StateNotifier<PasswordResetCodeState> 
           resetCode();
 
           _emitDialog(
-            const LinkyDialogEvent(
+              LinkyDialogEvent(
               type: LinkyDialogType.info,
-              message: CommonDialogMessages.resendResetCodeSucceeded,
+              message: CommonMessages.success.resendResetCodeSucceeded.message,
             ),
           );
           return true;
@@ -162,9 +162,9 @@ class PasswordResetCodeController extends StateNotifier<PasswordResetCodeState> 
       ok: (v) => v,
       onException: (e, st) {
         _emitDialog(
-          const LinkyDialogEvent(
+            LinkyDialogEvent(
             type: LinkyDialogType.error,
-            message: CommonDialogMessages.resendResetCodeFailed,
+            message: CommonMessages.failures.resendResetCodeFailed.message,
           ),
         );
         return false;

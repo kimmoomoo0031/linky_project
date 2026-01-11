@@ -42,9 +42,9 @@ class ProfileEditController extends StateNotifier<ProfileEditState> {
     } catch (_) {
       state = state.copyWith(isLoading: false);
       _emitDialog(
-        const LinkyDialogEvent(
+          LinkyDialogEvent(
           type: LinkyDialogType.error,
-          message: CommonDialogMessages.unexpectedError,
+          message: CommonMessages.errors.unexpected.message,
         ),
       );
     }
@@ -103,12 +103,12 @@ class ProfileEditController extends StateNotifier<ProfileEditState> {
     if (state.currentPassword.trim() == state.password.trim()) {
       state = state.copyWith(
         passwordError:
-            CommonDialogMessages.newPasswordMustBeDifferentFromCurrent,
+            CommonMessages.failures.newPasswordMustBeDifferentFromCurrent.message,
       );
       _emitDialog(
-        const LinkyDialogEvent(
+          LinkyDialogEvent(
           type: LinkyDialogType.warning,
-          message: CommonDialogMessages.newPasswordMustBeDifferentFromCurrent,
+          message: CommonMessages.failures.newPasswordMustBeDifferentFromCurrent.message,
         ),
       );
       return false;
@@ -134,9 +134,9 @@ class ProfileEditController extends StateNotifier<ProfileEditState> {
         ),
       );
       _emitDialog(
-        const LinkyDialogEvent(
+          LinkyDialogEvent(
           type: LinkyDialogType.info,
-          message: CommonDialogMessages.profileUpdated,
+          message: CommonMessages.success.profileUpdated.message,
         ),
       );
     } catch (_) {
@@ -145,9 +145,9 @@ class ProfileEditController extends StateNotifier<ProfileEditState> {
       //   - state.nicknameError を設定（フィールド下に表示）
       //   - LinkyDialogType.warning のダイアログも表示
       _emitDialog(
-        const LinkyDialogEvent(
+          LinkyDialogEvent(
           type: LinkyDialogType.error,
-          message: CommonDialogMessages.unexpectedError,
+          message: CommonMessages.errors.unexpected.message,
         ),
       );
     } finally {
