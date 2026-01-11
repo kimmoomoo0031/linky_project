@@ -26,11 +26,11 @@
     - `schemas` : Pydantic ベースのリクエスト/レスポンス DTO（入力検証・レスポンス整形）
 
 - インフラ / 外部サービス
-  - AWS EC2: FastAPI アプリケーションをホスト
-  - AWS RDS (PostgreSQL): 永続データ保存
-  - AWS S3: 投稿画像ファイルの保存（最大 10 枚/投稿）
+  - Amazon Lightsail (Instances): FastAPI アプリケーションをホスト
+  - Amazon Lightsail (Databases / PostgreSQL): 永続データ保存
+  - Amazon Lightsail (Object Storage): 投稿画像ファイルの保存（最大 10 枚/投稿）
   - Firebase FCM: プッシュ通知（コメント通知 / ラウンジ申請結果通知）
-  - Route 53: ドメイン管理
+  - Lightsail DNS / Route 53: ドメイン管理
   - Let’s Encrypt: 無料 SSL 証明書発行（HTTPS 対応）
 
 ---
@@ -40,7 +40,7 @@
 1. ユーザーの Flutter アプリから HTTP(S) リクエスト送信  
    例: `https://api.example-linky.com/api/v1/posts`
 
-2. Route 53 で `api.example-linky.com` を EC2 の Nginx にルーティング
+2. DNS（Lightsail DNS / Route 53）で `api.example-linky.com` を Lightsail の Static IP（Nginx）にルーティング
 
 3. Nginx
    - 80番ポート (HTTP) → 443 番 (HTTPS) へリダイレクト
@@ -49,12 +49,12 @@
      `proxy_pass http://127.0.0.1:8000;`
 
 4. Uvicorn
-   - FastAPI アプリケーション実行
-   - ルーター → サービス → リポジトリ → DB/S3/FCM の順で処理
+  - FastAPI アプリケーション実行
+  - ルーター → サービス → リポジトリ → DB/Object Storage/FCM の順で処理
 
 5. データアクセス
-   - 認証 / 投稿 / コメント / ラウンジ / 通知 など: RDS(PostgreSQL)
-   - 画像ファイル: S3 にアップロード（DB には URL のみ保存）
+   - 認証 / 投稿 / コメント / ラウンジ / 通知 など: Lightsail Databases(PostgreSQL)
+   - 画像ファイル: Lightsail Object Storage にアップロード（DB には URL のみ保存）
    - プッシュ通知: FCM 経由で送信
 
 ---
@@ -102,7 +102,7 @@ app/
   admin/                     # 管理者向け API
     ...
 
-  utils/                     # S3 アップローダー等のユーティリティ
+  utils/                     # Object Storage / S3 アップローダー等のユーティリティ
     s3_uploader.py
 ```
 
@@ -163,14 +163,14 @@ app/
 
 - RDBMS: PostgreSQL
   - 開発環境: ローカル PostgreSQL
-  - 本番環境: AWS RDS PostgreSQL
+  - 本番環境: Lightsail Databases (PostgreSQL)
 
 - スキーマ管理
   - SQLAlchemy モデル + Alembic によるマイグレーション
   - テーブル例:
     - `users`（ユーザーアカウント）
     - `posts`（投稿）
-    - `post_images`（投稿画像の S3 URL）
+    - `post_images`（投稿画像の URL）
     - `comments`（コメント）
     - `lounges` / `lounge_favorites` / `lounge_recent_views`
     - `lounge_requests`（ラウンジ申請）
@@ -182,11 +182,12 @@ app/
 
 ### 3-4. ファイルストレージ
 
-- サービス: AWS S3
-  - 投稿画像を S3 バケットに保存
+- サービス: Lightsail Object Storage（バケット）
+  - 投稿画像を Object Storage バケットに保存
   - DB には画像の URL のみ保存
   - 投稿 1 件あたり最大 10 枚まで
-- ライブラリ: `boto3`
+- ライブラリ: （要決定）
+  - ※ もし AWS S3 を採用する場合は `boto3` を利用
 
 ---
 
@@ -207,28 +208,27 @@ app/
 - クラウド: AWS
 
 - コンピュート
-  - AWS EC2（Ubuntu, t2.micro 想定）
+  - Amazon Lightsail インスタンス（Ubuntu）
   - FastAPI(Uvicorn) を常駐プロセスとして稼働（systemd など）
-  - EC2 には最小権限の IAM ロールを付与し、必要なリソース（例: S3 アップロード, Parameter Store 参照）のみ許可する
 
 - データベース
-  - AWS RDS PostgreSQL
-  - パブリックアクセスは無効化し、EC2 など特定のセキュリティグループからのみ接続を許可する
+  - Lightsail Databases (PostgreSQL)
+  - 必要最小限の接続元（アプリサーバ等）に限定して接続を許可する
 
 - ストレージ
-  - AWS S3（画像アップロード用）
+  - Lightsail Object Storage（画像アップロード用）
 
 - ネットワーク / ドメイン / HTTPS
-  - Route 53
+  - Lightsail DNS / Route 53
     - 独自ドメイン管理
-    - 例: `api.linky-example.com` → EC2 の Nginx に A レコード設定
+    - 例: `api.linky-example.com` → Lightsail の Static IP（Nginx）に A レコード設定
   - Nginx
     - 80 番ポート: HTTP → 443 番へリダイレクト
     - 443 番ポート: HTTPS 終端、Uvicorn へのリバースプロキシ
   - Let’s Encrypt
     - `certbot` による無料 SSL 証明書発行と自動更新設定
   - 機密情報（DB パスワード, JWT シークレットなど）は Git にコミットせず、  
-    本番環境では AWS Systems Manager Parameter Store / Secrets Manager から取得する
+    個人ミニマムでは `.env` / systemd `EnvironmentFile` などで安全に管理する（必要に応じて Parameter Store / Secrets Manager も検討）
 
 ---
 
@@ -245,12 +245,12 @@ app/
 
 ### 5-2. 本番デプロイ（手動デプロイの想定）
 
-1. AWS EC2 インスタンス作成（Ubuntu）
+1. Lightsail インスタンス作成（Ubuntu）
 2. Python / Git / Nginx / PostgreSQL クライアントなどをインストール
-3. RDS / S3 / Route 53 / SSL 設定
-4. プロジェクトを EC2 に配置（git clone など）
+3. Lightsail Databases / Lightsail Object Storage / DNS / SSL 設定
+4. プロジェクトをインスタンスに配置（git clone など）
 5. 仮想環境作成 & `pip install -r requirements.txt`
-6. Alembic マイグレーションを RDS に対して実行
+6. Alembic マイグレーションを Databases(PostgreSQL) に対して実行
 7. Uvicorn を systemd サービスとして登録し常駐起動
 8. Nginx のリバースプロキシ & HTTPS 設定
 9. Flutter アプリから本番 API エンドポイントに接続して動作確認
@@ -262,6 +262,6 @@ app/
 - Python バージョン: 3.13.7（開発環境）  
   → ライブラリは 3.13 系で動作確認しつつ導入する。
 - 将来的にトラフィックや機能が増えた場合は、ECS/Fargate や CI/CD 導入なども検討可能だが、  
-  現段階では「学習・ポートフォリオ用途 + シンプルな運用」を優先し EC2 単体構成とする。
+  現段階では「学習・ポートフォリオ用途 + シンプルな運用」を優先し Lightsail 単体構成とする。
 
 
