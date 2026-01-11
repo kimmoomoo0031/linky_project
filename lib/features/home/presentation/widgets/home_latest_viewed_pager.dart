@@ -12,12 +12,14 @@ class HomeLatestViewedPager extends StatefulWidget {
     required this.onFetchMore,
     required this.hasNext,
     required this.onTapItem,
+    required this.onLongPressItem,
   });
 
   final List<LoungePreview> items;
   final VoidCallback onFetchMore;
   final bool hasNext;
   final ValueChanged<LoungePreview> onTapItem;
+  final ValueChanged<LoungePreview> onLongPressItem;
 
   @override
   State<HomeLatestViewedPager> createState() => _HomeLatestViewedPagerState();
@@ -39,6 +41,17 @@ class _HomeLatestViewedPagerState extends State<HomeLatestViewedPager> {
     final items = widget.items;
     final pageCount = (items.length / _itemsPerPage).ceil().clamp(1, 9999);
     final cs = Theme.of(context).colorScheme;
+
+    // 削除などで pageCount が減って、現在ページが範囲外になった場合は補正する。
+    if (_page >= pageCount) {
+      final nextPage = (pageCount - 1).clamp(0, 9999);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        if (_page == nextPage) return;
+        setState(() => _page = nextPage);
+        _controller.jumpToPage(nextPage);
+      });
+    }
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
@@ -126,6 +139,7 @@ class _HomeLatestViewedPagerState extends State<HomeLatestViewedPager> {
                               AppAssets.linkyLogoSvg,
                             ),
                             onTap: () => widget.onTapItem(item),
+                            onLongPress: () => widget.onLongPressItem(item),
                           );
                         },
                       ),

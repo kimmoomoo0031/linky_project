@@ -20,6 +20,7 @@ class LoungeCard extends StatelessWidget {
     this.thumbnailUrl,
     this.fallbackThumbnail,
     this.onTap,
+    this.onLongPress,
   }) : assert(
           !(thumbnail != null && thumbnailUrl != null),
           'thumbnail と thumbnailUrl は同時に指定できません。',
@@ -30,6 +31,7 @@ class LoungeCard extends StatelessWidget {
     required this.title,
     this.fallbackThumbnail,
     this.onTap,
+    this.onLongPress,
   })  : thumbnail = null,
         thumbnailUrl = null;
 
@@ -47,6 +49,7 @@ class LoungeCard extends StatelessWidget {
   /// 例: `SvgPicture.asset(AppAssets.loungeIconLogoSvg)`
   final Widget? fallbackThumbnail;
   final VoidCallback? onTap;
+  final VoidCallback? onLongPress;
 
   // タイルが小さい場合でも overflow しないように、タイトル領域の高さを確保する。
   static const double _titleSpacing = 4;
@@ -146,6 +149,7 @@ class LoungeCard extends StatelessWidget {
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: onTap,
+        onLongPress: onLongPress,
         child: LayoutBuilder(
           builder: (context, constraints) {
             // Grid などから渡される「タイルの実サイズ」が端数になると、
