@@ -14,6 +14,9 @@ class CommonDialogMessages {
   static const String unexpectedError =
       '予期せぬエラーが発生しました。\nしばらく時間をおいて再度お試しください。';
 
+  static const String deleteError =
+      '削除に失敗しました。もう一度お試しください。';
+
   /// ---- 共通：成功メッセージ（ダイアログ用）----
 
   /// 更新成功。

@@ -18,6 +18,7 @@ import 'package:linky_project_0318/features/home/presentation/widgets/home_best_
 import 'package:linky_project_0318/features/home/presentation/widgets/home_latest_viewed_pager.dart';
 import 'package:linky_project_0318/features/home/presentation/widgets/home_main_app_bar.dart';
 import 'package:linky_project_0318/features/home/presentation/widgets/home_section_title.dart';
+import 'package:linky_project_0318/core/constants/common_dialog_messages.dart';
 
 /// ホーム画面（メイン側）。
 class HomeMainPage extends ConsumerStatefulWidget {
@@ -161,7 +162,7 @@ class _HomeLatestViewedSection extends ConsumerWidget {
           if (!context.mounted) return;
           showLinkySnackBar(
             context,
-            message: '削除に失敗しました。もう一度お試しください。',
+            message: CommonDialogMessages.deleteError,
           );
         }
       },
