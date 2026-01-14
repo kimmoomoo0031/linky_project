@@ -30,7 +30,7 @@ class PostListItem extends StatelessWidget {
   final VoidCallback onTap;
 
   ///ベスト投稿基準を満たしたか確認
-  bool get _isPopular => post.likeCount >= PostConstants.popularStarThreshold;
+  bool get _isPopular => post.likeCount >= LoungeConstants.popularStarMinLikeCount;
 
 
   /// 右側の表示：

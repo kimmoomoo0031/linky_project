@@ -20,7 +20,6 @@ import 'package:linky_project_0318/features/home/presentation/widgets/home_main_
 import 'package:linky_project_0318/features/home/presentation/widgets/home_section_title.dart';
 import 'package:linky_project_0318/core/constants/dialog_messages.dart';
 import 'package:linky_project_0318/core/enums/linky_dialog_type.dart';
-import 'package:linky_project_0318/core/constants/app_strings.dart';
 
 /// ホーム画面（メイン側）。
 class HomeMainPage extends ConsumerStatefulWidget {
@@ -99,7 +98,7 @@ class _HomeMainPageState extends ConsumerState<HomeMainPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 LinkySearchBar(
-                  hintText: AppHints.loungeSearch,
+                  hintText: 'ラウンジ検索',
                   readOnly: true,
                   onTap: () => context.pushLoungeSearch()
                 ),

@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:linky_project_0318/core/constants/app_assets.dart';
+import 'package:linky_project_0318/core/constants/auth_constants.dart';
 import 'package:linky_project_0318/core/constants/dialog_messages.dart';
-import 'package:linky_project_0318/core/constants/app_strings.dart';
 import 'package:linky_project_0318/core/dialog_type_exports.dart';
 import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
 import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
@@ -203,7 +203,7 @@ class _EmailField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AuthLabeledTextField(
-      label: AppLabels.email,
+      label: 'メールアドレス',
       hintText: '',
       controller: controller,
       enabled: false,
@@ -227,8 +227,8 @@ class _NicknameField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AuthLabeledTextField(
-      label: AppLabels.nickname,
-      hintText: AppHints.nickname,
+      label: 'ニックネーム',
+      hintText: AuthConstants.nickname,
       controller: controller,
       errorText: errorText,
       onChanged: onChanged,
@@ -255,7 +255,7 @@ class _CurrentPasswordField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AuthPasswordField(
-      label: AppLabels.currentPassword,
+      label: '現在のパスワード',
       onChanged: onChanged,
       errorText: errorText,
       isRequired: true,
@@ -279,7 +279,7 @@ class _PasswordField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AuthPasswordField(
-      label: AppLabels.newPassword,
+      label: '新しいパスワード',
       onChanged: onChanged,
       errorText: errorText,
       isRequired: true,
@@ -303,7 +303,7 @@ class _PasswordConfirmField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AuthPasswordField(
-      label: AppLabels.passwordConfirm,
+      label: 'パスワード再確認',
       onChanged: onChanged,
       errorText: errorText,
       isRequired: true,

@@ -1,9 +1,11 @@
 /// 認証（Auth）関連の定数を集約する。
-///
-/// - 仕様の数値やUI文言など、「Auth機能でのみ使う値」を置く
-/// - まだ定数が無い場合でも、配置ルールのためにファイルだけ用意する
 class AuthConstants {
   const AuthConstants._();
+
+  /// [Auth] メール入力欄の hintText（例: 形式の見本）。
+  static const String email = 'linky@example.com';
+  /// [Auth] ニックネーム入力欄の hintText（例）。
+  static const String nickname = 'リンゴ';
 }
 
 

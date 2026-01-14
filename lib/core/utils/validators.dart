@@ -50,9 +50,9 @@ class Validators {
     }
 
     final len = trimmed.characters.length;
-    if (len < LoungeCreateConstants.nameMinLength ||
-        len > LoungeCreateConstants.nameMaxLength) {
-      return 'ラウンジ名は${LoungeCreateConstants.nameMinLength}〜${LoungeCreateConstants.nameMaxLength}文字で入力してください';
+    if (len < LoungeConstants.nameMinLength ||
+        len > LoungeConstants.nameMaxLength) {
+      return 'ラウンジ名は${LoungeConstants.nameMinLength}〜${LoungeConstants.nameMaxLength}文字で入力してください';
     }
 
     if (!RegexPatterns.loungeAllowed.hasMatch(trimmed)) {
@@ -69,9 +69,9 @@ class Validators {
     }
 
     final len = trimmed.characters.length;
-    if (len < LoungeCreateConstants.descriptionMinLength ||
-        len > LoungeCreateConstants.descriptionMaxLength) {
-      return 'ラウンジ紹介は${LoungeCreateConstants.descriptionMinLength}〜${LoungeCreateConstants.descriptionMaxLength}文字で入力してください';
+    if (len < LoungeConstants.descriptionMinLength ||
+        len > LoungeConstants.descriptionMaxLength) {
+      return 'ラウンジ紹介は${LoungeConstants.descriptionMinLength}〜${LoungeConstants.descriptionMaxLength}文字で入力してください';
     }
 
     if (!RegexPatterns.loungeAllowed.hasMatch(trimmed)) {

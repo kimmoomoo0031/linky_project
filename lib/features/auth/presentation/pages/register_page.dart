@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:linky_project_0318/core/dialog_type_exports.dart';
 import 'package:linky_project_0318/core/constants/app_assets.dart';
-import 'package:linky_project_0318/core/constants/app_strings.dart';
+import 'package:linky_project_0318/core/constants/auth_constants.dart';
 import 'package:linky_project_0318/core/router/router_extensions.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
@@ -229,8 +229,8 @@ class _EmailField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AuthLabeledTextField(
-      label: AppLabels.email,
-      hintText: AppHints.email,
+      label: 'メールアドレス',
+      hintText: AuthConstants.email,
       keyboardType: TextInputType.emailAddress,
       errorText: errorText,
       onChanged: onChanged,
@@ -255,8 +255,8 @@ class _NicknameField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AuthLabeledTextField(
-      label: AppLabels.nickname,
-      hintText: AppHints.nickname,
+      label: 'ニックネーム',
+      hintText: AuthConstants.nickname,
       errorText: errorText,
       onChanged: onChanged,
       isRequired: true,
@@ -280,7 +280,7 @@ class _PasswordField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AuthPasswordField(
-      label: AppLabels.password,
+      label: 'パスワード',
       errorText: errorText,
       onChanged: onChanged,
       isRequired: true,
@@ -304,7 +304,7 @@ class _PasswordConfirmField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AuthPasswordField(
-      label: AppLabels.passwordConfirm,
+      label: 'パスワード再確認',
       errorText: errorText,
       onChanged: onChanged,
       isRequired: true,

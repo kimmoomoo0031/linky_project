@@ -40,10 +40,10 @@ class LoungeCreateController extends StateNotifier<LoungeCreateState> {
     if (xfile == null) return;
 
     final bytes = await xfile.readAsBytes();
-    if (bytes.lengthInBytes > LoungeCreateConstants.maxUploadBytes) {
+    if (bytes.lengthInBytes > LoungeConstants.maxUploadBytes) {
       state = state.copyWith(
         coverImageError:
-            'ファイルサイズが大きすぎます（最大${LoungeCreateConstants.maxUploadMb}MB）',
+            'ファイルサイズが大きすぎます（最大${LoungeConstants.maxUploadMb}MB）',
       );
       return;
     }
@@ -78,11 +78,11 @@ class LoungeCreateController extends StateNotifier<LoungeCreateState> {
       );
       return;
     }
-    if (decoded.width < LoungeCreateConstants.minSidePx ||
-        decoded.height < LoungeCreateConstants.minSidePx) {
+    if (decoded.width < LoungeConstants.coverImageMinRecommendedSidePx ||
+        decoded.height < LoungeConstants.coverImageMinRecommendedSidePx) {
       state = state.copyWith(
         coverImageError:
-            '画像サイズが小さすぎます（${LoungeCreateConstants.minSidePx}px以上推奨）',
+            '画像サイズが小さすぎます（${LoungeConstants.coverImageMinRecommendedSidePx}px以上推奨）',
       );
       return;
     }
@@ -121,8 +121,8 @@ class LoungeCreateController extends StateNotifier<LoungeCreateState> {
     // 5) サムネ生成（256x256）
     final thumb = img.copyResize(
       croppedDecoded,
-      width: LoungeCreateConstants.thumbSizePx,
-      height: LoungeCreateConstants.thumbSizePx,
+      width: LoungeConstants.coverThumbnailSizePx,
+      height: LoungeConstants.coverThumbnailSizePx,
       interpolation: img.Interpolation.average,
     );
     final Uint8List thumbBytes = isPng

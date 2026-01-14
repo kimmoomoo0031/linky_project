@@ -32,9 +32,9 @@ extension LoungeCreateStateX on LoungeCreateState {
   int get nameCount => name.characters.length;
   int get descriptionCount => description.characters.length;
 
-  bool get isNameOverLimit => nameCount > LoungeCreateConstants.nameMaxLength;
+  bool get isNameOverLimit => nameCount > LoungeConstants.nameMaxLength;
   bool get isDescriptionOverLimit =>
-      descriptionCount > LoungeCreateConstants.descriptionMaxLength;
+      descriptionCount > LoungeConstants.descriptionMaxLength;
 }
 
 

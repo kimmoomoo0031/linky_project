@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:linky_project_0318/core/constants/app_assets.dart';
-import 'package:linky_project_0318/core/constants/app_strings.dart';
 import 'package:linky_project_0318/core/constants/mypage_constants.dart';
 import 'package:linky_project_0318/core/dialog_type_exports.dart';
 import 'package:linky_project_0318/core/enums/withdraw_reason.dart';
@@ -89,12 +88,12 @@ class _WithdrawWarningSection extends StatelessWidget {
         ),
         const SizedBox(height: 6),
         Text(
-          WithdrawConstants.description,
+          MyPageConstants.description,
           style: AppTextStyles.body12.copyWith(color: cs.onSurfaceVariant),
           textAlign: TextAlign.left,
         ),
         const SizedBox(height: 18),
-        const LinkyInfoBox(text: WithdrawConstants.infoBoxText),
+        const LinkyInfoBox(text: MyPageConstants.infoBoxText),
       ],
     );
   }
@@ -111,8 +110,8 @@ class _WithdrawPasswordSection extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         AuthPasswordField(
-          label: AppLabels.currentPassword,
-          hintText: AppHints.currentPassword,
+          label: '現在のパスワード',
+          hintText: '現在のパスワードを入力してください',
           isRequired: true,
           requiredMark: SvgPicture.asset(
             AppAssets.asteriskLogoSvg,
@@ -177,7 +176,7 @@ class _WithdrawActionSection extends ConsumerWidget {
               // 完了ダイアログ → ボタン押下後に遷移
               await showLinkyDialog(
                 context: context,
-                message: WithdrawConstants.completedContext,
+                message: MyPageConstants.completedContext,
                 closeText: 'ログイン画面へ',
                 type: LinkyDialogType.info,
                 svgAssetPath: AppAssets.linkyLogoSvg,
@@ -209,7 +208,7 @@ class _WithdrawReasonField extends StatelessWidget {
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
     return LabeledField(
-      label: AppLabels.withdrawReason,
+      label: '退会理由を教えてください',
       isRequired: true,
       requiredMark: SvgPicture.asset(
         AppAssets.asteriskLogoSvg,
@@ -226,20 +225,20 @@ class _WithdrawReasonField extends StatelessWidget {
           errorText: errorText,
         ).copyWith(contentPadding: EdgeInsets.zero),
         hint: Text(
-          AppLabels.withdrawReason,
+          '退会理由を教えてください',
           style: AppTextStyles.body12.copyWith(color: cs.outlineVariant),
         ),
         dropdownStyleData: const DropdownStyleData(offset: Offset(0, 0)),
         iconStyleData: IconStyleData(
           icon: SvgPicture.asset(
             AppAssets.arrowDownLogoSvg,
-            width: WithdrawConstants.arrowIconWidthSize,
-            height: WithdrawConstants.arrowIconHeightSize,
+            width: MyPageConstants.arrowIconWidthSize,
+            height: MyPageConstants.arrowIconHeightSize,
           ),
           openMenuIcon: SvgPicture.asset(
             AppAssets.arrowUpLogoSvg,
-            width: WithdrawConstants.arrowIconWidthSize,
-            height: WithdrawConstants.arrowIconHeightSize,
+            width: MyPageConstants.arrowIconWidthSize,
+            height: MyPageConstants.arrowIconHeightSize,
           ),
           iconSize: 30,
         ),
