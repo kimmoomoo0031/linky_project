@@ -1,7 +1,7 @@
 /// 認証（auth）機能で使うダイアログ/説明文言。
 ///
 /// アプリ全体共通の文言（ネットワーク/サーバー等）は
-/// `core/constants/common_dialog_messages.dart` に置く。
+/// `core/constants/dialog_messages.dart` に置く。
 class AuthDialogMessages {
   const AuthDialogMessages._();
 

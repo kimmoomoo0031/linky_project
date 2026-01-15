@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:characters/characters.dart';
 
-import 'package:linky_project_0318/core/constants/lounge_create_constants.dart';
+import 'package:linky_project_0318/core/constants/lounge_constants.dart';
 
 part 'lounge_create_state.freezed.dart';
 
@@ -32,9 +32,9 @@ extension LoungeCreateStateX on LoungeCreateState {
   int get nameCount => name.characters.length;
   int get descriptionCount => description.characters.length;
 
-  bool get isNameOverLimit => nameCount > LoungeCreateConstants.nameMaxLength;
+  bool get isNameOverLimit => nameCount > LoungeConstants.nameMaxLength;
   bool get isDescriptionOverLimit =>
-      descriptionCount > LoungeCreateConstants.descriptionMaxLength;
+      descriptionCount > LoungeConstants.descriptionMaxLength;
 }
 
 

@@ -7,7 +7,7 @@ import 'package:go_router/go_router.dart';
 
 import 'package:linky_project_0318/core/constants/app_assets.dart';
 import 'package:linky_project_0318/core/dialog_type_exports.dart';
-import 'package:linky_project_0318/core/constants/lounge_create_constants.dart';
+import 'package:linky_project_0318/core/constants/lounge_constants.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
 import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
@@ -114,7 +114,7 @@ class _LoungeCreateCoverSection extends ConsumerWidget {
         _CoverImagePicker(
           thumbnailBytes: state.thumbnailBytes,
           onTap: controller.pickCoverImage,
-          size: LoungeCreateConstants.coverImageSize,
+          size: LoungeConstants.coverImageSize,
         ),
         const SizedBox(height: 6),
         Text(
@@ -146,7 +146,7 @@ class _LoungeCreateNameSection extends ConsumerWidget {
       children: [
         AuthLabeledTextField(
           label: 'ラウンジ名',
-          hintText: '日本生活',
+          hintText: LoungeConstants.loungeNameExample,
           isRequired: true,
           requiredMark: SvgPicture.asset(
             AppAssets.asteriskLogoSvg,
@@ -159,8 +159,8 @@ class _LoungeCreateNameSection extends ConsumerWidget {
         ),
         const SizedBox(height: 6),
         _RuleAndCounterRow(
-          ruleText: LoungeCreateConstants.nameRuleText,
-          counterText: '${state.nameCount}/${LoungeCreateConstants.nameMaxLength}',
+          ruleText: LoungeConstants.nameRuleText,
+          counterText: '${state.nameCount}/${LoungeConstants.nameMaxLength}',
           isOver: state.isNameOverLimit,
         ),
       ],
@@ -181,7 +181,7 @@ class _LoungeCreateDescriptionSection extends ConsumerWidget {
       children: [
         AuthLabeledTextField(
           label: 'ラウンジ紹介',
-          hintText: '日本での生活を共有できる場所です',
+          hintText: LoungeConstants.loungeDescriptionExample,
           isRequired: true,
           requiredMark: SvgPicture.asset(
             AppAssets.asteriskLogoSvg,
@@ -196,9 +196,9 @@ class _LoungeCreateDescriptionSection extends ConsumerWidget {
         ),
         const SizedBox(height: 6),
         _RuleAndCounterRow(
-          ruleText: LoungeCreateConstants.descriptionRuleText,
+          ruleText: LoungeConstants.descriptionRuleText,
           counterText:
-              '${state.descriptionCount}/${LoungeCreateConstants.descriptionMaxLength}',
+              '${state.descriptionCount}/${LoungeConstants.descriptionMaxLength}',
           isOver: state.isDescriptionOverLimit,
         ),
       ],

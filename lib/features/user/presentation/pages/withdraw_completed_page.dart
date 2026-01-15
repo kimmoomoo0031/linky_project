@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:linky_project_0318/core/constants/app_assets.dart';
-import 'package:linky_project_0318/core/constants/withdraw_constants.dart';
+import 'package:linky_project_0318/core/constants/mypage_constants.dart';
 import 'package:linky_project_0318/core/router/router_extensions.dart';
 
 /// 退会完了後の遷移用画面（ロゴ + インディケータ → ログインへ）。
@@ -30,7 +30,7 @@ class _WithdrawCompletedPageState extends State<WithdrawCompletedPage> {
 
     // 1.2秒後にログインへ
     Future<void>.delayed(
-      const Duration(milliseconds: WithdrawConstants.completedDelayMs),
+      const Duration(milliseconds: MyPageConstants.completedDelayMs),
       () {
       if (!mounted) return;
       context.goLogin();
@@ -46,11 +46,11 @@ class _WithdrawCompletedPageState extends State<WithdrawCompletedPage> {
         child: Center(
           child: AnimatedOpacity(
             opacity: _visible ? 1 : 0,
-            duration: const Duration(milliseconds: WithdrawConstants.completedAnimMs),
+            duration: const Duration(milliseconds: MyPageConstants.completedAnimMs),
             curve: Curves.easeOut,
             child: AnimatedScale(
-              scale: _visible ? 1.0 : WithdrawConstants.completedBeginScale,
-              duration: const Duration(milliseconds: WithdrawConstants.completedAnimMs),
+              scale: _visible ? 1.0 : MyPageConstants.completedBeginScale,
+              duration: const Duration(milliseconds: MyPageConstants.completedAnimMs),
               curve: Curves.easeOut,
               child: Column(
                 mainAxisSize: MainAxisSize.min,

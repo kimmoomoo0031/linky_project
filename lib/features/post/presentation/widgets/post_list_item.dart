@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:linky_project_0318/core/constants/app_assets.dart';
-import 'package:linky_project_0318/core/constants/post_constants.dart';
+import 'package:linky_project_0318/core/constants/lounge_constants.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/linky_divider.dart';
 import 'package:linky_project_0318/features/post/domain/entities/my_post.dart';
@@ -30,7 +30,7 @@ class PostListItem extends StatelessWidget {
   final VoidCallback onTap;
 
   ///ベスト投稿基準を満たしたか確認
-  bool get _isPopular => post.likeCount >= PostConstants.popularStarThreshold;
+  bool get _isPopular => post.likeCount >= LoungeConstants.popularStarMinLikeCount;
 
 
   /// 右側の表示：

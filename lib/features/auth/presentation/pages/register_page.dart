@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:linky_project_0318/core/dialog_type_exports.dart';
 import 'package:linky_project_0318/core/constants/app_assets.dart';
+import 'package:linky_project_0318/core/constants/auth_constants.dart';
 import 'package:linky_project_0318/core/router/router_extensions.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
@@ -229,7 +230,7 @@ class _EmailField extends StatelessWidget {
   Widget build(BuildContext context) {
     return AuthLabeledTextField(
       label: 'メールアドレス',
-      hintText: 'yamada@example.com',
+      hintText: AuthConstants.email,
       keyboardType: TextInputType.emailAddress,
       errorText: errorText,
       onChanged: onChanged,
@@ -255,7 +256,7 @@ class _NicknameField extends StatelessWidget {
   Widget build(BuildContext context) {
     return AuthLabeledTextField(
       label: 'ニックネーム',
-      hintText: 'リンゴ',
+      hintText: AuthConstants.nickname,
       errorText: errorText,
       onChanged: onChanged,
       isRequired: true,

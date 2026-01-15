@@ -56,7 +56,7 @@ Future<bool> showLinkyConfirmDialog({
   required String message,
   required String confirmText,
   String cancelText = 'キャンセル',
-  LinkyDialogType type = LinkyDialogType.warning,
+  LinkyDialogType type = LinkyDialogType.confirm,
   String? svgAssetPath,
   bool barrierDismissible = false,
   bool isDestructive = false,
@@ -138,6 +138,10 @@ class _LinkyDialogShell extends StatelessWidget {
     final Color textColor;
 
     switch (type) {
+      case LinkyDialogType.confirm:
+        borderColor = cs.primary;
+        textColor = cs.onSurfaceVariant;
+        break;
       case LinkyDialogType.warning:
         borderColor = cs.primary;
         textColor = cs.onSurfaceVariant;

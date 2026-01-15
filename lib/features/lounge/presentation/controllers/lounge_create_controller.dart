@@ -6,7 +6,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:linky_project_0318/core/dialog_type_exports.dart';
-import 'package:linky_project_0318/core/constants/lounge_create_constants.dart';
+import 'package:linky_project_0318/core/constants/lounge_constants.dart';
 import 'package:linky_project_0318/core/ui/events/linky_dialog_event.dart';
 import 'package:linky_project_0318/core/utils/validators.dart';
 import 'package:linky_project_0318/features/lounge/presentation/lounge_dialog_event_providers.dart';
@@ -40,10 +40,10 @@ class LoungeCreateController extends StateNotifier<LoungeCreateState> {
     if (xfile == null) return;
 
     final bytes = await xfile.readAsBytes();
-    if (bytes.lengthInBytes > LoungeCreateConstants.maxUploadBytes) {
+    if (bytes.lengthInBytes > LoungeConstants.maxUploadBytes) {
       state = state.copyWith(
         coverImageError:
-            'ファイルサイズが大きすぎます（最大${LoungeCreateConstants.maxUploadMb}MB）',
+            'ファイルサイズが大きすぎます（最大${LoungeConstants.maxUploadMb}MB）',
       );
       return;
     }
@@ -78,11 +78,11 @@ class LoungeCreateController extends StateNotifier<LoungeCreateState> {
       );
       return;
     }
-    if (decoded.width < LoungeCreateConstants.minSidePx ||
-        decoded.height < LoungeCreateConstants.minSidePx) {
+    if (decoded.width < LoungeConstants.coverImageMinRecommendedSidePx ||
+        decoded.height < LoungeConstants.coverImageMinRecommendedSidePx) {
       state = state.copyWith(
         coverImageError:
-            '画像サイズが小さすぎます（${LoungeCreateConstants.minSidePx}px以上推奨）',
+            '画像サイズが小さすぎます（${LoungeConstants.coverImageMinRecommendedSidePx}px以上推奨）',
       );
       return;
     }
@@ -121,8 +121,8 @@ class LoungeCreateController extends StateNotifier<LoungeCreateState> {
     // 5) サムネ生成（256x256）
     final thumb = img.copyResize(
       croppedDecoded,
-      width: LoungeCreateConstants.thumbSizePx,
-      height: LoungeCreateConstants.thumbSizePx,
+      width: LoungeConstants.coverThumbnailSizePx,
+      height: LoungeConstants.coverThumbnailSizePx,
       interpolation: img.Interpolation.average,
     );
     final Uint8List thumbBytes = isPng
@@ -158,11 +158,11 @@ class LoungeCreateController extends StateNotifier<LoungeCreateState> {
     try {
       // TODO(api): ラウンジ作成 API を呼び出し、成功したらラウンジ詳細へ遷移する。
       // TODO(api): バックエンドのエラーをフロントで分類して扱えるようにする（文字列ベタ出しを避ける）。
-      //   - ネットワーク系（オフライン/タイムアウト等）: CommonDialogMessages.networkError を表示
-      //   - サーバー系（5xx等）: CommonDialogMessages.serverError を表示
+      //   - ネットワーク系（オフライン/タイムアウト等）: CommonMessages.errors.network.message を表示
+      //   - サーバー系（5xx等）: CommonMessages.errors.server.message を表示
       //   - ビジネスエラー（例: ラウンジ名重複）: errorCode を解析して nameError 等のフィールドエラーに反映
       //   - バリデーションエラー（fieldErrors が返る場合）: 各フィールドにマッピング
-      //   - 想定外: CommonDialogMessages.unexpectedError を表示
+      //   - 想定外: CommonMessages.errors.unexpected.message を表示
       // TODO(api): 可能なら UseCase/Result（例: CreateLoungeResult）を導入し、
       //   Controller は Result → UI(state/ダイアログ) のマッピングに専念させる。
       await Future<void>.delayed(const Duration(milliseconds: 400));

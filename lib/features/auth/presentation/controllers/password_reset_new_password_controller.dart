@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:linky_project_0318/core/debug/app_log.dart';
 import 'package:linky_project_0318/core/debug/logged_action.dart';
 import 'package:linky_project_0318/core/utils/validators.dart';
-import 'package:linky_project_0318/core/constants/common_dialog_messages.dart';
+import 'package:linky_project_0318/core/constants/dialog_messages.dart';
 import 'package:linky_project_0318/core/dialog_type_exports.dart';
 import 'package:linky_project_0318/core/ui/events/linky_dialog_event.dart';
 import 'package:linky_project_0318/features/auth/domain/usecases/reset_password_result.dart';
@@ -131,17 +131,17 @@ class PasswordResetNewPasswordController
       },
       networkError: () {
         _emitDialog(
-          const LinkyDialogEvent(
+            LinkyDialogEvent(
             type: LinkyDialogType.error,
-            message: CommonDialogMessages.networkError,
+            message: CommonMessages.errors.network.message,
           ),
         );
       },
       serverError: () {
         _emitDialog(
-          const LinkyDialogEvent(
+            LinkyDialogEvent(
             type: LinkyDialogType.error,
-            message: CommonDialogMessages.serverError,
+            message: CommonMessages.errors.server.message,
           ),
         );
       },
@@ -151,9 +151,9 @@ class PasswordResetNewPasswordController
   /// 想定外の例外発生時のエラーハンドリング。
   void _handleUnexpectedError() {
     _emitDialog(
-      const LinkyDialogEvent(
+        LinkyDialogEvent(
         type: LinkyDialogType.error,
-        message: CommonDialogMessages.unexpectedError,
+        message: CommonMessages.errors.unexpected.message,
       ),
     );
   }
