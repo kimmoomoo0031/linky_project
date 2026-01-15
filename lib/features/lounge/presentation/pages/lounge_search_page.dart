@@ -190,7 +190,7 @@ class _LoungeSearchPageState extends ConsumerState<LoungeSearchPage> {
                       stackTrace: st,
                     );
                     final msg = AppError.from(e).userMessage(
-                      contextLabel: AppErrorContext.loungeSearch,
+                      context: AppErrorContext.loungeSearch,
                     );
                     return Center(
                       child: Text(

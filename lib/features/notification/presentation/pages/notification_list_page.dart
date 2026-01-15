@@ -60,7 +60,7 @@ class NotificationListPage extends ConsumerWidget {
               stackTrace: st,
             );
             final msg = AppError.from(e).userMessage(
-              contextLabel: AppErrorContext.notifications,
+              context: AppErrorContext.notifications,
             );
             return Center(
               child: Text(

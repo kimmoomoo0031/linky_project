@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:linky_project_0318/features/auth/presentation/constants/auth_dialog_messages.dart';
+import 'package:linky_project_0318/core/constants/auth_constants.dart';
 
 import 'package:linky_project_0318/core/dialog_type_exports.dart';
 import 'package:linky_project_0318/core/router/router_extensions.dart';
@@ -136,7 +136,7 @@ class _PasswordRuleBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const LinkyInfoBox(
-      text: AuthDialogMessages.passwordResetDescription,
+      text: AuthConstants.passwordResetDescription,
     );
   }
 }

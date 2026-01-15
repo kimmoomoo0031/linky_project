@@ -34,7 +34,7 @@ class NotificationSettingsPage extends ConsumerWidget {
             stackTrace: st,
           );
           final msg = AppError.from(e).userMessage(
-            contextLabel: AppErrorContext.notificationSettings,
+            context: AppErrorContext.notificationSettings,
           );
           return Center(
             child: Text(

@@ -2,13 +2,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:linky_project_0318/core/debug/app_log.dart';
 import 'package:linky_project_0318/core/debug/logged_action.dart';
 import 'package:linky_project_0318/core/utils/validators.dart';
-import 'package:linky_project_0318/core/constants/dialog_messages.dart';
+import 'package:linky_project_0318/core/error/common_messages.dart';
 import 'package:linky_project_0318/core/dialog_type_exports.dart';
 import 'package:linky_project_0318/core/ui/events/linky_dialog_event.dart';
 import 'package:linky_project_0318/features/auth/domain/usecases/reset_password_result.dart';
 import 'package:linky_project_0318/features/auth/domain/usecases/reset_password_usecase.dart';
 import 'package:linky_project_0318/features/auth/presentation/auth_dialog_event_providers.dart';
-import 'package:linky_project_0318/features/auth/presentation/constants/auth_dialog_messages.dart';
+import 'package:linky_project_0318/core/constants/auth_constants.dart';
 
 import 'package:linky_project_0318/features/auth/presentation/states/password_reset_new_password_state.dart';
 
@@ -112,7 +112,7 @@ class PasswordResetNewPasswordController
         _emitDialog(
           const LinkyDialogEvent(
             type: LinkyDialogType.info,
-            message: AuthDialogMessages.resetPasswordSuccess,
+            message: AuthConstants.resetPasswordSuccess,
           ),
         );
       },
@@ -120,7 +120,7 @@ class PasswordResetNewPasswordController
         _emitDialog(
           const LinkyDialogEvent(
             type: LinkyDialogType.error,
-            message: AuthDialogMessages.invalidResetCode,
+            message: AuthConstants.invalidResetCode,
           ),
         );
       },

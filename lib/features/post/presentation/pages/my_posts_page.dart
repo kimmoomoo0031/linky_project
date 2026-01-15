@@ -35,7 +35,7 @@ class MyPostsPage extends ConsumerWidget {
               stackTrace: st,
             );
             final msg = AppError.from(e).userMessage(
-              contextLabel: AppErrorContext.myPosts,
+              context: AppErrorContext.myPosts,
             );
             return Center(
               child: Text(

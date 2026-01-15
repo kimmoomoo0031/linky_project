@@ -18,7 +18,7 @@ import 'package:linky_project_0318/core/enums/auth_action_button_style.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/auth_labeled_text_field.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/auth_password_field.dart';
 
-import 'package:linky_project_0318/features/auth/presentation/constants/auth_dialog_messages.dart';
+import 'package:linky_project_0318/core/constants/auth_constants.dart';
 
 /// Linky 新規登録画面。
 ///
@@ -61,8 +61,8 @@ class RegisterPage extends ConsumerWidget {
           onPressedHelp: () {
             showLinkyDialog(
               context: context,
-              title: AuthDialogMessages.registerInputRuleTitle,
-              message: AuthDialogMessages.registerInputRuleBody,
+              title: AuthConstants.registerInputRuleTitle,
+              message: AuthConstants.registerInputRuleBody,
               type: LinkyDialogType.info,
             );
           },

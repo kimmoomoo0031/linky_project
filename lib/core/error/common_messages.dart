@@ -1,4 +1,4 @@
-/// アプリ全体で共通に使うメッセージ（ダイアログ/スナックバー両対応）。
+/// [Core/Error] アプリ全体で共通に使うメッセージ（ダイアログ/スナックバー両対応）。
 class AppMessage {
   const AppMessage({
     required this.message,
@@ -9,7 +9,7 @@ class AppMessage {
   final String? title;
 }
 
-/// アプリ共通メッセージ一覧。
+/// [Core/Error] アプリ共通メッセージ一覧。
 ///
 /// 例: `CommonMessages.errors.network.message`
 class CommonMessages {
@@ -20,7 +20,7 @@ class CommonMessages {
   static const failures = _CommonFailureMessages();
 }
 
-/// 共通：エラーメッセージ（ダイアログ/スナックバー用）
+/// [Core/Error] 共通：エラーメッセージ（ダイアログ/スナックバー用）
 class _CommonErrorMessages {
   const _CommonErrorMessages();
 
@@ -45,38 +45,38 @@ class _CommonErrorMessages {
   );
 }
 
-/// 共通：成功メッセージ（ダイアログ/スナックバー用）
+/// [Core/Error] 共通：成功メッセージ（ダイアログ/スナックバー用）
 class _CommonSuccessMessages {
   const _CommonSuccessMessages();
 
-  /// 更新成功。
+  /// [Core/Error] プロフィール更新成功。
   final profileUpdated = const AppMessage(
     message: 'プロフィールの編集が完了しました。',
   );
 
-  /// 認証コード再送信成功。
+  /// [Core/Error] 認証コード再送信成功。
   final resendResetCodeSucceeded = const AppMessage(
     message: '認証コードを再送信しました。',
   );
 }
 
-/// 共通：失敗メッセージ（ダイアログ/スナックバー用）
+/// [Core/Error] 共通：失敗メッセージ（ダイアログ/スナックバー用）
 class _CommonFailureMessages {
   const _CommonFailureMessages();
 
-  /// 認証コード確認失敗。
+  /// [Core/Error] 認証コード確認失敗。
   final verifyResetCodeFailed = const AppMessage(
     title: '失敗',
     message: '認証コードの確認に失敗しました。\n時間をおいて再度お試しください。',
   );
 
-  /// 認証コード再送信失敗。
+  /// [Core/Error] 認証コード再送信失敗。
   final resendResetCodeFailed = const AppMessage(
     title: '失敗',
     message: '再送信に失敗しました。\n時間をおいて再度お試しください。',
   );
 
-  /// 新しいパスワード設定失敗
+  /// [Core/Error] 新しいパスワード設定失敗。
   final newPasswordMustBeDifferentFromCurrent = const AppMessage(
     title: '入力エラー',
     message: '新しいパスワードは現在のパスワードと異なるものを入力してください。',

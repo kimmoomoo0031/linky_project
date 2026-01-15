@@ -1,45 +1,56 @@
-import 'dart:async';
-import 'dart:io';
+import 'package:linky_project_0318/core/error/app_error_context.dart';
+import 'package:linky_project_0318/core/error/api_error_models.dart';
+import 'package:linky_project_0318/core/error/app_error_mapper.dart';
 
-import 'package:dio/dio.dart';
-
-/// アプリ内で扱う「標準化したエラー」。
-///
-/// 目的:
-/// - 例外（DioException 等）を UI に直接流さない
-/// - UI は「ユーザー向け文言」だけを表示する
-/// - 実 API 連携後も、エラー種別追加はここ（変換/マッピング）だけで済むようにする
 sealed class AppError {
   const AppError();
 
   factory AppError.from(Object error) {
-    // Dio
-    if (error is DioException) {
-      return AppErrorDio._from(error);
-    }
-
-    // ネットワーク（Socket）
-    if (error is SocketException) {
-      return const AppErrorNetwork();
-    }
-
-    // タイムアウト（Dart）
-    if (error is TimeoutException) {
-      return const AppErrorTimeout();
-    }
-
-    // 形式不正など
-    if (error is FormatException) {
-      return const AppErrorInvalidResponse();
-    }
-
-    return AppErrorUnknown(error);
+    return AppErrorMapper.from(error);
   }
+  /// - [context] は画面/機能に応じた補足（例: 通知/ホーム/検索）に使う
+  String userMessage({AppErrorContext? context});
+}
 
-  /// ユーザー向けの表示文言（例外の生文は出さない）。
-  ///
-  /// - [contextLabel] は画面/機能に応じた補足（例: 通知/ホーム/検索）に使う
-  String userMessage({String? contextLabel});
+/// [Core/Error] サーバー標準のエラー応答（trace_id/error/path/method）を表す AppError。
+class AppErrorApi extends AppError {
+  const AppErrorApi({
+    required this.traceId,
+    required this.httpStatus,
+    required this.code,
+    required this.message,
+    required this.type,
+    required this.details,
+    required this.path,
+    required this.method,
+  });
+
+  /// [Core/Error] サーバー trace_id（ログ追跡用）
+  final String traceId;
+
+  /// [Core/Error] HTTP status（成功定義は200、ここは失敗時のみ来る想定）
+  final int? httpStatus;
+
+  /// [Core/Error] ビジネスエラーコード（例: 1000台/2000台）
+  final int code;
+
+  /// [Core/Error] ユーザー向けメッセージ（サーバー提供）
+  final String message;
+
+  /// [Core/Error] エラータイプ（例: validation_error/internal_error 等）
+  final String type;
+
+  /// [Core/Error] Validation詳細（該当時のみ）
+  final List<ApiErrorDetail> details;
+
+  final String path;
+  final String method;
+
+  @override
+  String userMessage({AppErrorContext? context}) {
+    // サーバーがユーザー向け文言を返す前提：そのまま表示
+    return message;
+  }
 }
 
 /// ネットワーク未接続/接続不可。
@@ -47,7 +58,7 @@ class AppErrorNetwork extends AppError {
   const AppErrorNetwork();
 
   @override
-  String userMessage({String? contextLabel}) {
+  String userMessage({AppErrorContext? context}) {
     return 'ネットワーク接続を確認してください。';
   }
 }
@@ -57,7 +68,7 @@ class AppErrorTimeout extends AppError {
   const AppErrorTimeout();
 
   @override
-  String userMessage({String? contextLabel}) {
+  String userMessage({AppErrorContext? context}) {
     return '通信がタイムアウトしました。時間をおいて再度お試しください。';
   }
 }
@@ -67,10 +78,8 @@ class AppErrorInvalidResponse extends AppError {
   const AppErrorInvalidResponse();
 
   @override
-  String userMessage({String? contextLabel}) {
-    final prefix = (contextLabel == null || contextLabel.isEmpty)
-        ? ''
-        : '$contextLabelの';
+  String userMessage({AppErrorContext? context}) {
+    final prefix = _contextPrefix(context);
     return '${prefix}データの取得に失敗しました。';
   }
 }
@@ -80,7 +89,7 @@ class AppErrorUnauthorized extends AppError {
   const AppErrorUnauthorized();
 
   @override
-  String userMessage({String? contextLabel}) {
+  String userMessage({AppErrorContext? context}) {
     return 'セッションが切れました。再ログインしてください。';
   }
 }
@@ -92,7 +101,7 @@ class AppErrorServer extends AppError {
   final int? statusCode;
 
   @override
-  String userMessage({String? contextLabel}) {
+  String userMessage({AppErrorContext? context}) {
     return 'サーバーエラーが発生しました。しばらくしてからお試しください。';
   }
 }
@@ -104,10 +113,8 @@ class AppErrorBadRequest extends AppError {
   final int? statusCode;
 
   @override
-  String userMessage({String? contextLabel}) {
-    final prefix = (contextLabel == null || contextLabel.isEmpty)
-        ? ''
-        : '$contextLabelの';
+  String userMessage({AppErrorContext? context}) {
+    final prefix = _contextPrefix(context);
     return '${prefix}取得に失敗しました。';
   }
 }
@@ -119,70 +126,15 @@ class AppErrorUnknown extends AppError {
   final Object original;
 
   @override
-  String userMessage({String? contextLabel}) {
-    final prefix = (contextLabel == null || contextLabel.isEmpty)
-        ? ''
-        : '$contextLabelの';
+  String userMessage({AppErrorContext? context}) {
+    final prefix = _contextPrefix(context);
     return '${prefix}取得に失敗しました。';
   }
 }
 
-class AppErrorDio extends AppError {
-  const AppErrorDio._(this.type, {this.statusCode});
-
-  final DioExceptionType type;
-  final int? statusCode;
-
-  factory AppErrorDio._from(DioException e) {
-    final code = e.response?.statusCode;
-
-    // type 優先（timeout 等）
-    switch (e.type) {
-      case DioExceptionType.connectionTimeout:
-      case DioExceptionType.sendTimeout:
-      case DioExceptionType.receiveTimeout:
-        return const AppErrorDio._(DioExceptionType.receiveTimeout);
-      case DioExceptionType.connectionError:
-        return const AppErrorDio._(DioExceptionType.connectionError);
-      case DioExceptionType.badResponse:
-        // status code で大分類
-        if (code == 401 || code == 403) {
-          return const AppErrorDio._(DioExceptionType.badResponse, statusCode: 401);
-        }
-        return AppErrorDio._(DioExceptionType.badResponse, statusCode: code);
-      case DioExceptionType.cancel:
-      case DioExceptionType.badCertificate:
-      case DioExceptionType.unknown:
-        return AppErrorDio._(e.type, statusCode: code);
-    }
-  }
-
-  @override
-  String userMessage({String? contextLabel}) {
-    // timeout
-    if (type == DioExceptionType.connectionTimeout ||
-        type == DioExceptionType.sendTimeout ||
-        type == DioExceptionType.receiveTimeout) {
-      return const AppErrorTimeout().userMessage(contextLabel: contextLabel);
-    }
-    // network
-    if (type == DioExceptionType.connectionError) {
-      return const AppErrorNetwork().userMessage(contextLabel: contextLabel);
-    }
-
-    final code = statusCode;
-    if (code == 401 || code == 403) {
-      return const AppErrorUnauthorized().userMessage(contextLabel: contextLabel);
-    }
-    if (code != null && code >= 500) {
-      return AppErrorServer(statusCode: code).userMessage(contextLabel: contextLabel);
-    }
-    if (code != null && code >= 400) {
-      return AppErrorBadRequest(statusCode: code).userMessage(contextLabel: contextLabel);
-    }
-
-    return AppErrorUnknown(this).userMessage(contextLabel: contextLabel);
-  }
+String _contextPrefix(AppErrorContext? context) {
+  if (context == null) return '';
+  return '${context.label}の';
 }
 
 
