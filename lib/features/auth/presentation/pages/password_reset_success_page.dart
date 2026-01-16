@@ -7,7 +7,7 @@ import 'package:linky_project_0318/core/theme/app_colors.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/router/router_extensions.dart';
 import 'package:linky_project_0318/core/widgets/gradient_text.dart';
-import 'package:linky_project_0318/features/auth/presentation/constants/auth_dialog_messages.dart';
+import 'package:linky_project_0318/core/constants/auth_constants.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/auth_action_button.dart';
 import 'package:linky_project_0318/core/enums/auth_action_button_style.dart';
 
@@ -28,14 +28,14 @@ class PasswordResetSuccessPage extends ConsumerWidget {
                 SvgPicture.asset(AppAssets.linkyLogoSvg, width: 50, height: 50),
                 const SizedBox(height: 24),
                 GradientText(
-                  AuthDialogMessages.passwordResetCompleted,
+                  AuthConstants.passwordResetCompleted,
                   gradient: AppColors.linky45degGradient,
                   style: AppTextStyles.heading24,
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 24),
                 GradientText(
-                  AuthDialogMessages.passWordResetCompletedContext,
+                  AuthConstants.passWordResetCompletedContext,
                   gradient: AppColors.linky45degGradient,
                   style: AppTextStyles.body14,
                   textAlign: TextAlign.center,

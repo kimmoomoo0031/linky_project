@@ -7,6 +7,7 @@ import 'package:linky_project_0318/core/theme/app_colors.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/router/router_extensions.dart';
 import 'package:linky_project_0318/core/widgets/gradient_text.dart';
+import 'package:linky_project_0318/core/constants/auth_constants.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/auth_action_button.dart';
 import 'package:linky_project_0318/core/enums/auth_action_button_style.dart';
 
@@ -75,7 +76,7 @@ class _RegisterSuccessMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GradientText(
-      '会員登録が完了しました。\n他のユーザーと情報を共有してみましょう!',
+      AuthConstants.registerCompletedMessage,
       gradient: AppColors.linky45degGradient,
       style: AppTextStyles.body18,
       textAlign: TextAlign.center,

@@ -5,8 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:linky_project_0318/core/debug/app_log.dart';
 import 'package:linky_project_0318/core/debug/trace_id.dart';
-import 'package:linky_project_0318/core/error/app_error.dart';
-import 'package:linky_project_0318/core/error/app_error_context.dart';
+import 'package:linky_project_0318/core/error/app_error_messages.dart';
 import 'package:linky_project_0318/core/enums/fetch_more_result.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/utils/infinite_scroll_helper.dart';
@@ -190,7 +189,7 @@ class _LoungeSearchPageState extends ConsumerState<LoungeSearchPage> {
                       stackTrace: st,
                     );
                     final msg = AppError.from(e).userMessage(
-                      contextLabel: AppErrorContext.loungeSearch,
+                      context: AppErrorContext.loungeSearch,
                     );
                     return Center(
                       child: Text(

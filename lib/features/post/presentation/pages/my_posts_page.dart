@@ -3,11 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:linky_project_0318/core/debug/app_log.dart';
 import 'package:linky_project_0318/core/debug/trace_id.dart';
-import 'package:linky_project_0318/core/error/app_error.dart';
-import 'package:linky_project_0318/core/error/app_error_context.dart';
+import 'package:linky_project_0318/core/error/app_error_messages.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
-import 'package:linky_project_0318/features/post/post_exports.dart';
+import 'package:linky_project_0318/core/export/post_exports.dart';
 import 'package:linky_project_0318/features/post/presentation/widgets/post_list_item.dart';
 
 /// 自分の投稿一覧（モック）。
@@ -35,7 +34,7 @@ class MyPostsPage extends ConsumerWidget {
               stackTrace: st,
             );
             final msg = AppError.from(e).userMessage(
-              contextLabel: AppErrorContext.myPosts,
+              context: AppErrorContext.myPosts,
             );
             return Center(
               child: Text(

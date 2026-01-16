@@ -3,12 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:linky_project_0318/core/debug/app_log.dart';
 import 'package:linky_project_0318/core/debug/trace_id.dart';
-import 'package:linky_project_0318/core/error/app_error.dart';
-import 'package:linky_project_0318/core/error/app_error_context.dart';
+import 'package:linky_project_0318/core/error/app_error_messages.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
 import 'package:linky_project_0318/core/widgets/linky_divider.dart';
-import 'package:linky_project_0318/features/notification/notification_exports.dart';
+import 'package:linky_project_0318/core/export/notification_exports.dart';
 
 /// 通知設定画面（モック）。
 class NotificationSettingsPage extends ConsumerWidget {
@@ -34,7 +33,7 @@ class NotificationSettingsPage extends ConsumerWidget {
             stackTrace: st,
           );
           final msg = AppError.from(e).userMessage(
-            contextLabel: AppErrorContext.notificationSettings,
+            context: AppErrorContext.notificationSettings,
           );
           return Center(
             child: Text(

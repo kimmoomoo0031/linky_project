@@ -1,13 +1,12 @@
 import 'dart:typed_data';
+import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image/image.dart' as img;
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-
-import 'package:linky_project_0318/core/dialog_type_exports.dart';
+import 'package:linky_project_0318/core/export/dialog_type_exports.dart';
 import 'package:linky_project_0318/core/constants/lounge_constants.dart';
-import 'package:linky_project_0318/core/ui/events/linky_dialog_event.dart';
 import 'package:linky_project_0318/core/utils/validators.dart';
 import 'package:linky_project_0318/features/lounge/presentation/lounge_dialog_event_providers.dart';
 import 'package:linky_project_0318/features/lounge/presentation/states/lounge_create_state.dart';

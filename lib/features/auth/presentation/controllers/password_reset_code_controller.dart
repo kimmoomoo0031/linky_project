@@ -3,12 +3,12 @@ import 'package:linky_project_0318/core/debug/app_log.dart';
 import 'package:linky_project_0318/core/debug/logged_action.dart';
 import 'package:linky_project_0318/core/utils/validators.dart';
 import 'package:linky_project_0318/core/utils/regex.dart';
+import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
 import 'package:linky_project_0318/features/auth/presentation/states/password_reset_code_state.dart';
-import 'package:linky_project_0318/core/dialog_type_exports.dart';
-import 'package:linky_project_0318/core/ui/events/linky_dialog_event.dart';
+import 'package:linky_project_0318/core/export/dialog_type_exports.dart';
 import 'package:linky_project_0318/features/auth/presentation/auth_dialog_event_providers.dart';
-import 'package:linky_project_0318/features/auth/presentation/constants/auth_dialog_messages.dart';
-import 'package:linky_project_0318/core/constants/dialog_messages.dart';
+import 'package:linky_project_0318/core/constants/auth_constants.dart';
+import 'package:linky_project_0318/core/error/ui_app_messages.dart';
 
 /// パスワード再設定の「認証コード入力」画面用コントローラ。
 ///
@@ -100,8 +100,8 @@ class PasswordResetCodeController extends StateNotifier<PasswordResetCodeState> 
             _emitDialog(
               const LinkyDialogEvent(
                 type: LinkyDialogType.error,
-                title: AuthDialogMessages.invalidOtpCodeTitle,
-                message: AuthDialogMessages.invalidOtpCodeMessage,
+                title: AuthConstants.invalidOtpCodeTitle,
+                message: AuthConstants.invalidOtpCodeMessage,
               ),
             );
             state = state.copyWith(isSuccess: false);

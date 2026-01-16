@@ -4,21 +4,20 @@ import 'package:go_router/go_router.dart';
 
 import 'package:linky_project_0318/core/debug/app_log.dart';
 import 'package:linky_project_0318/core/debug/trace_id.dart';
-import 'package:linky_project_0318/core/error/app_error.dart';
-import 'package:linky_project_0318/core/error/app_error_context.dart';
+import 'package:linky_project_0318/core/error/app_error_messages.dart';
 import 'package:linky_project_0318/core/router/router_extensions.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
 import 'package:linky_project_0318/core/widgets/linky_search_bar.dart';
 import 'package:linky_project_0318/core/widgets/linky_snack_bar.dart';
-import 'package:linky_project_0318/features/home/home_exports.dart';
+import 'package:linky_project_0318/core/export/home_exports.dart';
 import 'package:linky_project_0318/features/home/domain/entities/lounge_preview.dart';
 import 'package:linky_project_0318/features/home/presentation/pages/home_menu_page.dart';
 import 'package:linky_project_0318/features/home/presentation/widgets/home_best_posts_list.dart';
 import 'package:linky_project_0318/features/home/presentation/widgets/home_latest_viewed_pager.dart';
 import 'package:linky_project_0318/features/home/presentation/widgets/home_main_app_bar.dart';
 import 'package:linky_project_0318/features/home/presentation/widgets/home_section_title.dart';
-import 'package:linky_project_0318/core/constants/dialog_messages.dart';
+import 'package:linky_project_0318/core/error/ui_app_messages.dart';
 import 'package:linky_project_0318/core/enums/linky_dialog_type.dart';
 
 /// ホーム画面（メイン側）。
@@ -83,7 +82,7 @@ class _HomeMainPageState extends ConsumerState<HomeMainPage> {
             error: e,
             stackTrace: st,
           );
-          final msg = AppError.from(e).userMessage(contextLabel: AppErrorContext.home);
+          final msg = AppError.from(e).userMessage(context: AppErrorContext.home);
           return Center(
             child: Text(
               msg,

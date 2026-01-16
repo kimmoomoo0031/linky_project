@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:linky_project_0318/core/dialog_type_exports.dart';
+import 'package:linky_project_0318/core/export/dialog_type_exports.dart';
 import 'package:linky_project_0318/core/constants/app_assets.dart';
 import 'package:linky_project_0318/core/constants/auth_constants.dart';
 import 'package:linky_project_0318/core/router/router_extensions.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
 import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
-import 'package:linky_project_0318/features/auth/auth_exports.dart';
+import 'package:linky_project_0318/core/export/auth_exports.dart';
 import 'package:linky_project_0318/features/auth/presentation/auth_dialog_event_providers.dart';
 import 'package:linky_project_0318/features/auth/presentation/controllers/register_controller.dart';
 import 'package:linky_project_0318/features/auth/presentation/states/register_state.dart';
@@ -18,7 +18,7 @@ import 'package:linky_project_0318/core/enums/auth_action_button_style.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/auth_labeled_text_field.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/auth_password_field.dart';
 
-import 'package:linky_project_0318/features/auth/presentation/constants/auth_dialog_messages.dart';
+import 'package:linky_project_0318/core/constants/auth_constants.dart';
 
 /// Linky 新規登録画面。
 ///
@@ -61,8 +61,8 @@ class RegisterPage extends ConsumerWidget {
           onPressedHelp: () {
             showLinkyDialog(
               context: context,
-              title: AuthDialogMessages.registerInputRuleTitle,
-              message: AuthDialogMessages.registerInputRuleBody,
+              title: AuthConstants.registerInputRuleTitle,
+              message: AuthConstants.registerInputRuleBody,
               type: LinkyDialogType.info,
             );
           },

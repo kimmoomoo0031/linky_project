@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:linky_project_0318/features/home/domain/entities/best_post.dart';
 import 'package:linky_project_0318/features/home/domain/entities/home_user.dart';
 import 'package:linky_project_0318/features/home/domain/entities/lounge_preview.dart';
-import 'package:linky_project_0318/features/home/home_exports.dart';
+import 'package:linky_project_0318/core/export/home_exports.dart';
 import 'package:linky_project_0318/core/constants/home_constants.dart';
 
 class HomeViewData {

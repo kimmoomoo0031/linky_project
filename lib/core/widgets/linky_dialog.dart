@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:linky_project_0318/core/dialog_type_exports.dart';
+import 'package:linky_project_0318/core/export/dialog_type_exports.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
+
 
 /// アプリ共通のシンプルなダイアログ。
 ///
@@ -236,4 +237,21 @@ class _LinkyDialogShell extends StatelessWidget {
     );
   }
 }
+
+/// ダイアログ表示のための「1回限りのイベント」データ。
+///
+/// 「いつ/何を表示するか」をイベントとして流すことで
+/// 再ビルドや画面復帰での再表示を避けやすくする。
+class LinkyDialogEvent {
+  const LinkyDialogEvent({
+    required this.message,
+    this.title,
+    this.type = LinkyDialogType.info,
+  });
+
+  final String message;
+  final String? title;
+  final LinkyDialogType type;
+}
+
 

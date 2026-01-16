@@ -6,7 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:linky_project_0318/core/constants/app_assets.dart';
-import 'package:linky_project_0318/core/dialog_type_exports.dart';
+import 'package:linky_project_0318/core/export/dialog_type_exports.dart';
 import 'package:linky_project_0318/core/constants/lounge_constants.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
@@ -19,7 +19,7 @@ import 'package:linky_project_0318/features/lounge/presentation/providers/lounge
 import 'package:linky_project_0318/features/lounge/presentation/lounge_dialog_event_providers.dart';
 import 'package:linky_project_0318/features/lounge/presentation/states/lounge_create_state.dart';
 
-import 'package:linky_project_0318/features/auth/presentation/constants/auth_dialog_messages.dart';
+import 'package:linky_project_0318/core/constants/lounge_constants.dart';
 
 /// ラウンジ作成画面。
 ///
@@ -90,7 +90,7 @@ class _LoungeCreateInfoSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LinkyInfoBox(text: AuthDialogMessages.makeLoungeDescription);
+    return LinkyInfoBox(text: LoungeConstants.makeLoungeDescription);
   }
 }
 
