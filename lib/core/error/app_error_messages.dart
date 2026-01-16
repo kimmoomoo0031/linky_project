@@ -105,7 +105,7 @@ class AppErrorInvalidResponse extends AppError {
   @override
   String userMessage({AppErrorContext? context}) {
     final prefix = _contextPrefix(context);
-    return '${prefix}データの取得に失敗しました。';
+    return '${prefix}取得したデータの形式が正しくありません。';
   }
 }
 
@@ -140,7 +140,7 @@ class AppErrorBadRequest extends AppError {
   @override
   String userMessage({AppErrorContext? context}) {
     final prefix = _contextPrefix(context);
-    return '${prefix}取得に失敗しました。';
+    return '${prefix}入力内容をご確認ください。';
   }
 }
 
@@ -152,8 +152,7 @@ class AppErrorUnknown extends AppError {
 
   @override
   String userMessage({AppErrorContext? context}) {
-    final prefix = _contextPrefix(context);
-    return '${prefix}取得に失敗しました。';
+    return '予期せぬエラーが発生しました。しばらくしてからお試しください。';
   }
 }
 

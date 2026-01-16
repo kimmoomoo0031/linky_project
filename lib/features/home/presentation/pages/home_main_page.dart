@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import 'package:linky_project_0318/core/debug/app_log.dart';
 import 'package:linky_project_0318/core/debug/trace_id.dart';
-import 'package:linky_project_0318/core/error/app_error.dart';
+import 'package:linky_project_0318/core/error/app_error_messages.dart';
 import 'package:linky_project_0318/core/router/router_extensions.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
@@ -17,7 +17,7 @@ import 'package:linky_project_0318/features/home/presentation/widgets/home_best_
 import 'package:linky_project_0318/features/home/presentation/widgets/home_latest_viewed_pager.dart';
 import 'package:linky_project_0318/features/home/presentation/widgets/home_main_app_bar.dart';
 import 'package:linky_project_0318/features/home/presentation/widgets/home_section_title.dart';
-import 'package:linky_project_0318/core/error/common_messages.dart';
+import 'package:linky_project_0318/core/error/ui_app_messages.dart';
 import 'package:linky_project_0318/core/enums/linky_dialog_type.dart';
 
 /// ホーム画面（メイン側）。

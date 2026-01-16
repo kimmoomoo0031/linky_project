@@ -8,7 +8,7 @@ import 'package:linky_project_0318/core/dialog_type_exports.dart';
 import 'package:linky_project_0318/core/ui/events/linky_dialog_event.dart';
 import 'package:linky_project_0318/features/auth/presentation/auth_dialog_event_providers.dart';
 import 'package:linky_project_0318/core/constants/auth_constants.dart';
-import 'package:linky_project_0318/core/error/common_messages.dart';
+import 'package:linky_project_0318/core/error/ui_app_messages.dart';
 
 /// パスワード再設定の「認証コード入力」画面用コントローラ。
 ///

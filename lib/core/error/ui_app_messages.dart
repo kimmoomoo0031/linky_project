@@ -66,13 +66,13 @@ class _CommonFailureMessages {
 
   /// [Core/Error] 認証コード確認失敗。
   final verifyResetCodeFailed = const AppMessage(
-    title: '失敗',
+    title: '認証エラー',
     message: '認証コードの確認に失敗しました。\n時間をおいて再度お試しください。',
   );
 
   /// [Core/Error] 認証コード再送信失敗。
   final resendResetCodeFailed = const AppMessage(
-    title: '失敗',
+    title: '送信エラー',
     message: '再送信に失敗しました。\n時間をおいて再度お試しください。',
   );
 

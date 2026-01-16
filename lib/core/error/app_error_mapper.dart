@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 
 import 'api_error_models.dart';
-import 'app_error.dart';
+import 'app_error_messages.dart';
 
 /// [Core/Error] 例外（DioException 等）を AppError に正規化する責務を集約する。
 class AppErrorMapper {
