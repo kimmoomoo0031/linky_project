@@ -10,7 +10,7 @@ import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
 import 'package:linky_project_0318/core/widgets/linky_search_bar.dart';
 import 'package:linky_project_0318/core/widgets/linky_snack_bar.dart';
-import 'package:linky_project_0318/features/home/home_exports.dart';
+import 'package:linky_project_0318/core/export/home_exports.dart';
 import 'package:linky_project_0318/features/home/domain/entities/lounge_preview.dart';
 import 'package:linky_project_0318/features/home/presentation/pages/home_menu_page.dart';
 import 'package:linky_project_0318/features/home/presentation/widgets/home_best_posts_list.dart';

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/features/home/domain/entities/home_user.dart';
-import 'package:linky_project_0318/features/home/presentation/menu/home_menu_item_exports.dart';
+import 'package:linky_project_0318/core/export/home_exports.dart';
 
 /// ログイン済みユーザー向け：メニュー本体（Drawer内）。
 class LoggedInMenuView extends StatelessWidget {

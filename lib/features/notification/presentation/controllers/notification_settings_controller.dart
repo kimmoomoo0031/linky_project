@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:linky_project_0318/features/notification/domain/entities/notification_settings.dart';
-import 'package:linky_project_0318/features/notification/notification_exports.dart';
+import 'package:linky_project_0318/core/export/notification_exports.dart';
 
 /// 通知設定の状態を管理する Controller。
 ///

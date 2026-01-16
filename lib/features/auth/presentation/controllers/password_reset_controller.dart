@@ -5,10 +5,11 @@ import 'package:linky_project_0318/core/debug/logged_action.dart';
 import 'package:linky_project_0318/features/auth/presentation/states/password_reset_state.dart';
 import 'package:linky_project_0318/core/utils/validators.dart';
 import 'package:linky_project_0318/core/error/ui_app_messages.dart';
-import 'package:linky_project_0318/core/dialog_type_exports.dart';
-import 'package:linky_project_0318/core/ui/events/linky_dialog_event.dart';
+import 'package:linky_project_0318/core/export/dialog_type_exports.dart';
 import 'package:linky_project_0318/features/auth/presentation/auth_dialog_event_providers.dart';
 import 'package:linky_project_0318/core/constants/auth_constants.dart';
+import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
+
 
 /// パスワード再設定画面の入力値・バリデーション・ローディング状態を管理するコントローラ。
 class PasswordResetController extends StateNotifier<PasswordResetState> {

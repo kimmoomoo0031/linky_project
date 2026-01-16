@@ -5,7 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:linky_project_0318/core/constants/app_assets.dart';
 import 'package:linky_project_0318/core/constants/auth_constants.dart';
 import 'package:linky_project_0318/core/error/ui_app_messages.dart';
-import 'package:linky_project_0318/core/dialog_type_exports.dart';
+import 'package:linky_project_0318/core/export/dialog_type_exports.dart';
 import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
 import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/auth_action_button.dart';
@@ -14,7 +14,7 @@ import 'package:linky_project_0318/features/auth/presentation/widgets/auth_label
 import 'package:linky_project_0318/features/auth/presentation/widgets/auth_password_field.dart';
 import 'package:linky_project_0318/core/constants/mypage_constants.dart';
 import 'package:linky_project_0318/features/user/presentation/user_dialog_event_providers.dart';
-import 'package:linky_project_0318/features/user/user_exports.dart';
+import 'package:linky_project_0318/core/export/user_exports.dart';
 import 'package:linky_project_0318/features/user/presentation/controllers/profile_edit_controller.dart';
 import 'package:linky_project_0318/features/user/presentation/states/profile_edit_state.dart';
 

@@ -2,18 +2,16 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-
+import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
 import 'package:linky_project_0318/core/router/router_extensions.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
-import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
-import 'package:linky_project_0318/features/auth/auth_exports.dart';
+import 'package:linky_project_0318/core/export/auth_exports.dart';
 import 'package:linky_project_0318/features/auth/presentation/auth_dialog_event_providers.dart';
 import 'package:linky_project_0318/features/auth/presentation/states/password_reset_code_state.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/auth_action_button.dart';
 import 'package:linky_project_0318/core/enums/auth_action_button_style.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/otp_code_input.dart';
-import 'package:linky_project_0318/features/auth/presentation/pages/password_reset_new_password_page.dart';
 
 import 'package:linky_project_0318/features/auth/presentation/controllers/password_reset_code_controller.dart';
 
