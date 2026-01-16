@@ -1,6 +1,29 @@
-import 'package:linky_project_0318/core/error/app_error_context.dart';
+import 'package:flutter/foundation.dart';
 import 'package:linky_project_0318/core/error/api_error_models.dart';
 import 'package:linky_project_0318/core/error/app_error_mapper.dart';
+
+/// [Core/Error] ユーザー向けエラーメッセージ生成時に使う「画面/機能」コンテキスト。
+enum AppErrorContext {
+  notifications,
+  notificationSettings,
+  home,
+  myPosts,
+  loungeSearch,
+  loungeMain,
+}
+
+extension AppErrorContextLabel on AppErrorContext {
+  /// [Core/Error] 画面/機能を表す表示ラベル（日本語）。
+  String get label => switch (this) {
+    AppErrorContext.notifications => '通知',
+    AppErrorContext.notificationSettings => '通知設定',
+    AppErrorContext.home => 'ホーム',
+    AppErrorContext.myPosts => '投稿',
+    AppErrorContext.loungeSearch => '検索',
+    AppErrorContext.loungeMain => 'ラウンジ',
+  };
+}
+
 
 sealed class AppError {
   const AppError();
@@ -48,8 +71,10 @@ class AppErrorApi extends AppError {
 
   @override
   String userMessage({AppErrorContext? context}) {
-    // サーバーがユーザー向け文言を返す前提：そのまま表示
-    return message;
+    if (kReleaseMode) {
+      return message.isNotEmpty ? message : 'エラーが発生しました。';
+    }
+    return '[${type}] $message';
   }
 }
 

@@ -70,12 +70,14 @@ class ApiErrorResponse {
     final json = data.cast<String, dynamic>();
 
     final success = json['success'];
-    if (success != false) return null;
+    if (success == true) return null;
 
     final traceId = json['trace_id'] as String?;
     final errorJson = (json['error'] as Map?)?.cast<String, dynamic>();
     final path = json['path'] as String?;
     final method = json['method'] as String?;
+
+    // success が無くても、error が存在する場合は標準エラー応答として扱う。
     if (traceId == null || errorJson == null || path == null || method == null) {
       return null;
     }

@@ -60,7 +60,10 @@ class AppErrorMapper {
       case DioExceptionType.connectionError:
         return const AppErrorNetwork();
       case DioExceptionType.badResponse:
-        // status code で大分類
+
+        if (code == null) {
+          return const AppErrorInvalidResponse();
+        }
         if (code == 401 || code == 403) {
           return const AppErrorUnauthorized();
         }
