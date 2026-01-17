@@ -11,24 +11,28 @@ import 'package:linky_project_0318/core/theme/app_typography.dart';
 class LinkySearchBar extends StatelessWidget {
   const LinkySearchBar({
     super.key,
-    required this.hintText,
+    this.hintText,
     this.controller,
     this.focusNode,
     this.autofocus = false,
     this.readOnly = false,
     this.onTap,
     this.onChanged,
+    this.prefixIcon,
+    this.onPressedPrefix,
     this.showClearButton = false,
     this.onPressedClear,
   });
 
-  final String hintText;
+  final String? hintText;
   final TextEditingController? controller;
   final FocusNode? focusNode;
   final bool autofocus;
   final bool readOnly;
   final VoidCallback? onTap;
   final ValueChanged<String>? onChanged;
+  final Widget? prefixIcon;
+  final VoidCallback? onPressedPrefix;
   final bool showClearButton;
   final VoidCallback? onPressedClear;
 
@@ -57,6 +61,15 @@ class LinkySearchBar extends StatelessWidget {
           contentPadding: const EdgeInsets.symmetric(horizontal: 12),
           hintText: hintText,
           hintStyle: AppTextStyles.body12.copyWith(color: iconColor),
+          prefixIcon: prefixIcon == null
+              ? null
+              : IconButton(
+                  onPressed: onPressedPrefix,
+                  padding: EdgeInsets.zero,
+                  constraints:
+                      const BoxConstraints.tightFor(width: 40, height: 40),
+                  icon: prefixIcon!,
+                ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
             borderSide: BorderSide(color: cs.outlineVariant),
@@ -92,8 +105,6 @@ class LinkySearchBar extends StatelessWidget {
               ],
             ),
           ),
-          // suffixIcon の最小幅（デフォルト48程度）で右側に余白が出やすいため、幅の下限を外す
-          suffixIconConstraints: const BoxConstraints(minHeight: 40),
         ),
       ),
     );

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:linky_project_0318/core/constants/app_assets.dart';
+import 'package:linky_project_0318/core/enums/fetch_more_result.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
+import 'package:linky_project_0318/core/utils/infinite_scroll_helper.dart';
 
 /// Linky 共通スナックバー（ロゴ + メッセージ）。
 ///
@@ -47,6 +49,60 @@ void showLinkySnackBar(
         ),
       ),
     );
+}
+
+/// 末尾付近の追加取得と「最後のページ」スナックバー表示を共通化する。
+Future<bool> handleFetchMoreWithNoMoreSnack({
+  required BuildContext context,
+  required ScrollPosition position,
+  required bool noMoreSnackShown,
+  required bool hasNext,
+  required Future<FetchMoreResult> Function() fetchMore,
+  bool showNoMoreSnack = true,
+  String noMoreMessage = '最後のページです。',
+  int nearBottomThresholdPx = 200,
+}) async {
+  var snackShown = noMoreSnackShown;
+
+  if (!InfiniteScrollHelper.hasScrollableExtent(position)) {
+    return snackShown;
+  }
+
+  if (InfiniteScrollHelper.shouldResetNoMoreSnack(
+    pos: position,
+    snackShown: snackShown,
+  )) {
+    snackShown = false;
+  }
+
+  if (!InfiniteScrollHelper.isNearBottom(
+    position,
+  )) {
+    return snackShown;
+  }
+
+  if (!hasNext) {
+    if (showNoMoreSnack &&
+        !snackShown &&
+        noMoreMessage.isNotEmpty &&
+        context.mounted) {
+      snackShown = true;
+      showLinkySnackBar(context, message: noMoreMessage);
+    }
+    return snackShown;
+  }
+
+  final result = await fetchMore();
+  if (result == FetchMoreResult.noMore &&
+      showNoMoreSnack &&
+      !snackShown &&
+      noMoreMessage.isNotEmpty &&
+      context.mounted) {
+    snackShown = true;
+    showLinkySnackBar(context, message: noMoreMessage);
+  }
+
+  return snackShown;
 }
 
 
