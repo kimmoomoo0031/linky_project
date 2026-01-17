@@ -6,6 +6,7 @@ import 'package:linky_project_0318/core/debug/trace_id.dart';
 import 'package:linky_project_0318/core/error/app_error_messages.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
+import 'package:linky_project_0318/core/widgets/linky_selection_bottom_sheet.dart';
 import 'package:linky_project_0318/core/widgets/search_page_shell.dart';
 import 'package:linky_project_0318/features/lounge/presentation/controllers/lounge_post_search_controller.dart';
 import 'package:linky_project_0318/features/lounge/presentation/providers/lounge_post_search_providers.dart';
@@ -20,53 +21,61 @@ class LoungePostSearchPage extends ConsumerWidget {
     final cs = Theme.of(context).colorScheme;
     final async = ref.watch(loungePostSearchControllerProvider);
     final controller = ref.read(loungePostSearchControllerProvider.notifier);
+    final data = async.valueOrNull;
+    final isLoading = async.isLoading && data == null;
+    Widget? errorBody;
+
+    if (async.hasError) {
+      final traceId = TraceId.newId();
+      AppLog.err(
+        feature: 'LOUNGE',
+        action: 'POST_SEARCH',
+        traceId: traceId,
+        ms: 0,
+        error: async.error!,
+        stackTrace: async.stackTrace ?? StackTrace.empty,
+      );
+      final msg = AppError.from(
+        async.error!,
+      ).userMessage(context: AppErrorContext.loungeSearch);
+      errorBody = Center(
+        child: Text(msg, style: AppTextStyles.body14.copyWith(color: cs.error)),
+      );
+    }
 
     return Scaffold(
       appBar: const LinkyAppBar(title: '投稿検索', showBackButton: true),
       body: SafeArea(
-        child: async.when(
-          loading: () => const Center(child: CircularProgressIndicator()),
-          error: (e, st) {
-            final traceId = TraceId.newId();
-            AppLog.err(
-              feature: 'LOUNGE',
-              action: 'POST_SEARCH',
-              traceId: traceId,
-              ms: 0,
-              error: e,
-              stackTrace: st,
+        child: SearchPageShell<PostSearchItem>(
+          hintText: '',
+          items: data?.items ?? const [],
+          totalCount: data?.totalCount ?? 0,
+          hasNext: data?.hasNext ?? false,
+          isFetchingMore: data?.isFetchingMore ?? false,
+          onSearch: controller.search,
+          onFetchMore: controller.fetchMore,
+          isLoading: isLoading,
+          errorBody: errorBody,
+          showSearchFilterIcon: true,
+          onTapSearchFilter: () async {
+            final selected = await showLinkySelectionBottomSheet<SearchTargetType>(
+              context: context,
+              title: '検索対象',
+              selectedValue: data?.target ?? SearchTargetType.title,
+              items: const [
+                LinkySelectionItem(value: SearchTargetType.title, label: 'タイトル'),
+                LinkySelectionItem(value: SearchTargetType.content, label: '内容'),
+                LinkySelectionItem(value: SearchTargetType.author, label: '投稿者'),
+              ],
             );
-            final msg = AppError.from(e).userMessage(
-              context: AppErrorContext.loungeSearch,
-            );
-            return Center(
-              child: Text(
-                msg,
-                style: AppTextStyles.body14.copyWith(color: cs.error),
-              ),
-            );
+            if (selected == null) return;
+            await controller.setSearchTarget(selected);
           },
-          data: (data) {
-            return SearchPageShell(
-              hintText: '投稿検索',
-              items: data.items,
-              totalCount: data.totalCount,
-              hasNext: data.hasNext,
-              isFetchingMore: data.isFetchingMore,
-              onSearch: controller.search,
-              onFetchMore: controller.fetchMore,
-              itemBuilder: (context, item) {
-                return PostListItem(
-                  post: item,
-                  onTap: () {},
-                );
-              },
-            );
+          itemBuilder: (context, item) {
+            return PostListItem(post: item.toMyPost(), onTap: () {});
           },
         ),
       ),
     );
   }
 }
-
-

@@ -4,10 +4,55 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:linky_project_0318/core/enums/fetch_more_result.dart';
 import 'package:linky_project_0318/features/post/domain/entities/my_post.dart';
 
+/// ラウンジ内投稿検索の1行分の表示モデル（モック）。
+class PostSearchItem {
+  const PostSearchItem({
+    required this.id,
+    required this.title,
+    required this.content,
+    required this.createdAt,
+    required this.nickname,
+    required this.viewCount,
+    required this.likeCount,
+    required this.hasImage,
+    required this.isGuest,
+  });
+
+  final int id;
+  final String title;
+  final String content;
+  final DateTime createdAt;
+  final String nickname;
+  final int viewCount;
+  final int likeCount;
+  final bool hasImage;
+  final bool isGuest;
+
+  MyPost toMyPost() {
+    return MyPost(
+      id: id,
+      title: title,
+      createdAt: createdAt,
+      nickname: nickname,
+      viewCount: viewCount,
+      likeCount: likeCount,
+      hasImage: hasImage,
+      isGuest: isGuest,
+    );
+  }
+}
+
+enum SearchTargetType {
+  title,
+  content,
+  author,
+}
+
 /// ラウンジ内投稿検索画面向けの表示データ。
 class LoungePostSearchViewData {
   const LoungePostSearchViewData({
     required this.query,
+    required this.target,
     required this.items,
     required this.totalCount,
     required this.hasNext,
@@ -15,20 +60,23 @@ class LoungePostSearchViewData {
   });
 
   final String query;
-  final List<MyPost> items;
+  final SearchTargetType target;
+  final List<PostSearchItem> items;
   final int totalCount;
   final bool hasNext;
   final bool isFetchingMore;
 
   LoungePostSearchViewData copyWith({
     String? query,
-    List<MyPost>? items,
+    SearchTargetType? target,
+    List<PostSearchItem>? items,
     int? totalCount,
     bool? hasNext,
     bool? isFetchingMore,
   }) {
     return LoungePostSearchViewData(
       query: query ?? this.query,
+      target: target ?? this.target,
       items: items ?? this.items,
       totalCount: totalCount ?? this.totalCount,
       hasNext: hasNext ?? this.hasNext,
@@ -45,10 +93,11 @@ class LoungePostSearchController extends AsyncNotifier<LoungePostSearchViewData>
   static const int _pageSize = 20;
 
   // TODO(api): 実APIに差し替える（loungeId を含めて検索）
-  late final List<MyPost> _all = List.generate(100, (i) {
-    return MyPost(
+  late final List<PostSearchItem> _all = List.generate(100, (i) {
+    return PostSearchItem(
       id: i + 1,
       title: i == 0 ? '初めての投稿' : '投稿タイトル（モック） #${i + 1}',
+      content: '本文（モック） #${i + 1} サンプルテキストです。',
       createdAt: DateTime.now().subtract(Duration(hours: i * 3)),
       nickname: i.isEven ? 'リンゴ' : 'ゲスト',
       viewCount: 2000 - i * 13,
@@ -58,15 +107,26 @@ class LoungePostSearchController extends AsyncNotifier<LoungePostSearchViewData>
     );
   });
 
-  List<MyPost> _filtered = const [];
+  List<PostSearchItem> _filtered = const [];
   int _cursor = 0;
   bool _isFetchingMore = false;
   String _query = '';
+  SearchTargetType _target = SearchTargetType.title;
 
   @override
   Future<LoungePostSearchViewData> build() async {
     await _applyQuery('');
     return _current();
+  }
+
+  Future<void> setSearchTarget(SearchTargetType target) async {
+    if (_target == target) return;
+    _target = target;
+    state = const AsyncLoading();
+    state = await AsyncValue.guard(() async {
+      await _applyQuery(_query);
+      return _current();
+    });
   }
 
   Future<void> search(String query) async {
@@ -122,15 +182,22 @@ class LoungePostSearchController extends AsyncNotifier<LoungePostSearchViewData>
 
     final q = _query.toLowerCase();
     _filtered = _all
-        .where(
-          (e) => e.title.toLowerCase().contains(q) || e.nickname.toLowerCase().contains(q),
-        )
+        .where((e) {
+          switch (_target) {
+            case SearchTargetType.title:
+              return e.title.toLowerCase().contains(q);
+            case SearchTargetType.content:
+              return e.content.toLowerCase().contains(q);
+            case SearchTargetType.author:
+              return e.nickname.toLowerCase().contains(q);
+          }
+        })
         .toList();
     _cursor = 0;
     _nextSlice();
   }
 
-  List<MyPost> _nextSlice() {
+  List<PostSearchItem> _nextSlice() {
     final end = (_cursor + _pageSize).clamp(0, _filtered.length);
     final slice = _filtered.sublist(_cursor, end);
     _cursor = end;
@@ -141,6 +208,7 @@ class LoungePostSearchController extends AsyncNotifier<LoungePostSearchViewData>
     final shown = _filtered.sublist(0, _cursor.clamp(0, _filtered.length));
     return LoungePostSearchViewData(
       query: _query,
+      target: _target,
       items: shown,
       totalCount: _filtered.length,
       hasNext: _cursor < _filtered.length,

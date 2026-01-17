@@ -65,6 +65,9 @@ class AppAssets {
   /// 検索アイコン（検索バーの虫眼鏡）。
   static const searchLogoSvg = '$_common/search_logo.svg';
 
+  /// 検索条件リストアイコン（投稿検索のフィルタボタン）。
+  static const searchListLogoSvg = '$_common/search_list_logo.svg';
+
   // ---- 画像選択（投稿/ラウンジ作成など）(svg) ----
   /// 画像アイコン（画像エリアのプレースホルダ等）。
   static const imageLogoSvg = '$_common/image_logo.svg';
