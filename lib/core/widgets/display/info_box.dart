@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 
-/// 枠線＋角丸で「案内/ルール文」を表示する共通ボックス。
-///
-/// 画面ごとに同じ UI を重複実装しないための共通 Widget。
+/// 案内/ルール文を表示する共通ボックス。
 class LinkyInfoBox extends StatelessWidget {
   const LinkyInfoBox({
     super.key,

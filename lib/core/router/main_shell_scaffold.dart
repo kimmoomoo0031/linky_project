@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import 'package:linky_project_0318/core/enums/lounge_tab.dart';
 import 'package:linky_project_0318/core/router/router_extensions.dart';
-import 'package:linky_project_0318/core/widgets/linky_bottom_nav_bar.dart';
+import 'package:linky_project_0318/core/export/widgets_exports.dart';
 
 /// ボトムナビゲーションを表示する「メインShell」。
 ///

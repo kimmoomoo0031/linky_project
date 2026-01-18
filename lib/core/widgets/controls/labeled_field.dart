@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:linky_project_0318/core/theme/app_colors.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 
-/// ラベル + 入力欄（child）をまとめる“中立”な共通レイアウトウィジェット。
-///
-/// - core には「配置（レイアウト）」だけを置き、見た目（decoration）は child 側に委譲する。
-/// - feature ごとに入力欄の装飾が異なっても、このレイアウトは再利用できる。
+/// ラベルと入力ウィジェットをまとめる共通レイアウト。
 class LabeledField extends StatelessWidget {
   const LabeledField({
     super.key,

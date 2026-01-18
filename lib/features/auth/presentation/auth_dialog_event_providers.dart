@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
+import 'package:linky_project_0318/core/export/widgets_exports.dart';
 
 /// auth 各画面のダイアログ表示イベント（1回限り）。
 ///

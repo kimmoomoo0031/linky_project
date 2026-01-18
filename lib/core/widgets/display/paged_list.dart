@@ -7,7 +7,7 @@ import 'package:linky_project_0318/core/theme/app_typography.dart';
 /// - 空表示（Empty）
 /// - 追加取得中の下部ローダー（Bottom loader）
 
-/// リストが空のときに表示する共通 UI（中央寄せのテキスト）。
+/// リストが空のときに表示する共通 UI。
 class LinkyListEmptyState extends StatelessWidget {
   const LinkyListEmptyState({
     super.key,
@@ -46,7 +46,7 @@ class LinkyListEmptyState extends StatelessWidget {
   }
 }
 
-/// 無限スクロール等で追加取得中に、リスト末尾に表示する共通ローダー。
+/// 追加取得中にリスト末尾へ表示する共通ローダー。
 class LinkyListBottomLoader extends StatelessWidget {
   const LinkyListBottomLoader({super.key, this.padding});
 

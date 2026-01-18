@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+﻿import 'package:flutter/cupertino.dart';
 
 /// 無限スクロール（ページング）でよく使う「底付近判定」などの共通ヘルパー。
 ///

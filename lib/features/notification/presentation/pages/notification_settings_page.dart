@@ -5,8 +5,7 @@ import 'package:linky_project_0318/core/debug/app_log.dart';
 import 'package:linky_project_0318/core/debug/trace_id.dart';
 import 'package:linky_project_0318/core/error/app_error_messages.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
-import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
-import 'package:linky_project_0318/core/widgets/linky_divider.dart';
+import 'package:linky_project_0318/core/export/widgets_exports.dart';
 import 'package:linky_project_0318/core/export/notification_exports.dart';
 
 /// 通知設定画面（モック）。

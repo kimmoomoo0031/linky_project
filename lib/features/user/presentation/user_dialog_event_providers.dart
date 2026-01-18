@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
+import 'package:linky_project_0318/core/export/widgets_exports.dart';
 
 /// User 機能の「1回限り」ダイアログイベント。
 final profileEditDialogEventProvider =

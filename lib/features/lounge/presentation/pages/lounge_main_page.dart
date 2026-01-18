@@ -2,13 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:go_router/go_router.dart';
-import 'package:linky_project_0318/core/enums/fetch_more_result.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
-import 'package:linky_project_0318/core/utils/infinite_scroll_helper.dart';
 import 'package:linky_project_0318/core/router/router_extensions.dart';
-import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
-import 'package:linky_project_0318/core/widgets/paged_list.dart';
-import 'package:linky_project_0318/core/widgets/linky_snack_bar.dart';
+import 'package:linky_project_0318/core/export/widgets_exports.dart';
 import 'package:linky_project_0318/features/lounge/presentation/controllers/lounge_main_controller.dart';
 import 'package:linky_project_0318/features/lounge/presentation/providers/lounge_main_providers.dart';
 import 'package:linky_project_0318/features/post/presentation/widgets/post_list_item.dart';
@@ -52,27 +48,18 @@ class _LoungeMainPageState extends ConsumerState<LoungeMainPage> {
   Future<void> _onScroll() async {
     if (!_scrollController.hasClients) return;
     final pos = _scrollController.position;
-    if (!InfiniteScrollHelper.hasScrollableExtent(pos)) return;
-
-    if (InfiniteScrollHelper.shouldResetNoMoreSnack(
-      pos: pos,
-      snackShown: _noMoreSnackShown,
-      showThresholdPx: 200,
-      resetExtraPx: 100,
-    )) {
-      _noMoreSnackShown = false;
-    }
-
-    if (!InfiniteScrollHelper.isNearBottom(pos, thresholdPx: 200)) return;
-
-    final result = await ref
-        .read(loungeMainControllerProvider(widget.loungeId).notifier)
-        .fetchMore();
-
-    if (result == FetchMoreResult.noMore && mounted && !_noMoreSnackShown) {
-      _noMoreSnackShown = true;
-      showLinkySnackBar(context, message: '最後のページです。');
-    }
+    final hasNext =
+        ref.read(loungeMainControllerProvider(widget.loungeId)).valueOrNull?.hasNext ??
+            true;
+    _noMoreSnackShown = await handleFetchMoreWithNoMoreSnack(
+      context: context,
+      position: pos,
+      noMoreSnackShown: _noMoreSnackShown,
+      hasNext: hasNext,
+      fetchMore: ref
+          .read(loungeMainControllerProvider(widget.loungeId).notifier)
+          .fetchMore,
+    );
   }
 
   Widget _buildList(LoungeMainViewData data) {

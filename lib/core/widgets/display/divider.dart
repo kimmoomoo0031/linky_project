@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 
 /// アプリ全体で利用する共通の区切り線ウィジェット。
-///
-/// - デフォルト色は `Theme.of(context).colorScheme.outlineVariant`
-/// - 線の太さは [thickness] で調整可能（デフォルト 1）
 class LinkyDivider extends StatelessWidget {
   const LinkyDivider({
     super.key,

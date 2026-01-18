@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../theme/app_colors.dart';
+import 'package:linky_project_0318/core/theme/app_colors.dart';
 
 /// アプリ共通のボトムナビゲーション。
-///
-/// - 今は遷移未実装のため、[onTap] が null の場合は no-op にする
-/// - 画面ごとに表示/非表示を切り替えるため [show] を用意する
 class LinkyBottomNavBar extends StatelessWidget {
   const LinkyBottomNavBar({
     super.key,

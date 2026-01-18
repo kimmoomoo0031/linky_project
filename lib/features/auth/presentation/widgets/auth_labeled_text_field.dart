@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:linky_project_0318/core/theme/app_typography.dart';
-import 'package:linky_project_0318/core/widgets/labeled_field.dart';
+import 'package:linky_project_0318/core/export/widgets_exports.dart';
 import 'package:linky_project_0318/features/auth/presentation/widgets/auth_input_decorations.dart';
 
 /// 認証画面でよく使う「ラベル + TextField + エラー表示」をまとめた共通ウィジェット。
