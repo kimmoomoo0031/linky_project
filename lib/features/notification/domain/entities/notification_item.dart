@@ -1,16 +1,8 @@
+import 'package:linky_project_0318/core/enums/notification_type.dart';
+
 /// 通知一覧で利用する通知エンティティ。
 ///
 /// - 未読のみを表示し、タップで既読化（一覧から除去）する前提。
-enum NotificationType {
-  /// 自分の投稿にコメントが付いた
-  postComment,
-
-  /// 自分のコメントに返信が付いた
-  commentReply,
-
-  /// 自分の投稿がベスト投稿になった
-  bestPost,
-}
 
 class NotificationItem {
   const NotificationItem({

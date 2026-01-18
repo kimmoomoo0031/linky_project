@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/features/notification/domain/entities/notification_item.dart';
+import 'package:linky_project_0318/core/enums/notification_type.dart';
 
 /// 通知一覧の1行表示。
 class NotificationListTile extends StatelessWidget {
