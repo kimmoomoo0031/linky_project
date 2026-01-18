@@ -2,14 +2,25 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:linky_project_0318/features/notification/di/notification_di.dart';
 import 'package:linky_project_0318/features/notification/domain/entities/notification_item.dart';
+import 'package:linky_project_0318/core/error/ui_app_messages.dart';
+import 'package:linky_project_0318/features/notification/presentation/providers/notification_snack_event_providers.dart';
 
 /// 通知一覧（未読のみ）を扱うコントローラ。
 class NotificationListController
     extends AutoDisposeAsyncNotifier<List<NotificationItem>> {
+  void _emitSnack(String message) {
+    ref.read(notificationSnackEventProvider.notifier).state = message;
+  }
+
   @override
   Future<List<NotificationItem>> build() async {
-    final repo = ref.read(notificationRepositoryProvider);
-    return repo.getNotifications(unreadOnly: true);
+    final result =
+        await ref.read(getNotificationsUseCaseProvider).call(unreadOnly: true);
+    return result.when(
+      success: (items) => items,
+      networkError: () => throw Exception('Failed to load notifications'),
+      serverError: () => throw Exception('Failed to load notifications'),
+    );
   }
 
   /// 通知を既読にして、未読一覧から取り除く。
@@ -23,12 +34,24 @@ class NotificationListController
     }
 
     try {
-      final repo = ref.read(notificationRepositoryProvider);
-      await repo.markAsRead(notificationId);
-    } catch (e, st) {
-      // 失敗時は元に戻す（もしくは再取得）。
+      final result =
+          await ref.read(markNotificationReadUseCaseProvider).call(
+                notificationId,
+              );
+      result.when(
+        success: () {},
+        networkError: () {
+          state = prev;
+          _emitSnack(CommonMessages.errors.network.message);
+        },
+        serverError: () {
+          state = prev;
+          _emitSnack(CommonMessages.errors.server.message);
+        },
+      );
+    } catch (_) {
       state = prev;
-      state = AsyncError(e, st);
+      _emitSnack(CommonMessages.errors.unexpected.message);
     }
   }
 }

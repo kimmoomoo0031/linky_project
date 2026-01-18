@@ -23,8 +23,12 @@ class ProfileEditController extends StateNotifier<ProfileEditState> {
   Future<void> load() async {
     state = state.copyWith(isLoading: true);
     try {
-      final repo = _ref.read(userRepositoryProvider);
-      final profile = await repo.getMyProfile();
+      final result = await _ref.read(getMyProfileUseCaseProvider).call();
+      final profile = result.when(
+        success: (value) => value,
+        networkError: () => throw Exception('Failed to load profile'),
+        serverError: () => throw Exception('Failed to load profile'),
+      );
       state = state.copyWith(
         isLoading: false,
         email: profile.email,
@@ -123,15 +127,20 @@ class ProfileEditController extends StateNotifier<ProfileEditState> {
 
     state = state.copyWith(isSaving: true);
     try {
-      final repo = _ref.read(userRepositoryProvider);
-      await repo.updateMyProfile(
-        UserProfile(
-          nickname: state.nickname.trim(),
-          email: state.email.trim(),
-          // TODO(api): プロフィール編集でパスワード更新APIが追加されたら連携する。
-          // 現状はモックのため、自己紹介は既存値を保持する。
-          bio: state.bio,
-        ),
+      final result =
+          await _ref.read(updateMyProfileUseCaseProvider).call(
+                UserProfile(
+                  nickname: state.nickname.trim(),
+                  email: state.email.trim(),
+                  // TODO(api): プロフィール編集でパスワード更新APIが追加されたら連携する。
+                  // 現状はモックのため、自己紹介は既存値を保持する。
+                  bio: state.bio,
+                ),
+              );
+      result.when(
+        success: () {},
+        networkError: () => throw Exception('Failed to update profile'),
+        serverError: () => throw Exception('Failed to update profile'),
       );
       _emitDialog(
           LinkyDialogEvent(

@@ -17,10 +17,10 @@ class AuthSessionController extends AsyncNotifier<void> {
     // 連打抑止
     if (state.isLoading) return;
 
-    final repo = ref.read(authRepositoryProvider);
+    final useCase = ref.read(logoutUseCaseProvider);
     state = const AsyncLoading();
     try {
-      await repo.logout();
+      await useCase.call();
       state = const AsyncData(null);
     } catch (e, st) {
       state = AsyncError(e, st);

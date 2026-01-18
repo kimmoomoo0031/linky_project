@@ -29,14 +29,30 @@ class HomeController extends AsyncNotifier<HomeViewData> {
 
   @override
   Future<HomeViewData> build() async {
-    final repo = ref.read(homeRepositoryProvider);
+    final meResult = await ref.read(getHomeMeUseCaseProvider).call();
+    final latestResult = await ref.read(getLatestViewedUseCaseProvider).call(
+          page: 1,
+          pageSize: HomeConstants.initialLatestSize,
+        );
+    final bestResult = await ref.read(getBestPostsUseCaseProvider).call(
+          limit: HomeConstants.bestPostsLimit,
+        );
 
-    final me = await repo.getMe();
-    final latest = await repo.getLatestViewed(
-      page: 1,
-      pageSize: HomeConstants.initialLatestSize,
+    final me = meResult.when(
+      success: (user) => user,
+      networkError: () => throw Exception('Failed to load home user'),
+      serverError: () => throw Exception('Failed to load home user'),
     );
-    final best = await repo.getBestPosts(limit: HomeConstants.bestPostsLimit);
+    final latest = latestResult.when(
+      success: (page) => page,
+      networkError: () => throw Exception('Failed to load latest viewed'),
+      serverError: () => throw Exception('Failed to load latest viewed'),
+    );
+    final best = bestResult.when(
+      success: (items) => items,
+      networkError: () => throw Exception('Failed to load best posts'),
+      serverError: () => throw Exception('Failed to load best posts'),
+    );
 
     return HomeViewData(
       me: me,
@@ -80,8 +96,14 @@ class HomeController extends AsyncNotifier<HomeViewData> {
     );
 
     try {
-      final repo = ref.read(homeRepositoryProvider);
-      await repo.deleteLatestViewed(loungeId: loungeId);
+      final result = await ref.read(deleteLatestViewedUseCaseProvider).call(
+            loungeId: loungeId,
+          );
+      result.when(
+        success: () {},
+        networkError: () => throw Exception('Failed to delete latest viewed'),
+        serverError: () => throw Exception('Failed to delete latest viewed'),
+      );
     } catch (e) {
       // rollback: できるだけ「今の state」に差し戻す（fetchMore 等の差分を潰しにくくする）
       final cur = state.valueOrNull;
@@ -118,12 +140,15 @@ class HomeController extends AsyncNotifier<HomeViewData> {
       final nextPage =
           (current.latestViewed.length / HomeConstants.latestPageSize).ceil() + 1;
       if (nextPage > HomeConstants.latestMaxPages) return;
-      final repo = ref.read(homeRepositoryProvider);
-
       // すでに data を持っているので、全画面ローディングにはせずに裏で追加読み込みする。
-      final next = await repo.getLatestViewed(
-        page: nextPage,
-        pageSize: HomeConstants.latestPageSize,
+      final result = await ref.read(getLatestViewedUseCaseProvider).call(
+            page: nextPage,
+            pageSize: HomeConstants.latestPageSize,
+          );
+      final next = result.when(
+        success: (page) => page,
+        networkError: () => throw Exception('Failed to load latest viewed'),
+        serverError: () => throw Exception('Failed to load latest viewed'),
       );
 
       state = AsyncData(

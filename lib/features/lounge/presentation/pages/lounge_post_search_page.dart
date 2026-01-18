@@ -3,10 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:linky_project_0318/core/debug/app_log.dart';
 import 'package:linky_project_0318/core/debug/trace_id.dart';
+import 'package:linky_project_0318/core/enums/lounge_post_search_target.dart';
 import 'package:linky_project_0318/core/export/widgets_exports.dart';
 import 'package:linky_project_0318/core/error/app_error_messages.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
-import 'package:linky_project_0318/features/lounge/presentation/controllers/lounge_post_search_controller.dart';
+import 'package:linky_project_0318/features/lounge/domain/entities/lounge_post_search_item.dart';
 import 'package:linky_project_0318/features/lounge/presentation/providers/lounge_post_search_providers.dart';
 import 'package:linky_project_0318/features/post/presentation/widgets/post_list_item.dart';
 
@@ -44,7 +45,7 @@ class LoungePostSearchPage extends ConsumerWidget {
     return Scaffold(
       appBar: const LinkyAppBar(title: '投稿検索', showBackButton: true),
       body: SafeArea(
-        child: SearchPageShell<PostSearchItem>(
+        child: SearchPageShell<LoungePostSearchItem>(
           hintText: '',
           items: data?.items ?? const [],
           totalCount: data?.totalCount ?? 0,
@@ -56,14 +57,24 @@ class LoungePostSearchPage extends ConsumerWidget {
           errorBody: errorBody,
           showSearchFilterIcon: true,
           onTapSearchFilter: () async {
-            final selected = await showLinkySelectionBottomSheet<SearchTargetType>(
+            final selected =
+                await showLinkySelectionBottomSheet<LoungePostSearchTarget>(
               context: context,
               title: '検索対象',
-              selectedValue: data?.target ?? SearchTargetType.title,
+              selectedValue: data?.target ?? LoungePostSearchTarget.title,
               items: const [
-                LinkySelectionItem(value: SearchTargetType.title, label: 'タイトル'),
-                LinkySelectionItem(value: SearchTargetType.content, label: '内容'),
-                LinkySelectionItem(value: SearchTargetType.author, label: '投稿者'),
+                LinkySelectionItem(
+                  value: LoungePostSearchTarget.title,
+                  label: 'タイトル',
+                ),
+                LinkySelectionItem(
+                  value: LoungePostSearchTarget.content,
+                  label: '内容',
+                ),
+                LinkySelectionItem(
+                  value: LoungePostSearchTarget.author,
+                  label: '投稿者',
+                ),
               ],
             );
             if (selected == null) return;

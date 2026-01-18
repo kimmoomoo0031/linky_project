@@ -5,5 +5,6 @@ export '../../features/notification/di/notification_di.dart';
 
 export '../../features/notification/presentation/providers/notification_settings_providers.dart';
 export '../../features/notification/presentation/providers/notification_list_providers.dart';
+export '../../features/notification/presentation/providers/notification_snack_event_providers.dart';
 
 

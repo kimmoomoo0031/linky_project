@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:linky_project_0318/features/auth/data/repositories/fake_auth_repository.dart';
 import 'package:linky_project_0318/features/auth/domain/repositories/auth_repository.dart';
 import 'package:linky_project_0318/features/auth/domain/usecases/login_usecase.dart';
+import 'package:linky_project_0318/features/auth/domain/usecases/logout_usecase.dart';
 import 'package:linky_project_0318/features/auth/domain/usecases/register_usecase.dart';
 import 'package:linky_project_0318/features/auth/domain/usecases/reset_password_usecase.dart';
 
@@ -33,5 +34,11 @@ final registerUseCaseProvider = Provider<RegisterUseCase>((ref) {
 final resetPasswordUseCaseProvider = Provider<ResetPasswordUseCase>((ref) {
   final repo = ref.watch(authRepositoryProvider);
   return ResetPasswordUseCase(repo);
+});
+
+/// ログアウトユースケース。
+final logoutUseCaseProvider = Provider<LogoutUseCase>((ref) {
+  final repo = ref.watch(authRepositoryProvider);
+  return LogoutUseCase(repo);
 });
 

@@ -7,6 +7,7 @@ import 'package:linky_project_0318/core/error/app_error_messages.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/export/widgets_exports.dart';
 import 'package:linky_project_0318/core/export/notification_exports.dart';
+import 'package:linky_project_0318/core/widgets/feedback/snack_bar.dart';
 
 /// 通知設定画面（モック）。
 class NotificationSettingsPage extends ConsumerWidget {
@@ -16,6 +17,11 @@ class NotificationSettingsPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final cs = Theme.of(context).colorScheme;
     final asyncSettings = ref.watch(notificationSettingsControllerProvider);
+    ref.listen(notificationSettingsSnackEventProvider, (previous, next) {
+      if (next == null) return;
+      showLinkySnackBar(context, message: next);
+      ref.read(notificationSettingsSnackEventProvider.notifier).state = null;
+    });
 
     return Scaffold(
       appBar: const LinkyAppBar(title: '通知設定', showBackButton: true),
@@ -42,6 +48,7 @@ class NotificationSettingsPage extends ConsumerWidget {
           );
         },
         data: (settings) {
+          // TODO: OS の通知権限状態を確認し、OFF の場合は案内バナー/リンクを表示する。
           return ListView(
             children: [
               _SettingRow(

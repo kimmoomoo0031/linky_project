@@ -1,6 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:linky_project_0318/core/constants/lounge_constants.dart';
 import 'package:linky_project_0318/core/enums/fetch_more_result.dart';
+import 'package:linky_project_0318/features/lounge/di/lounge_di.dart';
+import 'package:linky_project_0318/features/lounge/domain/repositories/lounge_repository.dart';
+import 'package:linky_project_0318/features/lounge/domain/usecases/get_lounge_best_posts_result.dart';
 import 'package:linky_project_0318/features/post/domain/entities/my_post.dart';
 
 /// ベストタブ向けの表示データ（投稿一覧 + ページング状態）。
@@ -36,7 +38,6 @@ class LoungeBestController extends FamilyAsyncNotifier<LoungeBestViewData, int> 
   /// [Lounge/Best] 1ページあたりの取得件数。
   static const int _pageSize = 20;
 
-  late List<MyPost> _all = const [];
   int _cursor = 0;
   bool _isFetchingMore = false;
   int _loungeId = 0;
@@ -44,31 +45,18 @@ class LoungeBestController extends FamilyAsyncNotifier<LoungeBestViewData, int> 
   @override
   Future<LoungeBestViewData> build(int loungeId) async {
     _loungeId = loungeId;
-    final now = DateTime.now();
-
-    final baseLike = LoungeConstants.popularStarMinLikeCount + 40;
-    final baseView = (loungeId.abs() % 11) * 50;
-
-    _all = List<MyPost>.generate(100, (i) {
-      final created = now.subtract(Duration(minutes: i * 13));
-      return MyPost(
-        id: _loungeId * 100000 + i,
-        title: 'テストタイトルですテストタイトルです',
-        createdAt: created,
-        nickname: i.isEven ? 'パインアップル' : 'リンゴ',
-        viewCount: baseView + i * 10,
-        likeCount: baseLike + (i % 5) * 10,
-        hasImage: i % 3 == 1,
-        isGuest: i % 4 == 0,
-      );
-    });
-
     _cursor = 0;
-    final first = _nextSlice();
+    final result = await ref.read(getLoungeBestPostsUseCaseProvider).call(
+          loungeId: loungeId,
+          cursor: _cursor,
+          limit: _pageSize,
+        );
+    final page = _requireSuccess(result);
+    _cursor += page.items.length;
 
     return LoungeBestViewData(
-      items: first,
-      hasNext: _cursor < _all.length,
+      items: page.items,
+      hasNext: page.hasNext,
       isFetchingMore: false,
     );
   }
@@ -83,21 +71,23 @@ class LoungeBestController extends FamilyAsyncNotifier<LoungeBestViewData, int> 
     try {
       state = AsyncData(cur.copyWith(isFetchingMore: true));
 
-      // TODO(api): 実APIならここで next page を取得する
-      await Future<void>.delayed(const Duration(milliseconds: 250));
-
-      if (_cursor >= _all.length) {
+      final result = await ref.read(getLoungeBestPostsUseCaseProvider).call(
+            loungeId: _loungeId,
+            cursor: _cursor,
+            limit: _pageSize,
+          );
+      final page = _requireSuccess(result);
+      if (page.items.isEmpty) {
         state = AsyncData(cur.copyWith(hasNext: false, isFetchingMore: false));
         return FetchMoreResult.noMore;
       }
-
-      final next = _nextSlice();
-      final merged = [...cur.items, ...next];
+      _cursor += page.items.length;
+      final merged = [...cur.items, ...page.items];
 
       state = AsyncData(
         cur.copyWith(
           items: merged,
-          hasNext: _cursor < _all.length,
+          hasNext: page.hasNext,
           isFetchingMore: false,
         ),
       );
@@ -106,13 +96,14 @@ class LoungeBestController extends FamilyAsyncNotifier<LoungeBestViewData, int> 
       _isFetchingMore = false;
     }
   }
+}
 
-  List<MyPost> _nextSlice() {
-    final end = (_cursor + _pageSize).clamp(0, _all.length);
-    final slice = _all.sublist(_cursor, end);
-    _cursor = end;
-    return slice;
-  }
+LoungePostPage _requireSuccess(GetLoungeBestPostsResult result) {
+  return result.when(
+    success: (page) => page,
+    networkError: () => throw Exception('network'),
+    serverError: () => throw Exception('server'),
+  );
 }
 
 
