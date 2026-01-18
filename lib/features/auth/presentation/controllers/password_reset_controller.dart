@@ -8,7 +8,7 @@ import 'package:linky_project_0318/core/error/ui_app_messages.dart';
 import 'package:linky_project_0318/core/export/dialog_type_exports.dart';
 import 'package:linky_project_0318/features/auth/presentation/auth_dialog_event_providers.dart';
 import 'package:linky_project_0318/core/constants/auth_constants.dart';
-import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
+import 'package:linky_project_0318/core/export/widgets_exports.dart';
 
 
 /// パスワード再設定画面の入力値・バリデーション・ローディング状態を管理するコントローラ。

@@ -5,9 +5,6 @@ import 'package:linky_project_0318/core/constants/app_assets.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 
 /// 共通の検索バー UI。
-///
-/// - 見た目は Home の検索バーと同一のデザインを想定
-/// - 入力ありの場合、右側にクリア（X）ボタンを表示できる
 class LinkySearchBar extends StatelessWidget {
   const LinkySearchBar({
     super.key,

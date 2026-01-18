@@ -109,10 +109,7 @@ Future<bool> showLinkyConfirmDialog({
   return result ?? false;
 }
 
-/// Linkyダイアログの共通レイアウト（外部公開しない）。
-///
-/// - showLinkyDialog / showLinkyConfirmDialog の両方でUIを再利用するため
-/// - ボタン（actions）だけ差し替え可能にする
+/// Linkyダイアログの共通レイアウト。
 class _LinkyDialogShell extends StatelessWidget {
   const _LinkyDialogShell({
     required this.message,
@@ -238,10 +235,7 @@ class _LinkyDialogShell extends StatelessWidget {
   }
 }
 
-/// ダイアログ表示のための「1回限りのイベント」データ。
-///
-/// 「いつ/何を表示するか」をイベントとして流すことで
-/// 再ビルドや画面復帰での再表示を避けやすくする。
+/// ダイアログ表示用のワンショットイベントデータ。
 class LinkyDialogEvent {
   const LinkyDialogEvent({
     required this.message,

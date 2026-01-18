@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:linky_project_0318/core/theme/app_colors.dart';
 
-/// グラデーションカラーでテキストを描画するための共通ウィジェット。
-///
-/// [gradient] には `AppColors.linky45degGradient` などを渡して使用します。
+/// グラデーションカラーでテキストを描画する共通ウィジェット。
 class GradientText extends StatelessWidget {
   const GradientText(
     this.text, {

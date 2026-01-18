@@ -6,7 +6,7 @@ import 'package:linky_project_0318/core/debug/logged_action.dart';
 import 'package:linky_project_0318/core/export/dialog_type_exports.dart';
 import 'package:linky_project_0318/core/utils/validators.dart';
 import 'package:linky_project_0318/core/error/ui_app_messages.dart';
-import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
+import 'package:linky_project_0318/core/export/widgets_exports.dart';
 import 'package:linky_project_0318/features/auth/domain/usecases/register_usecase.dart';
 import 'package:linky_project_0318/features/auth/domain/usecases/register_result.dart';
 import 'package:linky_project_0318/features/auth/presentation/auth_dialog_event_providers.dart';

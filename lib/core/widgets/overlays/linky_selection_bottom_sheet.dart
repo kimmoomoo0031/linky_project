@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 
 import 'package:linky_project_0318/core/theme/app_typography.dart';
-import 'package:linky_project_0318/core/widgets/linky_divider.dart';
-import 'package:linky_project_0318/core/widgets/linky_primary_button.dart';
+import 'package:linky_project_0318/core/widgets/display/linky_divider.dart';
+import 'package:linky_project_0318/core/widgets/controls/linky_primary_button.dart';
 
-/// 選択式ボトムシートの項目。
+/// 選択式ボトムシートの項目モデル。
 class LinkySelectionItem<T> {
   const LinkySelectionItem({
     required this.value,
@@ -15,7 +15,7 @@ class LinkySelectionItem<T> {
   final String label;
 }
 
-/// 共通の選択式ボトムシート。
+/// 選択式ボトムシートを表示する共通関数。
 Future<T?> showLinkySelectionBottomSheet<T>({
   required BuildContext context,
   required String title,
@@ -79,6 +79,7 @@ Future<T?> showLinkySelectionBottomSheet<T>({
   );
 }
 
+/// 選択ボトムシートのヘッダー（タイトル + 区切り線）。
 class _LinkySelectionHeader extends StatelessWidget {
   const _LinkySelectionHeader({required this.title});
 
@@ -103,6 +104,7 @@ class _LinkySelectionHeader extends StatelessWidget {
   }
 }
 
+/// 選択ボトムシートの本文（選択肢リスト + 適用ボタン）。
 class _LinkySelectionBody<T> extends StatelessWidget {
   const _LinkySelectionBody({
     required this.items,
@@ -136,4 +138,5 @@ class _LinkySelectionBody<T> extends StatelessWidget {
     );
   }
 }
+
 

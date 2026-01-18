@@ -6,9 +6,7 @@ import 'package:linky_project_0318/core/export/dialog_type_exports.dart';
 import 'package:linky_project_0318/core/error/app_error_messages.dart';
 
 import 'package:linky_project_0318/core/theme/app_typography.dart';
-import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
-import 'package:linky_project_0318/core/widgets/linky_divider.dart';
-import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
+import 'package:linky_project_0318/core/export/widgets_exports.dart';
 import 'package:linky_project_0318/features/notification/presentation/providers/notification_list_providers.dart';
 import 'package:linky_project_0318/features/notification/presentation/widgets/notification_list_tile.dart';
 

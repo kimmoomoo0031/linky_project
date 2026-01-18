@@ -6,8 +6,7 @@ import 'package:linky_project_0318/core/constants/app_assets.dart';
 import 'package:linky_project_0318/core/theme/app_colors.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 
-/// Linky 共通ヘッダー。
-/// 画面ごとにタイトルだけ変えて再利用することを想定した AppBar です。
+/// 画面ごとにタイトルを変えて使う共通 AppBar。
 class LinkyAppBar extends StatelessWidget implements PreferredSizeWidget {
   const LinkyAppBar({
     super.key,

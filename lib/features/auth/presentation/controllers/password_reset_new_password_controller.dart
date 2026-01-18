@@ -8,7 +8,7 @@ import 'package:linky_project_0318/features/auth/domain/usecases/reset_password_
 import 'package:linky_project_0318/features/auth/domain/usecases/reset_password_usecase.dart';
 import 'package:linky_project_0318/features/auth/presentation/auth_dialog_event_providers.dart';
 import 'package:linky_project_0318/core/constants/auth_constants.dart';
-import 'package:linky_project_0318/core/widgets/linky_dialog.dart';
+import 'package:linky_project_0318/core/export/widgets_exports.dart';
 
 
 import 'package:linky_project_0318/features/auth/presentation/states/password_reset_new_password_state.dart';

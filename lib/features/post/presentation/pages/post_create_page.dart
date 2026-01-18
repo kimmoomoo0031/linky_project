@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:linky_project_0318/core/widgets/linky_app_bar.dart';
+import 'package:linky_project_0318/core/export/widgets_exports.dart';
 
 /// 投稿作成（未実装の殻）。
 class PostCreatePage extends StatelessWidget {
