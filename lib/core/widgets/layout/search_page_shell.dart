@@ -5,9 +5,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:linky_project_0318/core/constants/app_assets.dart';
 import 'package:linky_project_0318/core/enums/fetch_more_result.dart';
-import 'package:linky_project_0318/core/widgets/display/linky_divider.dart';
-import 'package:linky_project_0318/core/widgets/controls/linky_search_bar.dart';
-import 'package:linky_project_0318/core/widgets/feedback/linky_snack_bar.dart';
+import 'package:linky_project_0318/core/widgets/display/divider.dart';
+import 'package:linky_project_0318/core/widgets/controls/search_bar.dart';
+import 'package:linky_project_0318/core/widgets/feedback/snack_bar.dart';
 import 'package:linky_project_0318/core/widgets/display/paged_list.dart';
 
 /// 検索ページの共通シェル（検索バー + 結果リスト）。

@@ -1,8 +1,8 @@
 ﻿import 'package:flutter/material.dart';
 
 import 'package:linky_project_0318/core/theme/app_typography.dart';
-import 'package:linky_project_0318/core/widgets/display/linky_divider.dart';
-import 'package:linky_project_0318/core/widgets/controls/linky_primary_button.dart';
+import 'package:linky_project_0318/core/widgets/display/divider.dart';
+import 'package:linky_project_0318/core/widgets/controls/primary_button.dart';
 
 /// 選択式ボトムシートの項目モデル。
 class LinkySelectionItem<T> {
