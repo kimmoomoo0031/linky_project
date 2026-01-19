@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:linky_project_0318/core/error/ui_app_messages.dart';
+import 'package:linky_project_0318/core/error/app_error_messages.dart';
 import 'package:linky_project_0318/core/export/dialog_type_exports.dart';
 import 'package:linky_project_0318/core/utils/validators.dart';
 import 'package:linky_project_0318/core/export/widgets_exports.dart';
@@ -26,8 +27,8 @@ class ProfileEditController extends StateNotifier<ProfileEditState> {
       final result = await _ref.read(getMyProfileUseCaseProvider).call();
       final profile = result.when(
         success: (value) => value,
-        networkError: () => throw Exception('Failed to load profile'),
-        serverError: () => throw Exception('Failed to load profile'),
+        networkError: () => throw const AppErrorNetwork(),
+        serverError: () => throw const AppErrorServer(),
       );
       state = state.copyWith(
         isLoading: false,
@@ -139,8 +140,8 @@ class ProfileEditController extends StateNotifier<ProfileEditState> {
               );
       result.when(
         success: () {},
-        networkError: () => throw Exception('Failed to update profile'),
-        serverError: () => throw Exception('Failed to update profile'),
+        networkError: () => throw const AppErrorNetwork(),
+        serverError: () => throw const AppErrorServer(),
       );
       _emitDialog(
           LinkyDialogEvent(

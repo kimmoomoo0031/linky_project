@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:linky_project_0318/core/enums/fetch_more_result.dart';
+import 'package:linky_project_0318/core/error/app_error_messages.dart';
+import 'package:linky_project_0318/core/utils/paged_fetch_helper.dart';
 import 'package:linky_project_0318/features/lounge/di/lounge_di.dart';
 import 'package:linky_project_0318/features/lounge/domain/entities/lounge_post_search_item.dart';
 import 'package:linky_project_0318/core/enums/lounge_post_search_target.dart';
@@ -49,13 +51,16 @@ class LoungePostSearchViewData {
 ///
 /// - 検索クエリでフィルタし、20件ずつ追加読み込みする
 /// - 実APIに切り替える際も UI 側の呼び出しを変えずに済むようにする
-class LoungePostSearchController extends AsyncNotifier<LoungePostSearchViewData> {
+class LoungePostSearchController
+    extends AsyncNotifier<LoungePostSearchViewData> {
   static const int _pageSize = 20;
 
   // TODO(api): 実APIに差し替える（loungeId を含めて検索）
   List<LoungePostSearchItem> _items = const [];
-  int _cursor = 0;
-  bool _isFetchingMore = false;
+  final PagedFetchHelper<LoungePostSearchItem, LoungePostSearchPage> _pager =
+      PagedFetchHelper<LoungePostSearchItem, LoungePostSearchPage>(
+        pageSize: _pageSize,
+      );
   String _query = '';
   LoungePostSearchTarget _target = LoungePostSearchTarget.title;
   int _totalCount = 0;
@@ -86,65 +91,63 @@ class LoungePostSearchController extends AsyncNotifier<LoungePostSearchViewData>
   }
 
   Future<FetchMoreResult> fetchMore() async {
-    if (_isFetchingMore) return FetchMoreResult.skipped;
     final cur = state.valueOrNull;
-    if (cur == null) return FetchMoreResult.skipped;
-    if (!cur.hasNext) return FetchMoreResult.noMore;
-
-    _isFetchingMore = true;
-    try {
-      state = AsyncData(cur.copyWith(isFetchingMore: true));
-
-      // TODO(api): 実APIならここで next page を取得する
-      final result = await ref.read(searchLoungePostsUseCaseProvider).call(
-            query: _query,
-            target: _target,
-            cursor: _cursor,
-            limit: _pageSize,
-          );
-      final page = _requireSuccess(result);
-      if (page.items.isEmpty) {
-        state = AsyncData(cur.copyWith(hasNext: false, isFetchingMore: false));
-        return FetchMoreResult.noMore;
-      }
-
-      _cursor += page.items.length;
-      _items = [...cur.items, ...page.items];
-      _totalCount = page.totalCount;
-      _hasNext = page.hasNext;
-      state = AsyncData(
-        cur.copyWith(
-          items: _items,
-          totalCount: _totalCount,
-          hasNext: _hasNext,
-          isFetchingMore: false,
-        ),
-      );
-      return FetchMoreResult.fetched;
-    } finally {
-      _isFetchingMore = false;
-    }
+    return _pager.fetchMore<LoungePostSearchViewData>(
+      currentValue: cur,
+      hasNext: cur?.hasNext ?? false,
+      currentItems: cur?.items ?? const [],
+      loadPage: (cursor, limit) async {
+        final result = await ref
+            .read(searchLoungePostsUseCaseProvider)
+            .call(query: _query, target: _target, cursor: cursor, limit: limit);
+        return _requireSuccess(result);
+      },
+      getItems: (page) => page.items,
+      getHasNext: (page) => page.hasNext,
+      onPage: (page) {
+        _totalCount = page.totalCount;
+      },
+      setValue: (value) => state = AsyncData(value),
+      buildView:
+          (
+            current, {
+            required items,
+            required hasNext,
+            required isFetchingMore,
+          }) {
+            _items = items;
+            _hasNext = hasNext;
+            return current.copyWith(
+              items: items,
+              totalCount: _totalCount,
+              hasNext: hasNext,
+              isFetchingMore: isFetchingMore,
+            );
+          },
+    );
   }
 
   Future<void> _applyQuery(String query) async {
     _query = query.trim();
     if (_query.isEmpty) {
       _items = const [];
-      _cursor = 0;
+      _pager.reset();
       _totalCount = 0;
       _hasNext = false;
       return;
     }
-    _cursor = 0;
-    final result = await ref.read(searchLoungePostsUseCaseProvider).call(
+    _pager.reset();
+    final result = await ref
+        .read(searchLoungePostsUseCaseProvider)
+        .call(
           query: _query,
           target: _target,
-          cursor: _cursor,
+          cursor: _pager.cursor,
           limit: _pageSize,
         );
     final page = _requireSuccess(result);
     _items = page.items;
-    _cursor = page.items.length;
+    _pager.setCursor(page.items.length);
     _totalCount = page.totalCount;
     _hasNext = page.hasNext;
   }
@@ -164,8 +167,7 @@ class LoungePostSearchController extends AsyncNotifier<LoungePostSearchViewData>
 LoungePostSearchPage _requireSuccess(SearchLoungePostsResult result) {
   return result.when(
     success: (page) => page,
-    networkError: () => throw Exception('network'),
-    serverError: () => throw Exception('server'),
+    networkError: () => throw const AppErrorNetwork(),
+    serverError: () => throw const AppErrorServer(),
   );
 }
-

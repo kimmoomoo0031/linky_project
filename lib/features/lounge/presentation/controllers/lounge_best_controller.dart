@@ -1,5 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:linky_project_0318/core/enums/fetch_more_result.dart';
+import 'package:linky_project_0318/core/error/app_error_messages.dart';
+import 'package:linky_project_0318/core/utils/paged_fetch_helper.dart';
 import 'package:linky_project_0318/features/lounge/di/lounge_di.dart';
 import 'package:linky_project_0318/features/lounge/domain/repositories/lounge_repository.dart';
 import 'package:linky_project_0318/features/lounge/domain/usecases/get_lounge_best_posts_result.dart';
@@ -34,25 +36,24 @@ class LoungeBestViewData {
 ///
 /// - 画面は「データ取得中心」なので AsyncNotifier を採用
 /// - 初回20件 + スクロールで20件ずつ追加取得
-class LoungeBestController extends FamilyAsyncNotifier<LoungeBestViewData, int> {
+class LoungeBestController
+    extends FamilyAsyncNotifier<LoungeBestViewData, int> {
   /// [Lounge/Best] 1ページあたりの取得件数。
   static const int _pageSize = 20;
 
-  int _cursor = 0;
-  bool _isFetchingMore = false;
+  final PagedFetchHelper<MyPost, LoungePostPage> _pager =
+      PagedFetchHelper<MyPost, LoungePostPage>(pageSize: _pageSize);
   int _loungeId = 0;
 
   @override
   Future<LoungeBestViewData> build(int loungeId) async {
     _loungeId = loungeId;
-    _cursor = 0;
-    final result = await ref.read(getLoungeBestPostsUseCaseProvider).call(
-          loungeId: loungeId,
-          cursor: _cursor,
-          limit: _pageSize,
-        );
+    _pager.reset();
+    final result = await ref
+        .read(getLoungeBestPostsUseCaseProvider)
+        .call(loungeId: loungeId, cursor: _pager.cursor, limit: _pageSize);
     final page = _requireSuccess(result);
-    _cursor += page.items.length;
+    _pager.setCursor(page.items.length);
 
     return LoungeBestViewData(
       items: page.items,
@@ -62,48 +63,39 @@ class LoungeBestController extends FamilyAsyncNotifier<LoungeBestViewData, int> 
   }
 
   Future<FetchMoreResult> fetchMore() async {
-    if (_isFetchingMore) return FetchMoreResult.skipped;
     final cur = state.valueOrNull;
-    if (cur == null) return FetchMoreResult.skipped;
-    if (!cur.hasNext) return FetchMoreResult.noMore;
-
-    _isFetchingMore = true;
-    try {
-      state = AsyncData(cur.copyWith(isFetchingMore: true));
-
-      final result = await ref.read(getLoungeBestPostsUseCaseProvider).call(
-            loungeId: _loungeId,
-            cursor: _cursor,
-            limit: _pageSize,
-          );
-      final page = _requireSuccess(result);
-      if (page.items.isEmpty) {
-        state = AsyncData(cur.copyWith(hasNext: false, isFetchingMore: false));
-        return FetchMoreResult.noMore;
-      }
-      _cursor += page.items.length;
-      final merged = [...cur.items, ...page.items];
-
-      state = AsyncData(
-        cur.copyWith(
-          items: merged,
-          hasNext: page.hasNext,
-          isFetchingMore: false,
-        ),
-      );
-      return FetchMoreResult.fetched;
-    } finally {
-      _isFetchingMore = false;
-    }
+    return _pager.fetchMore<LoungeBestViewData>(
+      currentValue: cur,
+      hasNext: cur?.hasNext ?? false,
+      currentItems: cur?.items ?? const [],
+      loadPage: (cursor, limit) async {
+        final result = await ref
+            .read(getLoungeBestPostsUseCaseProvider)
+            .call(loungeId: _loungeId, cursor: cursor, limit: limit);
+        return _requireSuccess(result);
+      },
+      getItems: (page) => page.items,
+      getHasNext: (page) => page.hasNext,
+      setValue: (value) => state = AsyncData(value),
+      buildView:
+          (
+            current, {
+            required items,
+            required hasNext,
+            required isFetchingMore,
+          }) => current.copyWith(
+            items: items,
+            hasNext: hasNext,
+            isFetchingMore: isFetchingMore,
+          ),
+    );
   }
 }
 
 LoungePostPage _requireSuccess(GetLoungeBestPostsResult result) {
   return result.when(
     success: (page) => page,
-    networkError: () => throw Exception('network'),
-    serverError: () => throw Exception('server'),
+    networkError: () => throw const AppErrorNetwork(),
+    serverError: () => throw const AppErrorServer(),
   );
 }
-
-

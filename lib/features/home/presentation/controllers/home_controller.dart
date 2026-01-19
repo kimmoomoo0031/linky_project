@@ -4,6 +4,7 @@ import 'package:linky_project_0318/features/home/domain/entities/best_post.dart'
 import 'package:linky_project_0318/features/home/domain/entities/home_user.dart';
 import 'package:linky_project_0318/features/home/domain/entities/lounge_preview.dart';
 import 'package:linky_project_0318/core/export/home_exports.dart';
+import 'package:linky_project_0318/core/error/app_error_messages.dart';
 import 'package:linky_project_0318/core/constants/home_constants.dart';
 
 class HomeViewData {
@@ -40,18 +41,18 @@ class HomeController extends AsyncNotifier<HomeViewData> {
 
     final me = meResult.when(
       success: (user) => user,
-      networkError: () => throw Exception('Failed to load home user'),
-      serverError: () => throw Exception('Failed to load home user'),
+      networkError: () => throw const AppErrorNetwork(),
+      serverError: () => throw const AppErrorServer(),
     );
     final latest = latestResult.when(
       success: (page) => page,
-      networkError: () => throw Exception('Failed to load latest viewed'),
-      serverError: () => throw Exception('Failed to load latest viewed'),
+      networkError: () => throw const AppErrorNetwork(),
+      serverError: () => throw const AppErrorServer(),
     );
     final best = bestResult.when(
       success: (items) => items,
-      networkError: () => throw Exception('Failed to load best posts'),
-      serverError: () => throw Exception('Failed to load best posts'),
+      networkError: () => throw const AppErrorNetwork(),
+      serverError: () => throw const AppErrorServer(),
     );
 
     return HomeViewData(
@@ -101,8 +102,8 @@ class HomeController extends AsyncNotifier<HomeViewData> {
           );
       result.when(
         success: () {},
-        networkError: () => throw Exception('Failed to delete latest viewed'),
-        serverError: () => throw Exception('Failed to delete latest viewed'),
+        networkError: () => throw const AppErrorNetwork(),
+        serverError: () => throw const AppErrorServer(),
       );
     } catch (e) {
       // rollback: できるだけ「今の state」に差し戻す（fetchMore 等の差分を潰しにくくする）
@@ -147,8 +148,8 @@ class HomeController extends AsyncNotifier<HomeViewData> {
           );
       final next = result.when(
         success: (page) => page,
-        networkError: () => throw Exception('Failed to load latest viewed'),
-        serverError: () => throw Exception('Failed to load latest viewed'),
+        networkError: () => throw const AppErrorNetwork(),
+        serverError: () => throw const AppErrorServer(),
       );
 
       state = AsyncData(

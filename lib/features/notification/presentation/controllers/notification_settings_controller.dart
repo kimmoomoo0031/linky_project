@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:linky_project_0318/core/error/ui_app_messages.dart';
+import 'package:linky_project_0318/core/error/app_error_messages.dart';
 
 import 'package:linky_project_0318/features/notification/domain/entities/notification_settings.dart';
 import 'package:linky_project_0318/core/export/notification_exports.dart';
@@ -20,8 +21,8 @@ class NotificationSettingsController
     final result = await ref.read(getNotificationSettingsUseCaseProvider).call();
     return result.when(
       success: (settings) => settings,
-      networkError: () => throw Exception('Failed to load notification settings'),
-      serverError: () => throw Exception('Failed to load notification settings'),
+      networkError: () => throw const AppErrorNetwork(),
+      serverError: () => throw const AppErrorServer(),
     );
   }
 

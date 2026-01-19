@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:linky_project_0318/features/notification/di/notification_di.dart';
 import 'package:linky_project_0318/features/notification/domain/entities/notification_item.dart';
+import 'package:linky_project_0318/core/error/app_error_messages.dart';
 import 'package:linky_project_0318/core/error/ui_app_messages.dart';
 import 'package:linky_project_0318/features/notification/presentation/providers/notification_snack_event_providers.dart';
 
@@ -18,8 +19,8 @@ class NotificationListController
         await ref.read(getNotificationsUseCaseProvider).call(unreadOnly: true);
     return result.when(
       success: (items) => items,
-      networkError: () => throw Exception('Failed to load notifications'),
-      serverError: () => throw Exception('Failed to load notifications'),
+      networkError: () => throw const AppErrorNetwork(),
+      serverError: () => throw const AppErrorServer(),
     );
   }
 
