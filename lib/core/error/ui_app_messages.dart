@@ -49,6 +49,11 @@ class _CommonErrorMessages {
 class _CommonSuccessMessages {
   const _CommonSuccessMessages();
 
+  /// [Core/Error] ラウンジ作成成功。
+  final loungeCreated = const AppMessage(
+    message: 'ラウンジを作成しました。',
+  );
+
   /// [Core/Error] プロフィール更新成功。
   final profileUpdated = const AppMessage(
     message: 'プロフィールの編集が完了しました。',

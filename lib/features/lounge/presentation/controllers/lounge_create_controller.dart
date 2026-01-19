@@ -1,10 +1,12 @@
 import 'dart:typed_data';
+import 'package:linky_project_0318/core/error/ui_app_messages.dart';
 import 'package:linky_project_0318/core/export/widgets_exports.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image/image.dart' as img;
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:linky_project_0318/core/debug/logged_action.dart';
 import 'package:linky_project_0318/core/export/dialog_type_exports.dart';
 import 'package:linky_project_0318/core/constants/lounge_constants.dart';
 import 'package:linky_project_0318/core/utils/validators.dart';
@@ -41,8 +43,7 @@ class LoungeCreateController extends StateNotifier<LoungeCreateState> {
     final bytes = await xfile.readAsBytes();
     if (bytes.lengthInBytes > LoungeConstants.maxUploadBytes) {
       state = state.copyWith(
-        coverImageError:
-            'ファイルサイズが大きすぎます（最大${LoungeConstants.maxUploadMb}MB）',
+        coverImageError: 'ファイルサイズが大きすぎます（最大${LoungeConstants.maxUploadMb}MB）',
       );
       return;
     }
@@ -52,18 +53,14 @@ class LoungeCreateController extends StateNotifier<LoungeCreateState> {
     // - 「処理可能かどうか」はバイトを見て判定する
     final decoder = img.findDecoderForData(bytes);
     if (decoder == null) {
-      state = state.copyWith(
-        coverImageError: '対応していない画像形式です（JPG/PNGのみ）',
-      );
+      state = state.copyWith(coverImageError: '対応していない画像形式です（JPG/PNGのみ）');
       return;
     }
 
     final isPng = decoder is img.PngDecoder;
     final isJpg = decoder is img.JpegDecoder;
     if (!isPng && !isJpg) {
-      state = state.copyWith(
-        coverImageError: '対応していない画像形式です（JPG/PNGのみ）',
-      );
+      state = state.copyWith(coverImageError: '対応していない画像形式です（JPG/PNGのみ）');
       return;
     }
 
@@ -99,10 +96,7 @@ class LoungeCreateController extends StateNotifier<LoungeCreateState> {
           lockAspectRatio: true,
           hideBottomControls: false,
         ),
-        IOSUiSettings(
-          title: '画像を調整',
-          aspectRatioLockEnabled: true,
-        ),
+        IOSUiSettings(title: '画像を調整', aspectRatioLockEnabled: true),
       ],
     );
     if (cropped == null) return;
@@ -111,8 +105,7 @@ class LoungeCreateController extends StateNotifier<LoungeCreateState> {
     final croppedDecoded = img.decodeImage(croppedBytes);
     if (croppedDecoded == null) {
       state = state.copyWith(
-        coverImageError:
-            'トリミング後の画像を読み込めませんでした。もう一度やり直すか、別の画像を選択してください。',
+        coverImageError: 'トリミング後の画像を読み込めませんでした。もう一度やり直すか、別の画像を選択してください。',
       );
       return;
     }
@@ -137,7 +130,9 @@ class LoungeCreateController extends StateNotifier<LoungeCreateState> {
 
   bool _validateAll() {
     final nameError = Validators.validateLoungeName(state.name);
-    final descriptionError = Validators.validateLoungeDescription(state.description);
+    final descriptionError = Validators.validateLoungeDescription(
+      state.description,
+    );
 
     if (nameError != null || descriptionError != null) {
       state = state.copyWith(
@@ -150,37 +145,56 @@ class LoungeCreateController extends StateNotifier<LoungeCreateState> {
   }
 
   Future<void> submit() async {
-    if (state.isSubmitting) return;
-    if (!_validateAll()) return;
-
-    state = state.copyWith(isSubmitting: true);
-    try {
-      // TODO(api): ラウンジ作成 API を呼び出し、成功したらラウンジ詳細へ遷移する。
-      // TODO(api): バックエンドのエラーをフロントで分類して扱えるようにする（文字列ベタ出しを避ける）。
-      //   - ネットワーク系（オフライン/タイムアウト等）: CommonMessages.errors.network.message を表示
-      //   - サーバー系（5xx等）: CommonMessages.errors.server.message を表示
-      //   - ビジネスエラー（例: ラウンジ名重複）: errorCode を解析して nameError 等のフィールドエラーに反映
-      //   - バリデーションエラー（fieldErrors が返る場合）: 各フィールドにマッピング
-      //   - 想定外: CommonMessages.errors.unexpected.message を表示
-      // TODO(api): 可能なら UseCase/Result（例: CreateLoungeResult）を導入し、
-      //   Controller は Result → UI(state/ダイアログ) のマッピングに専念させる。
-      await Future<void>.delayed(const Duration(milliseconds: 400));
-      _emitDialog(
-        const LinkyDialogEvent(
-          type: LinkyDialogType.info,
-          message: 'ラウンジを作成しました。',
-        ),
-      );
-    } catch (_) {
-      _emitDialog(
-        const LinkyDialogEvent(
-          type: LinkyDialogType.error,
-          message: 'エラーが発生しました。時間をおいて再度お試しください。',
-        ),
-      );
-    } finally {
-      state = state.copyWith(isSubmitting: false);
-    }
+    return runLogged(
+      feature: 'LOUNGE',
+      action: 'create.submit',
+      fields: {
+        'nameLength': state.name.length,
+        'descriptionLength': state.description.length,
+        'hasCoverImage': state.originalImagePath != null,
+      },
+      blockReason: () {
+        if (state.isSubmitting) return 'isSubmitting';
+        if (!_validateAll()) return 'validation';
+        return null;
+      },
+      blockFields: () => {
+        'nameError': state.nameError,
+        'descriptionError': state.descriptionError,
+        'coverImageError': state.coverImageError,
+      },
+      run: () async {
+        state = state.copyWith(isSubmitting: true);
+        try {
+          // TODO(api): ラウンジ作成 API を呼び出し、成功したらラウンジ詳細へ遷移する。
+          // TODO(api): バックエンドのエラーをフロントで分類して扱えるようにする（文字列ベタ出しを避ける）。
+          //   - ネットワーク系（オフライン/タイムアウト等）: CommonMessages.errors.network.message を表示
+          //   - サーバー系（5xx等）: CommonMessages.errors.server.message を表示
+          //   - ビジネスエラー（例: ラウンジ名重複）: errorCode を解析して nameError 等のフィールドエラーに反映
+          //   - バリデーションエラー（fieldErrors が返る場合）: 各フィールドにマッピング
+          //   - 想定外: CommonMessages.errors.unexpected.message を表示
+          // TODO(api): 可能なら UseCase/Result（例: CreateLoungeResult）を導入し、
+          //   Controller は Result → UI(state/ダイアログ) のマッピングに専念させる。
+          await Future<void>.delayed(const Duration(milliseconds: 400));
+          _emitDialog(
+            LinkyDialogEvent(
+              type: LinkyDialogType.info,
+              message: CommonMessages.success.loungeCreated.message,
+            ),
+          );
+        } finally {
+          state = state.copyWith(isSubmitting: false);
+        }
+      },
+      onException: (e, st) {
+        state = state.copyWith(isSubmitting: false);
+        _emitDialog(
+          LinkyDialogEvent(
+            type: LinkyDialogType.error,
+            message: CommonMessages.errors.unexpected.message,
+          ),
+        );
+      },
+    );
   }
 }
-
