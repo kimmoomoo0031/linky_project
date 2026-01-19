@@ -2,17 +2,12 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:linky_project_0318/core/enums/fetch_more_result.dart';
-
-/// ラウンジ検索の1行分の表示モデル（モック）。
-class LoungeSearchItem {
-  const LoungeSearchItem({
-    required this.name,
-    required this.totalPostCount,
-  });
-
-  final String name;
-  final int totalPostCount;
-}
+import 'package:linky_project_0318/core/error/app_error_messages.dart';
+import 'package:linky_project_0318/core/utils/paged_fetch_helper.dart';
+import 'package:linky_project_0318/features/lounge/di/lounge_di.dart';
+import 'package:linky_project_0318/features/lounge/domain/entities/lounge_search_item.dart';
+import 'package:linky_project_0318/features/lounge/domain/repositories/lounge_repository.dart';
+import 'package:linky_project_0318/features/lounge/domain/usecases/search_lounges_result.dart';
 
 /// ラウンジ検索画面向けの表示データ。
 class LoungeSearchViewData {
@@ -54,18 +49,12 @@ class LoungeSearchViewData {
 class LoungeSearchController extends AsyncNotifier<LoungeSearchViewData> {
   static const int _pageSize = 20;
 
-  // TODO(api): 実APIに差し替える
-  late final List<LoungeSearchItem> _all = List.generate(100, (i) {
-    return LoungeSearchItem(
-      name: i == 0 ? '日本生活' : 'ラウンジ（モック） #${i + 1}',
-      totalPostCount: 10000 - i * 37,
-    );
-  });
-
-  List<LoungeSearchItem> _filtered = const [];
-  int _cursor = 0;
-  bool _isFetchingMore = false;
+  List<LoungeSearchItem> _items = const [];
+  final PagedFetchHelper<LoungeSearchItem, LoungeSearchPage> _pager =
+      PagedFetchHelper<LoungeSearchItem, LoungeSearchPage>(pageSize: _pageSize);
   String _query = '';
+  int _totalCount = 0;
+  bool _hasNext = false;
 
   @override
   Future<LoungeSearchViewData> build() async {
@@ -82,75 +71,79 @@ class LoungeSearchController extends AsyncNotifier<LoungeSearchViewData> {
   }
 
   Future<FetchMoreResult> fetchMore() async {
-    if (_isFetchingMore) return FetchMoreResult.skipped;
     final cur = state.valueOrNull;
-    if (cur == null) return FetchMoreResult.skipped;
-    if (!cur.hasNext) return FetchMoreResult.noMore;
-
-    _isFetchingMore = true;
-    try {
-      // UI 側で下部インジケータを出すため、先にフラグだけ立てて反映する
-      state = AsyncData(cur.copyWith(isFetchingMore: true));
-
-      // TODO(api): 実APIならここで next page を取得する
-      await Future<void>.delayed(const Duration(milliseconds: 250));
-
-      // 末尾まで到達している場合でも、一度“取得中”を見せてから noMore を返す
-      if (_cursor >= _filtered.length) {
-        state = AsyncData(cur.copyWith(hasNext: false, isFetchingMore: false));
-        return FetchMoreResult.noMore;
-      }
-
-      final next = _nextSlice();
-      final merged = [...cur.items, ...next];
-      state = AsyncData(
-        cur.copyWith(
-          items: merged,
-          hasNext: _cursor < _filtered.length,
-          isFetchingMore: false,
-        ),
-      );
-      return FetchMoreResult.fetched;
-    } finally {
-      _isFetchingMore = false;
-    }
+    return _pager.fetchMore<LoungeSearchViewData>(
+      currentValue: cur,
+      hasNext: cur?.hasNext ?? false,
+      currentItems: cur?.items ?? const [],
+      loadPage: (cursor, limit) async {
+        final result = await ref
+            .read(searchLoungesUseCaseProvider)
+            .call(query: _query, cursor: cursor, limit: limit);
+        return _requireSuccess(result);
+      },
+      getItems: (page) => page.items,
+      getHasNext: (page) => page.hasNext,
+      onPage: (page) {
+        _totalCount = page.totalCount;
+      },
+      setValue: (value) => state = AsyncData(value),
+      buildView:
+          (
+            current, {
+            required items,
+            required hasNext,
+            required isFetchingMore,
+          }) {
+            _items = items;
+            _hasNext = hasNext;
+            return current.copyWith(
+              items: items,
+              totalCount: _totalCount,
+              hasNext: hasNext,
+              isFetchingMore: isFetchingMore,
+            );
+          },
+    );
   }
 
   Future<void> _applyQuery(String query) async {
-    // TODO(api): 実APIならここで検索APIを呼ぶ
-    await Future<void>.delayed(const Duration(milliseconds: 200));
     _query = query.trim();
     if (_query.isEmpty) {
       // UX: 初期状態（検索語なし）は一覧表示せず、空表示にする
-      _filtered = const [];
-      _cursor = 0;
+      _items = const [];
+      _pager.reset();
+      _totalCount = 0;
+      _hasNext = false;
       return;
     }
 
-    _filtered = _all
-        .where((e) => e.name.toLowerCase().contains(_query.toLowerCase()))
-        .toList();
-    _cursor = 0;
-    _nextSlice(); // 初回20件を確定
-  }
-
-  List<LoungeSearchItem> _nextSlice() {
-    final end = (_cursor + _pageSize).clamp(0, _filtered.length);
-    final slice = _filtered.sublist(_cursor, end);
-    _cursor = end;
-    return slice;
+    _pager.reset();
+    final result = await ref
+        .read(searchLoungesUseCaseProvider)
+        .call(query: _query, cursor: _pager.cursor, limit: _pageSize);
+    final page = _requireSuccess(result);
+    _items = page.items;
+    _pager.setCursor(page.items.length);
+    _totalCount = page.totalCount;
+    _hasNext = page.hasNext;
   }
 
   LoungeSearchViewData _current() {
-    final shown = _filtered.sublist(0, _cursor.clamp(0, _filtered.length));
     return LoungeSearchViewData(
       query: _query,
-      items: shown,
-      totalCount: _filtered.length,
-      hasNext: _cursor < _filtered.length,
+      items: _items,
+      totalCount: _totalCount,
+      hasNext: _hasNext,
       isFetchingMore: false,
     );
   }
 }
 
-
+LoungeSearchPage _requireSuccess(SearchLoungesResult result) {
+  return result.when(
+    success: (page) => page,
+    networkError: () => throw const AppErrorNetwork(),
+    serverError: () => throw const AppErrorServer(),
+  );
+}

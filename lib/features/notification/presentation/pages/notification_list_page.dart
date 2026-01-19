@@ -9,6 +9,8 @@ import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/export/widgets_exports.dart';
 import 'package:linky_project_0318/features/notification/presentation/providers/notification_list_providers.dart';
 import 'package:linky_project_0318/features/notification/presentation/widgets/notification_list_tile.dart';
+import 'package:linky_project_0318/features/notification/presentation/providers/notification_snack_event_providers.dart';
+import 'package:linky_project_0318/core/widgets/feedback/snack_bar.dart';
 
 import '../../../../core/theme/app_colors.dart';
 
@@ -20,6 +22,11 @@ class NotificationListPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final cs = Theme.of(context).colorScheme;
     final asyncList = ref.watch(notificationListControllerProvider);
+    ref.listen(notificationSnackEventProvider, (previous, next) {
+      if (next == null) return;
+      showLinkySnackBar(context, message: next);
+      ref.read(notificationSnackEventProvider.notifier).state = null;
+    });
 
     return Scaffold(
       appBar: LinkyAppBar(

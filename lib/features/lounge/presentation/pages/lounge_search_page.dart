@@ -6,8 +6,8 @@ import 'package:linky_project_0318/core/debug/trace_id.dart';
 import 'package:linky_project_0318/core/error/app_error_messages.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/export/widgets_exports.dart';
+import 'package:linky_project_0318/features/lounge/domain/entities/lounge_search_item.dart';
 import 'package:linky_project_0318/features/lounge/presentation/providers/lounge_search_providers.dart';
-import 'package:linky_project_0318/features/lounge/presentation/controllers/lounge_search_controller.dart';
 
 /// ラウンジ検索画面。
 ///

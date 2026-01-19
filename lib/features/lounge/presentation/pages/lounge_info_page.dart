@@ -9,7 +9,7 @@ import 'package:linky_project_0318/core/router/router_extensions.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/export/widgets_exports.dart';
 import 'package:linky_project_0318/core/utils/formatters.dart';
-import 'package:linky_project_0318/features/lounge/presentation/controllers/lounge_info_controller.dart';
+import 'package:linky_project_0318/features/lounge/domain/entities/lounge_info.dart';
 import 'package:linky_project_0318/features/lounge/presentation/providers/lounge_info_providers.dart';
 import 'package:linky_project_0318/core/theme/app_colors.dart';
 
@@ -55,7 +55,7 @@ class LoungeInfoPage extends ConsumerWidget {
 class _LoungeInfoBody extends StatelessWidget {
   const _LoungeInfoBody({required this.data});
 
-  final LoungeInfoViewData data;
+  final LoungeInfo data;
 
   @override
   Widget build(BuildContext context) {

@@ -2,51 +2,13 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:linky_project_0318/core/enums/fetch_more_result.dart';
-import 'package:linky_project_0318/features/post/domain/entities/my_post.dart';
-
-/// ラウンジ内投稿検索の1行分の表示モデル（モック）。
-class PostSearchItem {
-  const PostSearchItem({
-    required this.id,
-    required this.title,
-    required this.content,
-    required this.createdAt,
-    required this.nickname,
-    required this.viewCount,
-    required this.likeCount,
-    required this.hasImage,
-    required this.isGuest,
-  });
-
-  final int id;
-  final String title;
-  final String content;
-  final DateTime createdAt;
-  final String nickname;
-  final int viewCount;
-  final int likeCount;
-  final bool hasImage;
-  final bool isGuest;
-
-  MyPost toMyPost() {
-    return MyPost(
-      id: id,
-      title: title,
-      createdAt: createdAt,
-      nickname: nickname,
-      viewCount: viewCount,
-      likeCount: likeCount,
-      hasImage: hasImage,
-      isGuest: isGuest,
-    );
-  }
-}
-
-enum SearchTargetType {
-  title,
-  content,
-  author,
-}
+import 'package:linky_project_0318/core/error/app_error_messages.dart';
+import 'package:linky_project_0318/core/utils/paged_fetch_helper.dart';
+import 'package:linky_project_0318/features/lounge/di/lounge_di.dart';
+import 'package:linky_project_0318/features/lounge/domain/entities/lounge_post_search_item.dart';
+import 'package:linky_project_0318/core/enums/lounge_post_search_target.dart';
+import 'package:linky_project_0318/features/lounge/domain/repositories/lounge_repository.dart';
+import 'package:linky_project_0318/features/lounge/domain/usecases/search_lounge_posts_result.dart';
 
 /// ラウンジ内投稿検索画面向けの表示データ。
 class LoungePostSearchViewData {
@@ -60,16 +22,16 @@ class LoungePostSearchViewData {
   });
 
   final String query;
-  final SearchTargetType target;
-  final List<PostSearchItem> items;
+  final LoungePostSearchTarget target;
+  final List<LoungePostSearchItem> items;
   final int totalCount;
   final bool hasNext;
   final bool isFetchingMore;
 
   LoungePostSearchViewData copyWith({
     String? query,
-    SearchTargetType? target,
-    List<PostSearchItem>? items,
+    LoungePostSearchTarget? target,
+    List<LoungePostSearchItem>? items,
     int? totalCount,
     bool? hasNext,
     bool? isFetchingMore,
@@ -89,29 +51,20 @@ class LoungePostSearchViewData {
 ///
 /// - 検索クエリでフィルタし、20件ずつ追加読み込みする
 /// - 実APIに切り替える際も UI 側の呼び出しを変えずに済むようにする
-class LoungePostSearchController extends AsyncNotifier<LoungePostSearchViewData> {
+class LoungePostSearchController
+    extends AsyncNotifier<LoungePostSearchViewData> {
   static const int _pageSize = 20;
 
   // TODO(api): 実APIに差し替える（loungeId を含めて検索）
-  late final List<PostSearchItem> _all = List.generate(100, (i) {
-    return PostSearchItem(
-      id: i + 1,
-      title: i == 0 ? '初めての投稿' : '投稿タイトル（モック） #${i + 1}',
-      content: '本文（モック） #${i + 1} サンプルテキストです。',
-      createdAt: DateTime.now().subtract(Duration(hours: i * 3)),
-      nickname: i.isEven ? 'リンゴ' : 'ゲスト',
-      viewCount: 2000 - i * 13,
-      likeCount: 500 - i * 7,
-      hasImage: i % 3 == 0,
-      isGuest: i.isOdd,
-    );
-  });
-
-  List<PostSearchItem> _filtered = const [];
-  int _cursor = 0;
-  bool _isFetchingMore = false;
+  List<LoungePostSearchItem> _items = const [];
+  final PagedFetchHelper<LoungePostSearchItem, LoungePostSearchPage> _pager =
+      PagedFetchHelper<LoungePostSearchItem, LoungePostSearchPage>(
+        pageSize: _pageSize,
+      );
   String _query = '';
-  SearchTargetType _target = SearchTargetType.title;
+  LoungePostSearchTarget _target = LoungePostSearchTarget.title;
+  int _totalCount = 0;
+  bool _hasNext = false;
 
   @override
   Future<LoungePostSearchViewData> build() async {
@@ -119,7 +72,7 @@ class LoungePostSearchController extends AsyncNotifier<LoungePostSearchViewData>
     return _current();
   }
 
-  Future<void> setSearchTarget(SearchTargetType target) async {
+  Future<void> setSearchTarget(LoungePostSearchTarget target) async {
     if (_target == target) return;
     _target = target;
     state = const AsyncLoading();
@@ -138,82 +91,83 @@ class LoungePostSearchController extends AsyncNotifier<LoungePostSearchViewData>
   }
 
   Future<FetchMoreResult> fetchMore() async {
-    if (_isFetchingMore) return FetchMoreResult.skipped;
     final cur = state.valueOrNull;
-    if (cur == null) return FetchMoreResult.skipped;
-    if (!cur.hasNext) return FetchMoreResult.noMore;
-
-    _isFetchingMore = true;
-    try {
-      state = AsyncData(cur.copyWith(isFetchingMore: true));
-
-      // TODO(api): 実APIならここで next page を取得する
-      await Future<void>.delayed(const Duration(milliseconds: 250));
-
-      if (_cursor >= _filtered.length) {
-        state = AsyncData(cur.copyWith(hasNext: false, isFetchingMore: false));
-        return FetchMoreResult.noMore;
-      }
-
-      final next = _nextSlice();
-      final merged = [...cur.items, ...next];
-      state = AsyncData(
-        cur.copyWith(
-          items: merged,
-          hasNext: _cursor < _filtered.length,
-          isFetchingMore: false,
-        ),
-      );
-      return FetchMoreResult.fetched;
-    } finally {
-      _isFetchingMore = false;
-    }
+    return _pager.fetchMore<LoungePostSearchViewData>(
+      currentValue: cur,
+      hasNext: cur?.hasNext ?? false,
+      currentItems: cur?.items ?? const [],
+      loadPage: (cursor, limit) async {
+        final result = await ref
+            .read(searchLoungePostsUseCaseProvider)
+            .call(query: _query, target: _target, cursor: cursor, limit: limit);
+        return _requireSuccess(result);
+      },
+      getItems: (page) => page.items,
+      getHasNext: (page) => page.hasNext,
+      onPage: (page) {
+        _totalCount = page.totalCount;
+      },
+      setValue: (value) => state = AsyncData(value),
+      buildView:
+          (
+            current, {
+            required items,
+            required hasNext,
+            required isFetchingMore,
+          }) {
+            _items = items;
+            _hasNext = hasNext;
+            return current.copyWith(
+              items: items,
+              totalCount: _totalCount,
+              hasNext: hasNext,
+              isFetchingMore: isFetchingMore,
+            );
+          },
+    );
   }
 
   Future<void> _applyQuery(String query) async {
-    // TODO(api): 実APIならここで検索APIを呼ぶ
-    await Future<void>.delayed(const Duration(milliseconds: 200));
     _query = query.trim();
     if (_query.isEmpty) {
-      _filtered = const [];
-      _cursor = 0;
+      _items = const [];
+      _pager.reset();
+      _totalCount = 0;
+      _hasNext = false;
       return;
     }
-
-    final q = _query.toLowerCase();
-    _filtered = _all
-        .where((e) {
-          switch (_target) {
-            case SearchTargetType.title:
-              return e.title.toLowerCase().contains(q);
-            case SearchTargetType.content:
-              return e.content.toLowerCase().contains(q);
-            case SearchTargetType.author:
-              return e.nickname.toLowerCase().contains(q);
-          }
-        })
-        .toList();
-    _cursor = 0;
-    _nextSlice();
-  }
-
-  List<PostSearchItem> _nextSlice() {
-    final end = (_cursor + _pageSize).clamp(0, _filtered.length);
-    final slice = _filtered.sublist(_cursor, end);
-    _cursor = end;
-    return slice;
+    _pager.reset();
+    final result = await ref
+        .read(searchLoungePostsUseCaseProvider)
+        .call(
+          query: _query,
+          target: _target,
+          cursor: _pager.cursor,
+          limit: _pageSize,
+        );
+    final page = _requireSuccess(result);
+    _items = page.items;
+    _pager.setCursor(page.items.length);
+    _totalCount = page.totalCount;
+    _hasNext = page.hasNext;
   }
 
   LoungePostSearchViewData _current() {
-    final shown = _filtered.sublist(0, _cursor.clamp(0, _filtered.length));
     return LoungePostSearchViewData(
       query: _query,
       target: _target,
-      items: shown,
-      totalCount: _filtered.length,
-      hasNext: _cursor < _filtered.length,
+      items: _items,
+      totalCount: _totalCount,
+      hasNext: _hasNext,
       isFetchingMore: false,
     );
   }
 }
 
+LoungePostSearchPage _requireSuccess(SearchLoungePostsResult result) {
+  return result.when(
+    success: (page) => page,
+    networkError: () => throw const AppErrorNetwork(),
+    serverError: () => throw const AppErrorServer(),
+  );
+}

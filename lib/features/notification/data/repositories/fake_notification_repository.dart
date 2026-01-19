@@ -1,6 +1,7 @@
 import 'package:linky_project_0318/features/notification/domain/entities/notification_settings.dart';
 import 'package:linky_project_0318/features/notification/domain/entities/notification_item.dart';
 import 'package:linky_project_0318/features/notification/domain/repositories/notification_repository.dart';
+import 'package:linky_project_0318/core/enums/notification_type.dart';
 
 /// バックエンド未接続の段階で利用する、インメモリのダミー実装。
 class FakeNotificationRepository implements NotificationRepository {
