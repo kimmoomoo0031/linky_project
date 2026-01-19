@@ -43,7 +43,8 @@ class LoungeCreateController extends StateNotifier<LoungeCreateState> {
     final bytes = await xfile.readAsBytes();
     if (bytes.lengthInBytes > LoungeConstants.maxUploadBytes) {
       state = state.copyWith(
-        coverImageError: 'ファイルサイズが大きすぎます（最大${LoungeConstants.maxUploadMb}MB）',
+        coverImageError:
+            CommonMessages.failures.loungeCoverImageTooLarge.message,
       );
       return;
     }
@@ -53,14 +54,20 @@ class LoungeCreateController extends StateNotifier<LoungeCreateState> {
     // - 「処理可能かどうか」はバイトを見て判定する
     final decoder = img.findDecoderForData(bytes);
     if (decoder == null) {
-      state = state.copyWith(coverImageError: '対応していない画像形式です（JPG/PNGのみ）');
+      state = state.copyWith(
+        coverImageError:
+            CommonMessages.failures.loungeCoverImageUnsupportedFormat.message,
+      );
       return;
     }
 
     final isPng = decoder is img.PngDecoder;
     final isJpg = decoder is img.JpegDecoder;
     if (!isPng && !isJpg) {
-      state = state.copyWith(coverImageError: '対応していない画像形式です（JPG/PNGのみ）');
+      state = state.copyWith(
+        coverImageError:
+            CommonMessages.failures.loungeCoverImageUnsupportedFormat.message,
+      );
       return;
     }
 
@@ -70,15 +77,14 @@ class LoungeCreateController extends StateNotifier<LoungeCreateState> {
     if (decoded == null) {
       state = state.copyWith(
         coverImageError:
-            '画像を読み込めませんでした。ファイルが壊れているか、対応外の形式の可能性があります。別の画像を選択してください（JPG/PNGのみ）。',
+            CommonMessages.failures.loungeCoverImageDecodeFailed.message,
       );
       return;
     }
     if (decoded.width < LoungeConstants.coverImageMinRecommendedSidePx ||
         decoded.height < LoungeConstants.coverImageMinRecommendedSidePx) {
       state = state.copyWith(
-        coverImageError:
-            '画像サイズが小さすぎます（${LoungeConstants.coverImageMinRecommendedSidePx}px以上推奨）',
+        coverImageError: CommonMessages.failures.loungeCoverImageTooSmall.message,
       );
       return;
     }
@@ -105,7 +111,8 @@ class LoungeCreateController extends StateNotifier<LoungeCreateState> {
     final croppedDecoded = img.decodeImage(croppedBytes);
     if (croppedDecoded == null) {
       state = state.copyWith(
-        coverImageError: 'トリミング後の画像を読み込めませんでした。もう一度やり直すか、別の画像を選択してください。',
+        coverImageError:
+            CommonMessages.failures.loungeCoverImageCropFailed.message,
       );
       return;
     }

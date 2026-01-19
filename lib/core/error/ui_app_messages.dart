@@ -1,3 +1,5 @@
+import 'package:linky_project_0318/core/constants/lounge_constants.dart';
+
 /// [Core/Error] アプリ全体で共通に使うメッセージ（ダイアログ/スナックバー両対応）。
 class AppMessage {
   const AppMessage({
@@ -68,6 +70,33 @@ class _CommonSuccessMessages {
 /// [Core/Error] 共通：失敗メッセージ（ダイアログ/スナックバー用）
 class _CommonFailureMessages {
   const _CommonFailureMessages();
+
+  /// [Lounge/Create] カバー画像のファイルサイズ超過。
+  final loungeCoverImageTooLarge = const AppMessage(
+    message: 'ファイルサイズが大きすぎます（最大${LoungeConstants.maxUploadMb}MB）',
+  );
+
+  /// [Lounge/Create] カバー画像の形式が未対応。
+  final loungeCoverImageUnsupportedFormat = const AppMessage(
+    message: '対応していない画像形式です（JPG/PNGのみ）',
+  );
+
+  /// [Lounge/Create] カバー画像の読み込み失敗。
+  final loungeCoverImageDecodeFailed = const AppMessage(
+    message:
+        '画像を読み込めませんでした。ファイルが壊れているか、対応外の形式の可能性があります。別の画像を選択してください（JPG/PNGのみ）。',
+  );
+
+  /// [Lounge/Create] カバー画像の解像度不足。
+  final loungeCoverImageTooSmall = const AppMessage(
+    message:
+        '画像サイズが小さすぎます（${LoungeConstants.coverImageMinRecommendedSidePx}px以上推奨）',
+  );
+
+  /// [Lounge/Create] トリミング後の画像読み込み失敗。
+  final loungeCoverImageCropFailed = const AppMessage(
+    message: 'トリミング後の画像を読み込めませんでした。もう一度やり直すか、別の画像を選択してください。',
+  );
 
   /// [Core/Error] 認証コード確認失敗。
   final verifyResetCodeFailed = const AppMessage(
