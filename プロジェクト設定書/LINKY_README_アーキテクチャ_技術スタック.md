@@ -129,6 +129,7 @@ app/
       - 例: `refresh_tokens (id, user_id, token_hash, created_at, expires_at, revoked)`
       - クライアントには生のトークン文字列を返し、サーバー側は検証時に同じアルゴリズムでハッシュして比較する
     - 将来的には Refresh Token ローテーション（再発行時に旧トークンを無効化）も検討
+  - **ゲストには Refresh Token を発行しない（Access Token のみ）**
   - JWT ペイロード例:
     - `sub`（ユーザー ID）
   - `role`（`user` / `guest`）
