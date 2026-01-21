@@ -99,9 +99,6 @@ app/
   lounge_request/            # ラウンジ申請（ユーザー・管理者）
     ...
 
-  admin/                     # 管理者向け API
-    ...
-
   utils/                     # Object Storage / S3 アップローダー等のユーティリティ
     s3_uploader.py
 ```
@@ -134,7 +131,7 @@ app/
     - 将来的には Refresh Token ローテーション（再発行時に旧トークンを無効化）も検討
   - JWT ペイロード例:
     - `sub`（ユーザー ID）
-    - `role`（`user` / `admin` / `guest`）
+  - `role`（`user` / `guest`）
     - `is_guest`
     - `exp`（有効期限）
     - `jti`（トークン固有 ID）
@@ -154,8 +151,7 @@ app/
      初期段階では「別アカウントとして扱う」方針とし、将来的な統合ポリシーを検討する
 
 - 権限管理
-  - `role`: `user` / `admin` / `guest` を `users` テーブルと JWT ペイロードに保持
-  - 管理者専用エンドポイントでは `role == 'admin'` をチェック
+  - `role`: `user` / `guest` を `users` テーブルと JWT ペイロードに保持
 
 ---
 
@@ -194,7 +190,7 @@ app/
 ### 3-5. 通知
 
 - サービス: Firebase Cloud Messaging (FCM)
-  - ライブラリ: `firebase-admin`
+- ライブラリ: FCM サーバー SDK
   - 機能:
     - 自分の投稿にコメントがついたときの通知
     - 自分のラウンジ申請が承認/却下されたときの通知

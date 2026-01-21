@@ -137,7 +137,7 @@
 ```json5
 {
   "sub": 123,              // ユーザー ID (users.id)
-  "role": "user",          // "user" | "admin" | "guest"
+  "role": "user",          // "user" | "guest"
   "is_guest": false,
   "jti": "uuid-...",       // トークン固有 ID
   "iat": 1719990000,       // 発行時刻

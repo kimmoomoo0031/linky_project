@@ -202,29 +202,3 @@
 
 ---
 
-## 8. 管理者 (Admin)
-
-- `GET    /admin/posts`  
-  - 投稿管理一覧（全投稿を対象）
-
-- `GET    /admin/posts/{post_id}`  
-  - 投稿管理詳細
-
-- `DELETE /admin/posts/{post_id}`  
-  - 管理者による投稿削除
-
-- `GET    /admin/lounge-requests`  
-  - すべてのラウンジ申請一覧（承認待ちなど）
-
-- `GET    /admin/lounge-requests/{id}`  
-  - 特定ラウンジ申請の詳細
-
-- `POST   /admin/lounge-requests/{id}/approve`  
-  - ラウンジ申請を承認し、新しいラウンジを作成  
-  - 申請者に対して `type = "lounge_approved"` の通知を作成
-
-- `POST   /admin/lounge-requests/{id}/reject`  
-  - ラウンジ申請を却下  
-  - 申請者に対して `type = "lounge_rejected"` の通知を作成
-
-
