@@ -3,10 +3,10 @@ class MyPageConstants {
   const MyPageConstants._();
 
   /// [MyPage/Withdraw] ドロップダウン矢印アイコンの幅。
-  static const double arrowIconWidthSize = 50;
+  static const double arrowIconWidthSize = 40;
 
   /// [MyPage/Withdraw] ドロップダウン矢印アイコンの高さ。
-  static const double arrowIconHeightSize = 50;
+  static const double arrowIconHeightSize = 40;
 
   /// [MyPage/WithdrawCompleted] 完了画面へ遷移するまでの遅延（ms）。
   static const int completedDelayMs = 3000;

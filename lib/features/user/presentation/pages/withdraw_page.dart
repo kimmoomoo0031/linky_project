@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:linky_project_0318/core/constants/app_assets.dart';
 import 'package:linky_project_0318/core/constants/mypage_constants.dart';
 import 'package:linky_project_0318/core/export/dialog_type_exports.dart';
@@ -190,7 +189,7 @@ class _WithdrawActionSection extends ConsumerWidget {
   }
 }
 
-class _WithdrawReasonField extends StatelessWidget {
+class _WithdrawReasonField extends StatefulWidget {
   const _WithdrawReasonField({
     required this.value,
     required this.onChanged,
@@ -202,10 +201,66 @@ class _WithdrawReasonField extends StatelessWidget {
   final String? errorText;
 
   @override
+  State<_WithdrawReasonField> createState() => _WithdrawReasonFieldState();
+}
+
+class _WithdrawReasonFieldState extends State<_WithdrawReasonField>
+    with TickerProviderStateMixin {
+  bool _isOpen = false;
+
+  static const String _hintText = '退会理由を教えてください';
+
+  void _toggle() {
+    FocusScope.of(context).unfocus();
+    setState(() => _isOpen = !_isOpen);
+  }
+
+  void _select(WithdrawReason reason) {
+    widget.onChanged(reason);
+    setState(() => _isOpen = false);
+  }
+
+  Widget _buildSelectBox({
+    required BuildContext context,
+    required ColorScheme cs,
+    required WithdrawReason? selected,
+  }) {
+    return InkWell(
+      borderRadius: BorderRadius.circular(10),
+      onTap: _toggle,
+      child: InputDecorator(
+        decoration: AuthInputDecorations.textField(
+          context: context,
+          errorText: widget.errorText,
+          suffixIcon: SizedBox(
+            width: MyPageConstants.arrowIconWidthSize,
+            height: MyPageConstants.arrowIconHeightSize,
+            child: Center(
+              child: SvgPicture.asset(
+                _isOpen ? AppAssets.arrowUpLogoSvg : AppAssets.arrowDownLogoSvg,
+                width: MyPageConstants.arrowIconWidthSize,
+                height: MyPageConstants.arrowIconHeightSize,
+              ),
+            ),
+          ),
+        ),
+        child: Text(
+          selected?.label() ?? _hintText,
+          style: selected == null
+              ? AppTextStyles.body12.copyWith(color: cs.outlineVariant)
+              : AppTextStyles.body12.copyWith(color: cs.onSurface),
+        ),
+      ),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+    final selected = widget.value;
+
     return LabeledField(
-      label: '退会理由を教えてください',
+      label: _hintText,
       isRequired: true,
       requiredMark: SvgPicture.asset(
         AppAssets.asteriskLogoSvg,
@@ -213,45 +268,72 @@ class _WithdrawReasonField extends StatelessWidget {
         height: 8,
       ),
       labelStyle: AppTextStyles.body14.copyWith(color: cs.onSurfaceVariant),
-      child: DropdownButtonFormField2<WithdrawReason>(
-        value: value,
-        isExpanded: true,
-        buttonStyleData: const ButtonStyleData(padding: EdgeInsets.zero),
-        decoration: AuthInputDecorations.textField(
-          context: context,
-          errorText: errorText,
-        ).copyWith(contentPadding: EdgeInsets.zero),
-        hint: Text(
-          '退会理由を教えてください',
-          style: AppTextStyles.body12.copyWith(color: cs.outlineVariant),
-        ),
-        dropdownStyleData: const DropdownStyleData(offset: Offset(0, 0)),
-        iconStyleData: IconStyleData(
-          icon: SvgPicture.asset(
-            AppAssets.arrowDownLogoSvg,
-            width: MyPageConstants.arrowIconWidthSize,
-            height: MyPageConstants.arrowIconHeightSize,
-          ),
-          openMenuIcon: SvgPicture.asset(
-            AppAssets.arrowUpLogoSvg,
-            width: MyPageConstants.arrowIconWidthSize,
-            height: MyPageConstants.arrowIconHeightSize,
-          ),
-          iconSize: 30,
-        ),
-        items: WithdrawReason.values
-            .map(
-              (r) => DropdownMenuItem<WithdrawReason>(
-                value: r,
-                child: Text(
-                  r.label(),
-                  style: AppTextStyles.body12.copyWith(color: cs.onSurface),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _buildSelectBox(context: context, cs: cs, selected: selected),
+          _buildOptions(cs: cs, selected: selected),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildOptions({
+    required ColorScheme cs,
+    required WithdrawReason? selected,
+  }) {
+    return AnimatedSize(
+      duration: const Duration(milliseconds: 250),
+      curve: Curves.easeOut,
+      alignment: Alignment.topCenter,
+      child: _isOpen
+          ? Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: cs.surface,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: cs.outlineVariant),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    for (final r in WithdrawReason.values) ...[
+                      InkWell(
+                        onTap: () => _select(r),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 12,
+                          ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  r.label(),
+                                  style: AppTextStyles.body12.copyWith(
+                                    color: cs.onSurface,
+                                  ),
+                                ),
+                              ),
+                              if (selected == r)
+                                Icon(Icons.check, size: 18, color: cs.primary),
+                            ],
+                          ),
+                        ),
+                      ),
+                      if (r != WithdrawReason.values.last)
+                        Divider(
+                          height: 1,
+                          thickness: 1,
+                          color: cs.outlineVariant.withOpacity(0.35),
+                        ),
+                    ],
+                  ],
                 ),
               ),
             )
-            .toList(),
-        onChanged: onChanged,
-      ),
+          : const SizedBox.shrink(),
     );
   }
 }
