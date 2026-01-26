@@ -2,10 +2,11 @@ import 'dart:typed_data';
 import 'package:linky_project_0318/core/error/ui_app_messages.dart';
 import 'package:linky_project_0318/core/export/widgets_exports.dart';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image/image.dart' as img;
 import 'package:image_cropper/image_cropper.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:insta_assets_picker/insta_assets_picker.dart';
 import 'package:linky_project_0318/core/debug/logged_action.dart';
 import 'package:linky_project_0318/core/export/dialog_type_exports.dart';
 import 'package:linky_project_0318/core/constants/lounge_constants.dart';
@@ -18,8 +19,6 @@ class LoungeCreateController extends StateNotifier<LoungeCreateState> {
   LoungeCreateController(this._ref) : super(const LoungeCreateState());
 
   final Ref _ref;
-  final ImagePicker _picker = ImagePicker();
-
   void onNameChanged(String value) {
     state = state.copyWith(name: value, nameError: null);
   }
@@ -33,14 +32,32 @@ class LoungeCreateController extends StateNotifier<LoungeCreateState> {
   }
 
   /// 画像を選択 → 1次検証 → 1:1クロップ → サムネ生成（256px）まで行う。
-  Future<void> pickCoverImage() async {
+  Future<void> pickCoverImage(BuildContext context) async {
     // 1) 画像選択（ギャラリー）
     // 以前のエラーメッセージをクリアしておく
     state = state.copyWith(coverImageError: null);
-    final xfile = await _picker.pickImage(source: ImageSource.gallery);
-    if (xfile == null) return;
+    final assets = await InstaAssetPicker.pickAssets(
+      context,
+      maxAssets: 1,
+      requestType: RequestType.image,
+      pickerConfig: const InstaAssetPickerConfig(
+        closeOnComplete: true,
+        skipCropOnComplete: true,
+      ),
+      onCompleted: (_) {},
+    );
+    if (assets == null || assets.isEmpty) return;
 
-    final bytes = await xfile.readAsBytes();
+    final asset = assets.first;
+    final file = await asset.originFile;
+    if (file == null) {
+      state = state.copyWith(
+        coverImageError:
+            CommonMessages.failures.loungeCoverImageDecodeFailed.message,
+      );
+      return;
+    }
+    final bytes = await file.readAsBytes();
     if (bytes.lengthInBytes > LoungeConstants.maxUploadBytes) {
       state = state.copyWith(
         coverImageError:
@@ -91,7 +108,7 @@ class LoungeCreateController extends StateNotifier<LoungeCreateState> {
 
     // 4) ユーザーが 1:1 でトリミング（アイコン用の構図調整）
     final cropped = await ImageCropper().cropImage(
-      sourcePath: xfile.path,
+      sourcePath: file.path,
       aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
       compressFormat: isPng ? ImageCompressFormat.png : ImageCompressFormat.jpg,
       // PNG の場合は quality が効かないが、型の都合で固定値を渡す
@@ -129,7 +146,7 @@ class LoungeCreateController extends StateNotifier<LoungeCreateState> {
         : Uint8List.fromList(img.encodeJpg(thumb, quality: 85));
 
     state = state.copyWith(
-      originalImagePath: xfile.path,
+      originalImagePath: file.path,
       thumbnailBytes: thumbBytes,
       coverImageError: null,
     );

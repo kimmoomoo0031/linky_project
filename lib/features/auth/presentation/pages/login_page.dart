@@ -214,6 +214,7 @@ class _ForgotPasswordLink extends StatelessWidget {
           style: AppTextStyles.body12.copyWith(
             color: cs.primary,
             decoration: TextDecoration.underline,
+            decorationColor: cs.primary
           ),
         ),
       ),

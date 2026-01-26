@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:linky_project_0318/core/enums/lounge_tab.dart';
 import 'package:linky_project_0318/core/router/router_extensions.dart';
 import 'package:linky_project_0318/core/export/widgets_exports.dart';
+import 'package:linky_project_0318/features/home/presentation/providers/home_providers.dart';
 
 /// ボトムナビゲーションを表示する「メインShell」。
 ///
 /// - ラウンジ/ベスト（=タブ）は go() で切り替え（スタックを積まない）
 /// - 検索/投稿作成 は push()（フローとして積む）
-class MainShellScaffold extends StatelessWidget {
+class MainShellScaffold extends ConsumerWidget {
   const MainShellScaffold({
     super.key,
     required this.child,
@@ -51,7 +53,7 @@ class MainShellScaffold extends StatelessWidget {
     return _idxHome;
   }
 
-  void _onTapBottomNav(BuildContext context, int index) {
+  void _onTapBottomNav(BuildContext context, int index, bool isGuest) {
     final loungeId = _tryParseLoungeIdFromLocation();
     switch (index) {
       case _idxHome:
@@ -76,7 +78,8 @@ class MainShellScaffold extends StatelessWidget {
         context.pushLoungePostSearch();
         return;
       case _idxCreate:
-        context.pushPostCreate();
+        if (loungeId == null) return;
+        context.pushLoungePostCreate(loungeId: loungeId, isGuest: isGuest);
         return;
       default:
         return;
@@ -84,13 +87,15 @@ class MainShellScaffold extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final asyncHome = ref.watch(homeControllerProvider);
+    final isGuest = asyncHome.valueOrNull?.me.isGuest ?? false;
     return Scaffold(
       body: child,
       bottomNavigationBar: LinkyBottomNavBar(
         show: true,
         currentIndex: _currentIndexFromLocation(),
-        onTap: (i) => _onTapBottomNav(context, i),
+        onTap: (i) => _onTapBottomNav(context, i, isGuest),
       ),
     );
   }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_quill/flutter_quill.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:linky_project_0318/core/router/app_router.dart';
@@ -52,6 +54,12 @@ class _AppRoot extends ConsumerWidget {
       darkTheme: AppTheme.dark(),
       themeMode: mode,
       routerConfig: appRouter,
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        FlutterQuillLocalizations.delegate,
+      ],
     );
   }
 }

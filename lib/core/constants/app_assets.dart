@@ -75,6 +75,12 @@ class AppAssets {
   /// 画像選択アイコン（画像を選ぶ導線ボタン）。
   static const selectImageLogoSvg = '$_common/select_image_logo.svg';
 
+  /// [Lounge/PostCreate] 画像添付アイコン（投稿画面のツールバー）。
+  static const writeImageLogoSvg = '$_common/wirte_image_logo.svg';
+
+  /// [Lounge/PostCreate] 動画添付アイコン（投稿画面のツールバー）。
+  static const videoLogoSvg = '$_common/video_logo.svg';
+
   // ---- ドロップダウン（フォーム）(svg) ----
   /// ドロップダウン下矢印（閉じている時）。
   static const arrowDownLogoSvg = '$_common/arrow_down_logo.svg';
@@ -107,6 +113,9 @@ class AppAssets {
   // ---- 認証（パスワードリセット）(png) ----
   /// パスワードリセット用の画像（パスワードリセット関連画面）。
   static const passwordResetLogoPng = '$_common/password_reset_logo.png';
+
+  /// [Lounge/PostCreate] 投稿本文に挿入するダミー画像。
+  static const startLinkyLogoPng = '$_common/start_linky_logo.png';
 
   // ---- ラウンジ (svg) ----
   /// ラウンジ画像未登録時のデフォルト画像（SVG）。

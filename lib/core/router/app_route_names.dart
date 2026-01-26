@@ -13,6 +13,7 @@ class AppRouteNames {
   static const loungePostSearch = 'loungePostSearch';
   static const loungeSearch = 'loungeSearch';
   static const loungeCreate = 'loungeCreate';
+  static const loungePostCreate = 'loungePostCreate';
 
   static const myPosts = 'myPosts';
   static const profileEdit = 'profileEdit';

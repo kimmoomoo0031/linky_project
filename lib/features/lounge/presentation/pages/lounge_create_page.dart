@@ -110,7 +110,7 @@ class _LoungeCreateCoverSection extends ConsumerWidget {
         const SizedBox(height: 8),
         CoverImagePicker(
           thumbnailBytes: state.thumbnailBytes,
-          onTap: controller.pickCoverImage,
+          onTap: () => controller.pickCoverImage(context),
           size: LoungeConstants.coverImageSize,
         ),
         const SizedBox(height: 6),

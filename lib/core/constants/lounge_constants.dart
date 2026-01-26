@@ -20,6 +20,21 @@ class LoungeConstants {
   /// [Lounge/Create] カバー画像の最大アップロード容量（bytes）。
   static const int maxUploadBytes = maxUploadMb * 1024 * 1024;
 
+  /// [Lounge/PostCreate] 投稿タイトルの最大文字数。
+  static const int postTitleMaxLength = 100;
+
+  /// [Lounge/PostCreate] 投稿本文の最大文字数。
+  static const int postContentMaxLength = 65500;
+
+  /// [Lounge/PostCreate] 投稿画像の最大アップロード容量（MB）。
+  static const int postImageMaxUploadMb = 5;
+
+  /// [Lounge/PostCreate] 投稿画像の最大アップロード容量（bytes）。
+  static const int postImageMaxUploadBytes = postImageMaxUploadMb * 1024 * 1024;
+
+  /// [Lounge/PostCreate] 投稿画像の最大許容辺長（px）。
+  static const int postImageMaxSidePx = 2048;
+
   /// [Lounge/Create] カバー画像の最小推奨サイズ（短辺px、未満なら弾く）。
   static const int coverImageMinRecommendedSidePx = 256;
 

@@ -61,6 +61,11 @@ class _CommonSuccessMessages {
     message: 'プロフィールの編集が完了しました。',
   );
 
+  /// [Lounge/PostCreate] 投稿作成成功。
+  final loungePostCreated = const AppMessage(
+    message: '投稿を作成しました。',
+  );
+
   /// [Core/Error] 認証コード再送信成功。
   final resendResetCodeSucceeded = const AppMessage(
     message: '認証コードを再送信しました。',
@@ -96,6 +101,51 @@ class _CommonFailureMessages {
   /// [Lounge/Create] トリミング後の画像読み込み失敗。
   final loungeCoverImageCropFailed = const AppMessage(
     message: 'トリミング後の画像を読み込めませんでした。もう一度やり直すか、別の画像を選択してください。',
+  );
+
+  /// [Lounge/PostCreate] 投稿画像のファイルサイズ超過。
+  final loungePostImageTooLarge = const AppMessage(
+    message:
+        'ファイルサイズが大きすぎます（最大${LoungeConstants.postImageMaxUploadMb}MB）',
+  );
+
+  /// [Lounge/PostCreate] 投稿画像の形式が未対応。
+  final loungePostImageUnsupportedFormat = const AppMessage(
+    message: '対応していない画像形式です（JPG/PNGのみ）',
+  );
+
+  /// [Lounge/PostCreate] 投稿画像の読み込み失敗。
+  final loungePostImageDecodeFailed = const AppMessage(
+    message:
+        '画像を読み込めませんでした。ファイルが壊れているか、対応外の形式の可能性があります。別の画像を選択してください（JPG/PNGのみ）。',
+  );
+
+  /// [Lounge/PostCreate] 投稿画像の解像度超過。
+  final loungePostImageTooLargeDimension = const AppMessage(
+    message:
+        '画像サイズが大きすぎます（${LoungeConstants.postImageMaxSidePx}px以下）',
+  );
+
+  /// [Lounge/PostCreate] 投稿タイトル未入力。
+  final loungePostTitleRequired = const AppMessage(
+    message: 'タイトルを入力してください',
+  );
+
+  /// [Lounge/PostCreate] 投稿タイトル文字数超過。
+  final loungePostTitleTooLong = const AppMessage(
+    message:
+        'タイトルは${LoungeConstants.postTitleMaxLength}文字以内で入力してください',
+  );
+
+  /// [Lounge/PostCreate] 投稿本文未入力。
+  final loungePostContentRequired = const AppMessage(
+    message: '本文を入力してください',
+  );
+
+  /// [Lounge/PostCreate] 投稿本文文字数超過。
+  final loungePostContentTooLong = const AppMessage(
+    message:
+        '本文は${LoungeConstants.postContentMaxLength}文字以内で入力してください',
   );
 
   /// [Core/Error] 認証コード確認失敗。

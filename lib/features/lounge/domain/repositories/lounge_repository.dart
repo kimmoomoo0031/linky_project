@@ -65,6 +65,16 @@ abstract class LoungeRepository {
     required int cursor,
     required int limit,
   });
+
+  Future<int> createLoungePost({
+    required int loungeId,
+    required String title,
+    required String contentHtml,
+    required String contentPlain,
+    required List<String> imagePaths,
+    String? guestNickname,
+    String? guestPassword,
+  });
 }
 
 

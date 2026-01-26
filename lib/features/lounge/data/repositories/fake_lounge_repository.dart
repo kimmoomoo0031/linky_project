@@ -127,6 +127,20 @@ class FakeLoungeRepository implements LoungeRepository {
     );
   }
 
+  @override
+  Future<int> createLoungePost({
+    required int loungeId,
+    required String title,
+    required String contentHtml,
+    required String contentPlain,
+    required List<String> imagePaths,
+    String? guestNickname,
+    String? guestPassword,
+  }) async {
+    await Future<void>.delayed(const Duration(milliseconds: 300));
+    return DateTime.now().millisecondsSinceEpoch;
+  }
+
   List<MyPost> _buildMainPool(int loungeId) {
     final now = DateTime.now();
     final baseLike = (loungeId.abs() % 7) * 20;

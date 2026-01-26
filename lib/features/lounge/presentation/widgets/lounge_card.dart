@@ -192,15 +192,13 @@ class LoungeCard extends StatelessWidget {
                     padding: const EdgeInsets.only(top: _titleSpacing),
                     child: Align(
                       alignment: Alignment.topCenter,
-                      child: Expanded(
-                        child: Text(
-                          title,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.center,
-                          style: AppTextStyles.body12
-                              .copyWith(color: cs.onSurfaceVariant),
-                        ),
+                      child: Text(
+                        title,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                        style: AppTextStyles.body12
+                            .copyWith(color: cs.onSurfaceVariant),
                       ),
                     ),
                   ),
