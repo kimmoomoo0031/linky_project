@@ -15,6 +15,7 @@ Future<void> showLinkyDialog({
   required BuildContext context,
   String? title,
   required String message,
+  TextAlign messageTextAlign = TextAlign.center,
   String closeText = 'とじる',
   LinkyDialogType type = LinkyDialogType.info,
   String? svgAssetPath,
@@ -26,6 +27,7 @@ Future<void> showLinkyDialog({
       return _LinkyDialogShell(
         title: title,
         message: message,
+        messageTextAlign: messageTextAlign,
         type: type,
         svgAssetPath: svgAssetPath,
         actions: [
@@ -55,6 +57,7 @@ Future<bool> showLinkyConfirmDialog({
   required BuildContext context,
   String? title,
   required String message,
+  TextAlign messageTextAlign = TextAlign.center,
   required String confirmText,
   String cancelText = 'キャンセル',
   LinkyDialogType type = LinkyDialogType.confirm,
@@ -69,6 +72,7 @@ Future<bool> showLinkyConfirmDialog({
       return _LinkyDialogShell(
         title: title,
         message: message,
+        messageTextAlign: messageTextAlign,
         type: type,
         svgAssetPath: svgAssetPath,
         isDestructive: isDestructive,
@@ -113,6 +117,7 @@ Future<bool> showLinkyConfirmDialog({
 class _LinkyDialogShell extends StatelessWidget {
   const _LinkyDialogShell({
     required this.message,
+    required this.messageTextAlign,
     required this.type,
     required this.actions,
     this.title,
@@ -122,6 +127,7 @@ class _LinkyDialogShell extends StatelessWidget {
 
   final String? title;
   final String message;
+  final TextAlign messageTextAlign;
   final LinkyDialogType type;
   final String? svgAssetPath;
   final List<Widget> actions;
@@ -218,7 +224,7 @@ class _LinkyDialogShell extends StatelessWidget {
                 // 本文
                 Text(
                   message,
-                  textAlign: TextAlign.center,
+                  textAlign: messageTextAlign,
                   style: AppTextStyles.body14.copyWith(
                     color: textColor,
                     height: 2,

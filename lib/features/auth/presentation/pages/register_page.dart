@@ -62,6 +62,7 @@ class RegisterPage extends ConsumerWidget {
               context: context,
               title: AuthConstants.registerInputRuleTitle,
               message: AuthConstants.registerInputRuleBody,
+              messageTextAlign: TextAlign.left,
               type: LinkyDialogType.info,
             );
           },
