@@ -149,15 +149,15 @@ class _HomeLatestViewedPagerState extends State<HomeLatestViewedPager> {
               );
             },
           ),
-          _DotsIndicator(count: pageCount, index: _page),
+          _DotsPagination(count: pageCount, index: _page),
         ],
       ),
     );
   }
 }
 
-class _DotsIndicator extends StatelessWidget {
-  const _DotsIndicator({required this.count, required this.index});
+class _DotsPagination extends StatelessWidget {
+  const _DotsPagination({required this.count, required this.index});
 
   final int count;
   final int index;

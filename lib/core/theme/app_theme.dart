@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:linky_project_0318/core/constants/lounge_constants.dart';
 
 import 'package:linky_project_0318/core/theme/app_colors.dart';
 
@@ -140,6 +141,15 @@ class AppTheme {
       ),
       progressIndicatorTheme: ProgressIndicatorThemeData(
         color: scheme.primary,
+      ),
+      navigationBarTheme: NavigationBarThemeData(
+        height: LoungeConstants.navigationBarHeight,
+        iconTheme: const WidgetStatePropertyAll(
+          IconThemeData(size: 26),
+        ),
+        labelTextStyle: const WidgetStatePropertyAll(
+          TextStyle(fontSize: 9, fontWeight: FontWeight.bold),
+        ),
       ),
     );
   }
