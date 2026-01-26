@@ -109,10 +109,14 @@
 - `POST   /posts`  
   - ログインユーザーによる投稿作成  
   - `multipart/form-data` でタイトル・本文・画像(最大 10 枚)をまとめて送信
+  - 画像制約はサーバー側で適用（最大 5MB / 2048×2048 に正規化）
+  - クライアントはサイズ制限を設けず送信し、超過分はサーバーでリサイズ
 
 - `POST   /posts/guest`  
   - ゲストによる投稿作成（ニックネーム + パスワード + 画像）  
   - こちらも `multipart/form-data` で送信
+  - 画像制約はサーバー側で適用（最大 5MB / 2048×2048 に正規化）
+  - クライアントはサイズ制限を設けず送信し、超過分はサーバーでリサイズ
 
 - `PUT    /posts/{post_id}`  
   - 投稿本文の修正（作成者のみ）
@@ -201,30 +205,4 @@
   - 結果（承認/却下）は通知 (`notifications`) 経由でユーザーに伝える。
 
 ---
-
-## 8. 管理者 (Admin)
-
-- `GET    /admin/posts`  
-  - 投稿管理一覧（全投稿を対象）
-
-- `GET    /admin/posts/{post_id}`  
-  - 投稿管理詳細
-
-- `DELETE /admin/posts/{post_id}`  
-  - 管理者による投稿削除
-
-- `GET    /admin/lounge-requests`  
-  - すべてのラウンジ申請一覧（承認待ちなど）
-
-- `GET    /admin/lounge-requests/{id}`  
-  - 特定ラウンジ申請の詳細
-
-- `POST   /admin/lounge-requests/{id}/approve`  
-  - ラウンジ申請を承認し、新しいラウンジを作成  
-  - 申請者に対して `type = "lounge_approved"` の通知を作成
-
-- `POST   /admin/lounge-requests/{id}/reject`  
-  - ラウンジ申請を却下  
-  - 申請者に対して `type = "lounge_rejected"` の通知を作成
-
 

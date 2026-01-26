@@ -66,25 +66,6 @@ class ApiEndpoints {
   // 7. Lounge Request
   static const String loungeRequests = '/lounge-requests';
 
-  // 8. Admin
-  static const String adminPosts = '/admin/posts';
-  static const String adminPostDetailTemplate = '/admin/posts/{post_id}';
-  static const String adminPostDeleteTemplate = '/admin/posts/{post_id}';
-  static const String adminLoungeRequests = '/admin/lounge-requests';
-  static const String adminLoungeRequestDetailTemplate =
-      '/admin/lounge-requests/{id}';
-  static const String adminLoungeRequestApproveTemplate =
-      '/admin/lounge-requests/{id}/approve';
-  static const String adminLoungeRequestRejectTemplate =
-      '/admin/lounge-requests/{id}/reject';
-  static String adminPostDetail(String id) => '/admin/posts/$id';
-  static String adminPostDelete(String id) => '/admin/posts/$id';
-  static String adminLoungeRequestDetail(String id) =>
-      '/admin/lounge-requests/$id';
-  static String adminLoungeRequestApprove(String id) =>
-      '/admin/lounge-requests/$id/approve';
-  static String adminLoungeRequestReject(String id) =>
-      '/admin/lounge-requests/$id/reject';
 }
 
 

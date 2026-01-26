@@ -60,6 +60,52 @@ class AuthInputDecorations {
       suffixIcon: suffixIcon,
     );
   }
+
+  /// ラインタイプのテキストフィールド用デコレーション（下線のみ）。
+  static InputDecoration underlineField({
+    required BuildContext context,
+    String? hintText,
+  }) {
+    final cs = Theme.of(context).colorScheme;
+    return InputDecoration(
+      hintText: hintText,
+      hintStyle: AppTextStyles.body12.copyWith(
+        color: cs.outlineVariant,
+      ),
+      filled: false,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+      enabledBorder: UnderlineInputBorder(
+        borderSide: BorderSide(color: cs.outlineVariant),
+      ),
+      focusedBorder: UnderlineInputBorder(
+        borderSide: BorderSide(color: cs.primary, width: 1),
+      ),
+      border: UnderlineInputBorder(
+        borderSide: BorderSide(color: cs.outlineVariant),
+      ),
+      errorText: null,
+    );
+  }
+
+  /// ボーダーなしのテキストフィールド用デコレーション。
+  static InputDecoration borderlessField({
+    required BuildContext context,
+    String? hintText,
+  }) {
+    final cs = Theme.of(context).colorScheme;
+    return InputDecoration(
+      hintText: hintText,
+      hintStyle: AppTextStyles.body12.copyWith(
+        color: cs.outlineVariant,
+      ),
+      filled: false,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+      border: InputBorder.none,
+      enabledBorder: InputBorder.none,
+      focusedBorder: InputBorder.none,
+      errorText: null,
+    );
+  }
 }
 
 /// TextField のバリデーションエラー表示（アイコン + 文言）。

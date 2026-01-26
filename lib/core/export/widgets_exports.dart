@@ -1,6 +1,6 @@
 
 export '../widgets/controls/labeled_field.dart';
-export '../widgets/controls/primary_button.dart';
+export '../widgets/controls/app_buttons.dart';
 export '../widgets/controls/search_bar.dart';
 
 export '../widgets/display/gradient_text.dart';

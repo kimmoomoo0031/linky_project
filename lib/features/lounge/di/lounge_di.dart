@@ -5,6 +5,7 @@ import 'package:linky_project_0318/features/lounge/domain/repositories/lounge_re
 import 'package:linky_project_0318/features/lounge/domain/usecases/get_lounge_best_posts_usecase.dart';
 import 'package:linky_project_0318/features/lounge/domain/usecases/get_lounge_info_usecase.dart';
 import 'package:linky_project_0318/features/lounge/domain/usecases/get_lounge_posts_usecase.dart';
+import 'package:linky_project_0318/features/lounge/domain/usecases/create_lounge_post_usecase.dart';
 import 'package:linky_project_0318/features/lounge/domain/usecases/search_lounge_posts_usecase.dart';
 import 'package:linky_project_0318/features/lounge/domain/usecases/search_lounges_usecase.dart';
 
@@ -25,6 +26,11 @@ final getLoungePostsUseCaseProvider = Provider<GetLoungePostsUseCase>((ref) {
 final getLoungeBestPostsUseCaseProvider =
     Provider<GetLoungeBestPostsUseCase>((ref) {
   return GetLoungeBestPostsUseCase(ref.read(loungeRepositoryProvider));
+});
+
+final createLoungePostUseCaseProvider =
+    Provider<CreateLoungePostUseCase>((ref) {
+  return CreateLoungePostUseCase(ref.read(loungeRepositoryProvider));
 });
 
 final searchLoungesUseCaseProvider = Provider<SearchLoungesUseCase>((ref) {

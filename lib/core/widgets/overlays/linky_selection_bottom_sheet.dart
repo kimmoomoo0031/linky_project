@@ -2,7 +2,7 @@
 
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/widgets/display/divider.dart';
-import 'package:linky_project_0318/core/widgets/controls/primary_button.dart';
+import 'package:linky_project_0318/core/widgets/controls/app_buttons.dart';
 
 /// 選択式ボトムシートの項目モデル。
 class LinkySelectionItem<T> {
@@ -129,7 +129,7 @@ class _LinkySelectionBody<T> extends StatelessWidget {
           const SizedBox(height: 8),
           ...items.map(buildOption),
           const SizedBox(height: 8),
-          LinkyPrimaryButton(
+          ConfirmButton (
             text: applyText,
             onPressed: onApply,
           ),

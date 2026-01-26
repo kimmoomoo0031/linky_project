@@ -199,6 +199,7 @@ class _EmailField extends StatelessWidget {
   final ValueChanged<String> onChanged;
   final String? errorText;
 
+  //실기기로 테스트하면서 수정부분수정, 디시처럼간편로그아웃로그인, 글쓸때 텍스트크기부분 셀렉트가밑으로내려옴, 내용부분구현한거 쓸모없는코드삭제
   @override
   Widget build(BuildContext context) {
     return AuthLabeledTextField(

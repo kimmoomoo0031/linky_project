@@ -15,7 +15,6 @@ import 'package:linky_project_0318/features/auth/presentation/pages/password_res
 import 'package:linky_project_0318/features/home/presentation/pages/home_main_page.dart';
 import 'package:linky_project_0318/features/lounge/presentation/pages/lounge_best_page.dart';
 import 'package:linky_project_0318/features/post/presentation/pages/my_posts_page.dart';
-import 'package:linky_project_0318/features/post/presentation/pages/post_create_page.dart';
 import 'package:linky_project_0318/features/user/presentation/pages/profile_edit_page.dart';
 import 'package:linky_project_0318/features/user/presentation/pages/withdraw_completed_page.dart';
 import 'package:linky_project_0318/features/user/presentation/pages/withdraw_page.dart';
@@ -24,6 +23,7 @@ import 'package:linky_project_0318/features/lounge/presentation/pages/lounge_cre
 import 'package:linky_project_0318/features/lounge/presentation/pages/lounge_main_page.dart';
 import 'package:linky_project_0318/features/lounge/presentation/pages/lounge_info_page.dart';
 import 'package:linky_project_0318/features/lounge/presentation/pages/lounge_post_search_page.dart';
+import 'package:linky_project_0318/features/lounge/presentation/pages/lounge_post_create_page.dart';
 import 'package:linky_project_0318/features/notification/presentation/pages/notification_settings_page.dart';
 import 'package:linky_project_0318/features/notification/presentation/pages/notification_list_page.dart';
 
@@ -93,11 +93,19 @@ final GoRouter appRouter = GoRouter(
       ],
     ),
 
-    // ラウンジ内の投稿検索（ボトムナビ非表示）
     GoRoute(
       path: '/loungePostSearch',
       name: AppRouteNames.loungePostSearch,
       builder: (context, state) => const LoungePostSearchPage(),
+    ),
+    GoRoute(
+      path: '/lounge/:id/post/create',
+      name: AppRouteNames.loungePostCreate,
+      builder: (context, state) {
+        final id = int.tryParse(state.pathParameters['id'] ?? '') ?? 0;
+        final isGuest = (state.extra as bool?) ?? false;
+        return LoungePostCreatePage(loungeId: id, isGuest: isGuest);
+      },
     ),
     GoRoute(
       path: '/myPosts',
@@ -148,12 +156,6 @@ final GoRouter appRouter = GoRouter(
           const LoungeCreatePage(),
     ),
 
-    // 投稿作成（ボトムナビ非表示）
-    GoRoute(
-      path: '/post/create',
-      name: AppRouteNames.postCreate,
-      builder: (context, state) => const PostCreatePage(),
-    ),
     GoRoute(
       path: '/terms',
       name: AppRouteNames.terms,

@@ -63,6 +63,17 @@ extension LinkyRouterX on BuildContext {
     pushNamed(AppRouteNames.postCreate);
   }
 
+  void pushLoungePostCreate({
+    required int loungeId,
+    bool isGuest = false,
+  }) {
+    pushNamed(
+      AppRouteNames.loungePostCreate,
+      pathParameters: {'id': loungeId.toString()},
+      extra: isGuest,
+    );
+  }
+
   void pushLoungePostSearch() {
     pushNamed(AppRouteNames.loungePostSearch);
   }

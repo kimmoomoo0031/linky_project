@@ -9,4 +9,8 @@ import 'package:linky_project_0318/core/export/widgets_exports.dart';
 final loungeCreateDialogEventProvider =
     StateProvider.autoDispose<LinkyDialogEvent?>((ref) => null);
 
+/// lounge 投稿作成画面のダイアログ表示イベント（1回限り）。
+final loungePostCreateDialogEventProvider =
+    StateProvider.autoDispose<LinkyDialogEvent?>((ref) => null);
+
 

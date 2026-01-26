@@ -39,7 +39,7 @@ flutter run
   アプリ全体で共通して使う設定、ルーティング、テーマ、ネットワーククライアント、ユーティリティ、共通ウィジェットを配置。
 
 - `lib/features`  
-  機能ごとのフォルダ（`auth`, `user`, `lounge`, `post`, `comment`, `notification`, `lounge_request`, `admin` など）を配置し、  
+  機能ごとのフォルダ（`auth`, `user`, `lounge`, `post`, `comment`, `notification`, `lounge_request` など）を配置し、  
   それぞれの中で `data / domain / presentation` レイヤに分割。
 
 Flutter 開発の一般的な情報については、公式ドキュメントを参照してください。  
@@ -57,7 +57,6 @@ Linky は、テーマ別の「ラウンジ」の中で、ユーザー同士が *
 - 複数のラウンジごとに投稿・コメント・ベスト投稿を管理
 - ログインユーザーだけでなく、ニックネーム＋パスワードによるゲスト投稿もサポート
 - コメント通知やラウンジ申請通知など、運営目線の機能も提供
-- 管理者用画面から投稿・ラウンジ申請をモデレーション可能
 
 ---
 
@@ -94,7 +93,7 @@ Linky は、テーマ別の「ラウンジ」の中で、ユーザー同士が *
 - ゲスト投稿 (`POST /posts/guest`)
 - タイトル / 本文 / 画像（最大 10 枚）を登録
 - 投稿詳細表示、閲覧数・コメント数の表示
-- 投稿の編集 / 削除（作成者 or 管理者）
+- 投稿の編集 / 削除（作成者）
 - おすすめ（いいね） / X 評価、いいね数に応じたベスト投稿登録
 
 ### コメント（Comment）
@@ -111,14 +110,9 @@ Linky は、テーマ別の「ラウンジ」の中で、ユーザー同士が *
 - 通知の既読化 (`PUT /notifications/{id}/read`)
 - 通知設定の ON/OFF（コメント通知 / ラウンジ申請結果通知）
 
-### ラウンジ申請 / 管理者
+### ラウンジ申請
 
 - ユーザーによるラウンジ作成申請 (`POST /lounge-requests`)
-- 管理者向け:
-  - 投稿管理一覧 / 詳細 / 削除
-  - ラウンジ申請一覧 / 詳細
-  - 承認: 新規ラウンジ作成 + 承認通知
-  - 却下: 却下通知
 
 ---
 
@@ -132,7 +126,7 @@ Linky は、テーマ別の「ラウンジ」の中で、ユーザー同士が *
 - クリーンアーキテクチャ
   - レイヤ構成: `data / domain / presentation`
   - 機能ごとのフォルダ分割:  
-    `auth`, `user`, `lounge`, `post`, `comment`, `notification`, `lounge_request`, `admin` など
+    `auth`, `user`, `lounge`, `post`, `comment`, `notification`, `lounge_request` など
 - 状態管理 / DI
   - `flutter_riverpod`
     - Provider / StateNotifier / AsyncNotifier
@@ -195,7 +189,7 @@ flutter run`.env` などで設定した API Base URL に対して、バックエ
 - `lib/core`
   - 共通設定、ルーティング、テーマ、Dio クライアント、ユーティリティ、共通ウィジェット
 - `lib/features`
-  - 機能ごと (`auth`, `lounge`, `post`, `comment`, `notification`, `lounge_request`, `admin` …) に
+  - 機能ごと (`auth`, `lounge`, `post`, `comment`, `notification`, `lounge_request` …) に
     - `data`（datasources, models, repositories）
     - `domain`（entities, repositories, usecases）
     - `presentation`（controllers, pages, widgets）  

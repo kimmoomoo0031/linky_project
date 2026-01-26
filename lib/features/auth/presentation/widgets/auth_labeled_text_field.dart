@@ -17,6 +17,7 @@ class AuthLabeledTextField extends StatelessWidget {
     required this.hintText,
     this.onChanged,
     this.controller,
+    this.focusNode,
     this.errorText,
     this.keyboardType,
     this.obscureText = false,
@@ -29,12 +30,14 @@ class AuthLabeledTextField extends StatelessWidget {
     this.textInputAction,
     this.minLines,
     this.maxLines,
+    this.useUnderline,
   });
 
   final String label;
   final String hintText;
   final ValueChanged<String>? onChanged;
   final TextEditingController? controller;
+  final FocusNode? focusNode;
   final String? errorText;
 
   final TextInputType? keyboardType;
@@ -54,6 +57,8 @@ class AuthLabeledTextField extends StatelessWidget {
   final TextInputAction? textInputAction;
   final int? minLines;
   final int? maxLines;
+  /// null: 既存のボックス型 / true: 下線のみ / false: 枠線なし
+  final bool? useUnderline;
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +71,7 @@ class AuthLabeledTextField extends StatelessWidget {
       labelSpacing: 8,
       child: TextField(
         controller: controller,
+        focusNode: focusNode,
         enabled: enabled,
         keyboardType: keyboardType,
         obscureText: obscureText,
@@ -75,12 +81,22 @@ class AuthLabeledTextField extends StatelessWidget {
         textInputAction: textInputAction,
         minLines: minLines,
         maxLines: maxLines ?? (obscureText ? 1 : null),
-        decoration: AuthInputDecorations.textField(
-          context: context,
-          hintText: hintText,
-          errorText: errorText,
-          suffixIcon: suffixIcon,
-        ),
+        decoration: switch (useUnderline) {
+          true => AuthInputDecorations.underlineField(
+              context: context,
+              hintText: hintText,
+            ),
+          false => AuthInputDecorations.borderlessField(
+              context: context,
+              hintText: hintText,
+            ),
+          null => AuthInputDecorations.textField(
+              context: context,
+              hintText: hintText,
+              errorText: errorText,
+              suffixIcon: suffixIcon,
+            ),
+        },
       ),
     );
   }

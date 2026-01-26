@@ -62,40 +62,6 @@ class _LoungeMainPageState extends ConsumerState<LoungeMainPage> {
     );
   }
 
-  Widget _buildList(LoungeMainViewData data) {
-    final items = data.items;
-    final showBottomLoader = data.isFetchingMore;
-    final itemCount = items.length + (showBottomLoader ? 1 : 0);
-
-    return ListView.builder(
-      controller: _scrollController,
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      itemCount: itemCount,
-      itemBuilder: (context, i) {
-        if (showBottomLoader && i == itemCount - 1) {
-          return const LinkyListBottomLoader();
-        }
-
-        final p = items[i];
-        return PostListItem(
-          post: p,
-          showTopDivider: i == 0,
-          showBottomDivider: true,
-          onTap: () {
-            // TODO: 投稿詳細へ（未実装）
-          },
-        );
-      },
-    );
-  }
-
-  Widget _buildDataBody(BuildContext context, LoungeMainViewData data) {
-    if (data.items.isEmpty) {
-      return const LinkyListEmptyState(message: 'まだ投稿がありません');
-    }
-    return _buildList(data);
-  }
-
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
@@ -106,9 +72,6 @@ class _LoungeMainPageState extends ConsumerState<LoungeMainPage> {
         title: widget.loungeTitle,
         showBackButton: true,
         onBackPressed: () {
-          // ラウンジホームの戻る挙動:
-          // - 通常は直前画面（ラウンジリスト等）へ戻す。
-          // - タブ切替(go)後などでスタックが無い場合は /home にフォールバックする。
           if (context.canPop()) {
             context.pop();
             return;
@@ -127,6 +90,58 @@ class _LoungeMainPageState extends ConsumerState<LoungeMainPage> {
           ),
           data: (data) => _buildDataBody(context, data),
         ),
+      ),
+    );
+  }
+
+  Widget _buildDataBody(BuildContext context, LoungeMainViewData data) {
+    if (data.items.isEmpty) {
+      return RefreshIndicator(
+        onRefresh: _onRefresh,
+        child: ListView(
+          controller: _scrollController,
+          physics: const AlwaysScrollableScrollPhysics(),
+          children: const [
+            SizedBox(height: 40),
+            LinkyListEmptyState(message: 'まだ投稿がありません'),
+          ],
+        ),
+      );
+    }
+    return _buildList(data);
+  }
+
+  Future<void> _onRefresh() async {
+    await ref.refresh(loungeMainControllerProvider(widget.loungeId).future);
+  }
+
+  Widget _buildList(LoungeMainViewData data) {
+    final items = data.items;
+    final showBottomLoader = data.isFetchingMore;
+    final itemCount = items.length + (showBottomLoader ? 1 : 0);
+
+    return RefreshIndicator(
+      onRefresh: _onRefresh,
+      child: ListView.builder(
+        controller: _scrollController,
+        physics: const AlwaysScrollableScrollPhysics(),
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        itemCount: itemCount,
+        itemBuilder: (context, i) {
+          if (showBottomLoader && i == itemCount - 1) {
+            return const LinkyListBottomLoader();
+          }
+
+          final p = items[i];
+          return PostListItem(
+            post: p,
+            showTopDivider: i == 0,
+            showBottomDivider: true,
+            onTap: () {
+              // TODO: 投稿詳細へ（未実装）
+            },
+          );
+        },
       ),
     );
   }

@@ -35,7 +35,7 @@ dependencies:
   flutter_dotenv: ^5.1.0
 
   # Utils
-  intl: ^0.19.0
+  intl: ^0.20.2
   logger: ^2.5.0
 
   #svg
@@ -52,6 +52,9 @@ dependencies:
 
   # Local storage (theme mode persistence)
   shared_preferences: ^2.3.2
+  insta_assets_picker: ^3.4.0
+  flutter_quill: ^11.5.0
+  flutter_quill_extensions: ^11.0.0
 
 dev_dependencies:
   flutter_test:
