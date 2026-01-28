@@ -44,6 +44,9 @@ dependencies:
   # Dropdown (menu offset / positioning)
   dropdown_button2: ^2.3.9
 
+  # Rich text editor (WYSIWYG)
+  fleather: ^1.26.0
+
   # Fonts
   google_fonts: ^6.2.1
 
@@ -53,8 +56,6 @@ dependencies:
   # Local storage (theme mode persistence)
   shared_preferences: ^2.3.2
   insta_assets_picker: ^3.4.0
-  flutter_quill: ^11.5.0
-  flutter_quill_extensions: ^11.0.0
 
 dev_dependencies:
   flutter_test:

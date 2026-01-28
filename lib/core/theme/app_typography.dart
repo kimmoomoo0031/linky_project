@@ -61,6 +61,10 @@ class AppTextStyles {
   static TextStyle get caption12Bold =>
       GoogleFonts.openSans(fontSize: 12, fontWeight: FontWeight.bold);
 
+  /// 一般的な本文（16px, regular）。
+  static TextStyle get body16Regular =>
+      GoogleFonts.openSans(fontSize: 16, fontWeight: FontWeight.w400);
+
   /// スプラッシュ画面タイトル用のショートカット。
   /// 内部的には [heading24] を利用します。
   static TextStyle get splashTitleTextStyle24 => heading24;

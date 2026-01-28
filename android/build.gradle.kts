@@ -22,6 +22,15 @@ subprojects {
     }
 }
 
+subprojects {
+    // Kotlin(11) に合わせて JavaCompile も 11 に揃える（shared_preferences_android 等の不整合対策）
+    tasks.withType<JavaCompile>().configureEach {
+        sourceCompatibility = JavaVersion.VERSION_11.toString()
+        targetCompatibility = JavaVersion.VERSION_11.toString()
+    }
+}
+
+// 一部プラグインが独自に JVM target を上書きするため、評価後に個別で補正する
 gradle.projectsEvaluated {
     subprojects
         .filter { it.name == "photo_manager" }

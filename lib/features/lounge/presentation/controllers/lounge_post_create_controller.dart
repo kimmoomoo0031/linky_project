@@ -206,7 +206,20 @@ class LoungePostCreateController extends StateNotifier<LoungePostCreateState> {
         continue;
       }
     }
-    return buffer.toString().trim();
+    var html = buffer.toString().trim();
+
+    // fleather 移行直後は本文内への画像 embed 挿入を未対応にしているため、
+    // 画像が添付されているのに embed が無い場合は末尾にまとめてプレースホルダを付与する。
+    final attachedCount = state.attachedImagePaths.length;
+    if (attachedCount > 0 && imageIndex == 0) {
+      final extra = StringBuffer();
+      for (var i = 0; i < attachedCount; i++) {
+        extra.write('<br/><img src="__upload__:$i" />');
+      }
+      html = (html + extra.toString()).trim();
+    }
+
+    return html;
   }
 
   String _escapeHtml(String input) {
