@@ -148,7 +148,7 @@ class AppTheme {
           IconThemeData(size: 26),
         ),
         labelTextStyle: const WidgetStatePropertyAll(
-          TextStyle(fontSize: 9, fontWeight: FontWeight.bold),
+          TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
         ),
       ),
     );
