@@ -16,7 +16,6 @@ abstract class HomeRepository {
   Future<HomeUser> getMe();
 
   /// 最新閲覧をページングで取得する。
-  /// [page] は 1 始まり。
   Future<LoungePreviewPage> getLatestViewed({
     required int page,
     required int pageSize,
