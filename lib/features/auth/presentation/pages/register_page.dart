@@ -62,6 +62,7 @@ class RegisterPage extends ConsumerWidget {
               context: context,
               title: AuthConstants.registerInputRuleTitle,
               message: AuthConstants.registerInputRuleBody,
+              messageTextAlign: TextAlign.left,
               type: LinkyDialogType.info,
             );
           },
@@ -209,8 +210,9 @@ class _LoginWithoutRegisterLink extends StatelessWidget {
         child: Text(
           '登録なしでログインする',
           style: AppTextStyles.body12.copyWith(
-            color: cs.primary,
-            decoration: TextDecoration.underline,
+              color: cs.primary,
+              decoration: TextDecoration.underline,
+              decorationColor: cs.primary
           ),
         ),
       ),

@@ -6,6 +6,7 @@ import 'package:linky_project_0318/core/debug/app_log.dart';
 import 'package:linky_project_0318/core/debug/trace_id.dart';
 import 'package:linky_project_0318/core/error/app_error_messages.dart';
 import 'package:linky_project_0318/core/router/router_extensions.dart';
+import 'package:linky_project_0318/core/theme/app_colors.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/export/home_exports.dart';
 import 'package:linky_project_0318/core/export/widgets_exports.dart';
@@ -14,7 +15,6 @@ import 'package:linky_project_0318/features/home/presentation/pages/home_menu_pa
 import 'package:linky_project_0318/features/home/presentation/widgets/home_best_posts_list.dart';
 import 'package:linky_project_0318/features/home/presentation/widgets/home_latest_viewed_pager.dart';
 import 'package:linky_project_0318/features/home/presentation/widgets/home_main_app_bar.dart';
-import 'package:linky_project_0318/features/home/presentation/widgets/home_section_title.dart';
 import 'package:linky_project_0318/core/error/ui_app_messages.dart';
 import 'package:linky_project_0318/core/enums/linky_dialog_type.dart';
 
@@ -100,14 +100,14 @@ class _HomeMainPageState extends ConsumerState<HomeMainPage> {
                   onTap: () => context.pushLoungeSearch()
                 ),
                 const SizedBox(height: 16),
-                const HomeSectionTitle('最新閲覧'),
+                _HomeSectionTitle(title: '最新閲覧'),
                 const SizedBox(height: 16),
                 _HomeLatestViewedSection(
                   items: data.latestViewed,
                   hasNext: data.latestHasNext,
                 ),
                 const SizedBox(height: 16),
-                const HomeSectionTitle('ベスト投稿'),
+                _HomeSectionTitle(title: 'ベスト投稿'),
                 const SizedBox(height: 16),
                 HomeBestPostsList(items: data.bestPosts),
               ],
@@ -118,6 +118,28 @@ class _HomeMainPageState extends ConsumerState<HomeMainPage> {
     );
   }
 }
+
+class _HomeSectionTitle extends StatelessWidget {
+
+  final String title;
+
+  const _HomeSectionTitle({
+    required this.title,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: GradientText(
+        title,
+        gradient: AppColors.linky45degGradient,
+        style: AppTextStyles.body14,
+      ),
+    );
+  }
+}
+
+
 
 class _HomeLatestViewedSection extends ConsumerWidget {
   const _HomeLatestViewedSection({

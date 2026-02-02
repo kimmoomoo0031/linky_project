@@ -30,9 +30,9 @@ class LinkyBottomNavBar extends StatelessWidget {
         color: Theme.of(context).colorScheme.surface,
         boxShadow: [
           BoxShadow(
-            color: AppColors.primaryGray,
-            blurRadius: 8,
-            offset: const Offset(0, -1),
+            color: AppColors.primaryWhite,
+            blurRadius: 1,
+            offset: const Offset(0, 0),
           )
         ]
       ),

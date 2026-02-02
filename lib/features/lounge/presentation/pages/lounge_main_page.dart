@@ -10,10 +10,6 @@ import 'package:linky_project_0318/features/lounge/presentation/providers/lounge
 import 'package:linky_project_0318/features/post/presentation/widgets/post_list_item.dart';
 
 /// ラウンジメイン画面（モック）。
-///
-/// - AppBar にラウンジ名を表示
-/// - 投稿一覧は最新順
-/// - ボトムナビは Shell 側で制御する
 class LoungeMainPage extends ConsumerStatefulWidget {
   const LoungeMainPage({
     super.key,

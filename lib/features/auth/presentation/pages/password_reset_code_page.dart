@@ -238,8 +238,9 @@ class _ResendEmailButton extends StatelessWidget {
         child: Text(
           'メールを再送信する',
           style: AppTextStyles.body12.copyWith(
-            color: cs.primary,
-            decoration: TextDecoration.underline,
+              color: cs.primary,
+              decoration: TextDecoration.underline,
+              decorationColor: cs.primary
           ),
         ),
       ),

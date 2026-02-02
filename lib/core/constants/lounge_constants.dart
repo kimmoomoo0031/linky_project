@@ -2,6 +2,9 @@
 class LoungeConstants {
   const LoungeConstants._();
 
+  /// [Lounge/Theme] ボトムナビ（NavigationBar）の高さ（px）。
+  static const double navigationBarHeight = 60;
+
   /// [Lounge/Create] ラウンジ名の最小文字数。
   static const int nameMinLength = 2;
 
