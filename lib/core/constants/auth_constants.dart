@@ -52,6 +52,10 @@ class AuthConstants {
   /// [Auth/RegisterSuccess] 会員登録完了メッセージ。
   static const String registerCompletedMessage =
       '会員登録が完了しました。\n他のユーザーと情報を共有してみましょう!';
+
+  /// [Auth/SignUpAgreement] 会員登録前に利用規約確認を促す説明文。
+  static const String signUpAgreementDescription =
+      '会員登録を進める前に、利用規約をご確認ください。';
 }
 
 

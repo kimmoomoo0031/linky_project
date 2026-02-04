@@ -25,6 +25,8 @@ class AppRouteNames {
   static const postCreate = 'postCreate';
 
   static const terms = 'terms';
+  static const privacy = 'privacy';
+  static const signUpAgreement = 'signUpAgreement';
   static const signUp = 'signUp';
   static const signUpSuccess = 'signUpSuccess';
 

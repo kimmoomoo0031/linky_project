@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <title>プライバシーポリシー（テスト）</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue",
+          "Segoe UI", sans-serif;
+        padding: 16px;
+        margin: 0;
+        line-height: 1.6;
+        color: #000000;
+        background-color: #ffffff;
+        word-break: break-word;
+      }
+      h1 {
+        font-size: 20px;
+        font-weight: 700;
+        margin: 0 0 16px;
+      }
+      h2 {
+        font-size: 16px;
+        font-weight: 700;
+        margin: 24px 0 8px;
+      }
+      p {
+        margin: 0 0 8px;
+      }
+      ul {
+        padding-left: 20px;
+        margin: 4px 0 12px;
+      }
+      .muted {
+        color: #555;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>プライバシーポリシー（テスト）</h1>
+    <p class="muted">この文書はテスト用であり、後日正式版に差し替えます。</p>
+
+    <h2>1. 取得する情報（例）</h2>
+    <ul>
+      <li>メールアドレス</li>
+      <li>ソーシャルログイン識別子（例: Google / LINE）</li>
+      <li>プッシュ通知トークン（FCM）</li>
+      <li>ユーザーがアップロードした画像（投稿への添付）</li>
+    </ul>
+
+    <h2>2. 利用目的（例）</h2>
+    <ul>
+      <li>ユーザー識別およびログイン処理</li>
+      <li>サービス提供および運営</li>
+      <li>コメント/申請結果などのサービス通知配信</li>
+    </ul>
+
+    <h2>3. テスト用の長文（スクロール確認）</h2>
+    <p>以下はスクロール確認のためのダミーテキストです。</p>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus.
+      Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies
+      sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a,
+      semper congue, euismod non, mi.
+    </p>
+    <p>
+      Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non
+      fermentum diam nisl sit amet erat. Duis semper. Duis arcu massa,
+      scelerisque vitae, consequat in, pretium a, enim. Pellentesque congue.
+    </p>
+    <p>
+      Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu
+      vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt
+      quis, accumsan porttitor, facilisis luctus, metus.
+    </p>
+    <p>
+      Phasellus ultrices nulla quis nibh. Quisque a lectus. Donec consectetuer
+      ligula vulputate sem tristique cursus. Nam nulla quam, gravida non,
+      commodo a, sodales sit amet, nisi.
+    </p>
+    <p>
+      Pellentesque fermentum dolor. Aliquam quam lectus, facilisis auctor,
+      ultrices ut, elementum vulputate, nunc.
+    </p>
+    <p>
+      Sed adipiscing ornare risus. Morbi est est, blandit sit amet, sagittis
+      vel, euismod vel, velit. Pellentesque egestas sem. Suspendisse commodo
+      ullamcorper magna.
+    </p>
+    <p>
+      Ut aliquam sollicitudin leo. Cras iaculis ultricies nulla. Donec quis dui
+      at dolor tempor interdum. Vivamus molestie gravida turpis.
+    </p>
+    <p>
+      Fusce lobortis lorem at ipsum semper sagittis. Nam convallis pellentesque
+      nisl. Integer malesuada commodo nulla.
+    </p>
+    <p>
+      In in enim a arcu imperdiet malesuada. Sed vel lectus. Donec odio urna,
+      tempus molestie, porttitor ut, iaculis quis, sem.
+    </p>
+    <p>
+      Phasellus rhoncus. Aenean id metus id velit ullamcorper pulvinar.
+      Vestibulum fermentum tortor id mi.
+    </p>
+    <p>
+      Pellentesque ipsum. Nulla non arcu lacinia neque faucibus fringilla. Nulla
+      facilisi. Aenean nec eros.
+    </p>
+    <p>
+      Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere
+      cubilia Curae; Suspendisse sollicitudin velit sed leo.
+    </p>
+    <p>
+      Ut pharetra augue nec augue. Nam elit magna, hendrerit sit amet, tincidunt
+      ac, viverra sed, nulla. Donec porta diam eu massa.
+    </p>
+
+    <script>
+      (function () {
+        var hasSent = false;
+        function maybeSendBottom() {
+          if (hasSent) return;
+          var bottom =
+            window.innerHeight + window.scrollY >=
+            document.body.scrollHeight - 2;
+          if (
+            bottom &&
+            window.ScrollChannel &&
+            typeof ScrollChannel.postMessage === "function"
+          ) {
+            hasSent = true;
+            ScrollChannel.postMessage("bottom");
+          }
+        }
+
+        window.addEventListener("scroll", maybeSendBottom);
+        // 컨텐츠가 짧아 스크롤이 불필요한 경우에도 버튼이 활성화되도록 한 번 체크
+        window.addEventListener("load", function () {
+          setTimeout(maybeSendBottom, 0);
+        });
+      })();
+    </script>
+  </body>
+</html>
+

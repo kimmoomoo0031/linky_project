@@ -11,4 +11,11 @@ final registerControllerProvider =
   return RegisterController(ref, useCase);
 });
 
+/// 新規登録時に送信する利用規約バージョン（施行日）を提供する（モック）。
+///
+/// TODO(api): 実 API から取得する実装に差し替える。
+final termsVersionProvider = Provider<String>((ref) {
+  return 'MOCK';
+});
+
 
