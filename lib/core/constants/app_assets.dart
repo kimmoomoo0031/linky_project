@@ -123,6 +123,7 @@ class AppAssets {
 
   // ---- html ----
   static const termsOfServiceJaHtml = '$_html/terms_of_service_ja.html';
+  static const privacyPolicyTestKoHtml = '$_html/privacy_policy_test_ko.html';
 }
 
 

@@ -79,6 +79,7 @@ flutter:
   assets:
     - assets/images/common/
     - assets/html/terms_of_service_ja.html
+    - assets/html/privacy_policy_test_ko.html
 flutter_native_splash:
   color: "#E6F7FF"
   image: "assets/images/common/start_linky_logo.png"

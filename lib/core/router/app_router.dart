@@ -28,6 +28,8 @@ import 'package:linky_project_0318/features/notification/presentation/pages/noti
 import 'package:linky_project_0318/features/notification/presentation/pages/notification_list_page.dart';
 
 import 'package:linky_project_0318/features/auth/presentation/pages/terms_of_service_page.dart';
+import 'package:linky_project_0318/features/auth/presentation/pages/privacy_policy_page.dart';
+import 'package:linky_project_0318/features/auth/presentation/pages/sign_up_agreement_page.dart';
 
 /// アプリ全体のルーティング設定。
 ///
@@ -161,6 +163,18 @@ final GoRouter appRouter = GoRouter(
       name: AppRouteNames.terms,
       builder: (BuildContext context, GoRouterState state) =>
       const TermsOfServicePage(),
+    ),
+    GoRoute(
+      path: '/privacy',
+      name: AppRouteNames.privacy,
+      builder: (BuildContext context, GoRouterState state) =>
+          const PrivacyPolicyPage(),
+    ),
+    GoRoute(
+      path: '/signUpAgreement',
+      name: AppRouteNames.signUpAgreement,
+      builder: (BuildContext context, GoRouterState state) =>
+          const SignUpAgreementPage(),
     ),
     GoRoute(
       path: '/signUp',

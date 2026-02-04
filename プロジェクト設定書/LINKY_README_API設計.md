@@ -21,21 +21,21 @@
     "password": "password1234",
     "nickname": "taro",
 
-    "terms_agreed": true,
+    "signUp_Agreement": true,
     "terms_version": "2025-01-01"
   }
   ```
 
-  - `terms_agreed` : 利用規約に同意した場合は `true`。未同意なら `false` またはフィールド自体を送信しない。
+  - `signUp_Agreement` : 利用規約に同意した場合は `true`。未同意なら `false` またはフィールド自体を送信しない。
   - `terms_version` : 同意時点の利用規約バージョンまたは施行日（例: `"2025-01-01"`）。クライアント側の定数 `currentTermsVersion` と一致させる。
 
   **サーバー側の想定挙動**
 
-  - `terms_agreed == true` の場合、ユーザーレコードに以下を保存する:
+  - `signUp_Agreement == true` の場合、ユーザーレコードに以下を保存する:
     - `terms_accepted` = true
     - `terms_accepted_version` = `terms_version`
     - `terms_accepted_at` = 現在時刻
-  - `terms_agreed` が `false` または未指定の場合の扱い（登録エラーにするか、ゲスト扱いにするか）は要件に応じて別途定義する。
+  - `signUp_Agreement` が `false` または未指定の場合の扱い（登録エラーにするか、ゲスト扱いにするか）は要件に応じて別途定義する。
 
 - `POST   /auth/login`  
   - メールアドレス + パスワードでログイン

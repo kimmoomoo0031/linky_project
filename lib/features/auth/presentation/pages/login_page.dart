@@ -56,7 +56,7 @@ class LoginPage extends ConsumerWidget {
           },
           onPressedSignUp: () {
             controller.clearValidationErrors();
-            context.pushTerms();
+            context.pushSignUpAgreement();
           },
           onPressedLineLogin: () {
             // TODO: LINE ログイン

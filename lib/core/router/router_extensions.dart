@@ -86,12 +86,23 @@ extension LinkyRouterX on BuildContext {
     pushNamed(AppRouteNames.loungeCreate);
   }
 
-  void pushTerms() {
-    pushNamed(AppRouteNames.terms);
+  Future<bool?> pushTerms() async {
+    final result = await pushNamed(AppRouteNames.terms);
+    return result is bool ? result : null;
   }
 
-  void pushSignUp() {
-    pushNamed(AppRouteNames.signUp);
+  Future<bool?> pushPrivacyPolicy() async {
+    final result = await pushNamed(AppRouteNames.privacy);
+    return result is bool ? result : null;
+  }
+
+  Future<bool?> pushSignUpAgreement() async {
+    final result = await pushNamed(AppRouteNames.signUpAgreement);
+    return result is bool ? result : null;
+  }
+
+  void pushSignUp({Object? extra}) {
+    pushNamed(AppRouteNames.signUp, extra: extra);
   }
 
   void pushPasswordReset() {
