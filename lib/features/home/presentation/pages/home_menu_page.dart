@@ -3,11 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:linky_project_0318/core/constants/app_assets.dart';
-import 'package:linky_project_0318/core/export/dialog_type_exports.dart';
 import 'package:linky_project_0318/core/theme/theme_mode_provider.dart';
-import 'package:linky_project_0318/core/export/auth_exports.dart';
 import 'package:linky_project_0318/core/export/widgets_exports.dart';
-import 'package:linky_project_0318/features/auth/presentation/pages/guest_gate_page.dart';
+import 'package:linky_project_0318/features/home/presentation/pages/guest_gate_page.dart';
 import 'package:linky_project_0318/core/export/home_exports.dart';
 import 'package:linky_project_0318/features/home/presentation/pages/logged_in_menu_view.dart';
 
@@ -31,24 +29,15 @@ class HomeMenuPage extends ConsumerWidget {
     final cs = Theme.of(context).colorScheme;
     final mode = ref.watch(themeModeProvider);
     final isDark = mode == ThemeMode.dark;
-    final logoutState = ref.watch(authSessionControllerProvider);
     final isGuest = me?.isGuest ?? false;
 
     final items = <HomeMenuItem>[
       HomeMenuItem.myPosts,
       HomeMenuItem.profileEdit,
-      HomeMenuItem.notificationSettings,
       HomeMenuItem.createLounge,
-      HomeMenuItem.logout,
-      HomeMenuItem.withdraw,
     ];
 
-    final handler = _HomeMenuActionHandler(
-      ref: ref,
-      onClose: onClose,
-      onNavigate: onNavigate,
-      logoutState: logoutState,
-    );
+    final handler = _HomeMenuActionHandler(onNavigate: onNavigate);
 
     // Drawer内/外に関わらず、ListTile が要求する Material 祖先をここで保証する。
     return Material(
@@ -59,8 +48,10 @@ class HomeMenuPage extends ConsumerWidget {
             const SizedBox(height: 12),
             _HomeMenuHeader(
               isDark: isDark,
+              isGuest: isGuest,
               onToggleTheme: () =>
                   ref.read(themeModeProvider.notifier).toggle(),
+              onOpenSettings: () => onNavigate('/settings'),
               onClose: onClose,
             ),
             const LinkyDivider(),
@@ -81,7 +72,6 @@ class HomeMenuPage extends ConsumerWidget {
                           : LoggedInMenuView(
                               me: me,
                               items: items,
-                              titleColorFor: (item) => item.titleColor(cs),
                               onTapItem: (item) => handler.handle(context, item),
                             ),
                     ),
@@ -99,12 +89,16 @@ class HomeMenuPage extends ConsumerWidget {
 class _HomeMenuHeader extends StatelessWidget {
   const _HomeMenuHeader({
     required this.isDark,
+    required this.isGuest,
     required this.onToggleTheme,
+    required this.onOpenSettings,
     required this.onClose,
   });
 
   final bool isDark;
+  final bool isGuest;
   final VoidCallback onToggleTheme;
+  final VoidCallback onOpenSettings;
   final VoidCallback onClose;
 
   @override
@@ -116,12 +110,24 @@ class _HomeMenuHeader extends StatelessWidget {
         SvgPicture.asset(AppAssets.linkyLogoSvg, width: 30, height: 30),
         const SizedBox(width: 6),
         const Spacer(),
+        if (!isGuest)
+          IconButton(
+            onPressed: onOpenSettings,
+            icon: SvgPicture.asset(
+              isDark
+                  ? AppAssets.settingsLightLogoSvg
+                  : AppAssets.settingsLogoSvg,
+              width: 25,
+              height: 25,
+            ),
+          ),
         IconButton(
           onPressed: onToggleTheme,
           icon: SvgPicture.asset(
             isDark ? AppAssets.lightModeLogoSvg : AppAssets.darkModeLogoSvg,
             width: 25,
             height: 25,
+
           ),
         ),
         IconButton(
@@ -135,16 +141,10 @@ class _HomeMenuHeader extends StatelessWidget {
 
 class _HomeMenuActionHandler {
   _HomeMenuActionHandler({
-    required this.ref,
-    required this.onClose,
     required this.onNavigate,
-    required this.logoutState,
   });
 
-  final WidgetRef ref;
-  final VoidCallback onClose;
   final HomeMenuNavigate onNavigate;
-  final AsyncValue<void> logoutState;
 
   Future<void> handle(BuildContext context, HomeMenuItem item) async {
     switch (item) {
@@ -154,31 +154,8 @@ class _HomeMenuActionHandler {
       case HomeMenuItem.profileEdit:
         onNavigate('/profileEdit');
         return;
-      case HomeMenuItem.notificationSettings:
-        onNavigate('/notificationSettings');
-        return;
       case HomeMenuItem.createLounge:
         onNavigate('/loungeCreate');
-        return;
-      case HomeMenuItem.withdraw:
-        onClose();
-        onNavigate('/withdraw');
-        return;
-      case HomeMenuItem.logout:
-        if (logoutState.isLoading) return; // 連打抑止
-        final ok = await showLinkyConfirmDialog(
-          context: context,
-          title: 'ログアウト確認',
-          message: 'ログアウトしますか？',
-          confirmText: 'ログアウト',
-          type: LinkyDialogType.confirm,
-          isDestructive: true,
-        );
-        if (!ok) return;
-
-        onClose();
-        await ref.read(authSessionControllerProvider.notifier).logout();
-        onNavigate('/login', replace: true);
         return;
     }
   }

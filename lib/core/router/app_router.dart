@@ -26,6 +26,7 @@ import 'package:linky_project_0318/features/lounge/presentation/pages/lounge_pos
 import 'package:linky_project_0318/features/lounge/presentation/pages/lounge_post_create_page.dart';
 import 'package:linky_project_0318/features/notification/presentation/pages/notification_settings_page.dart';
 import 'package:linky_project_0318/features/notification/presentation/pages/notification_list_page.dart';
+import 'package:linky_project_0318/features/user/presentation/pages/settings_page.dart';
 
 import 'package:linky_project_0318/features/auth/presentation/pages/terms_of_service_page.dart';
 import 'package:linky_project_0318/features/auth/presentation/pages/privacy_policy_page.dart';
@@ -120,6 +121,12 @@ final GoRouter appRouter = GoRouter(
       name: AppRouteNames.profileEdit,
       builder: (BuildContext context, GoRouterState state) =>
           const ProfileEditPage(),
+    ),
+    GoRoute(
+      path: '/settings',
+      name: AppRouteNames.settings,
+      builder: (BuildContext context, GoRouterState state) =>
+          const SettingsPage(),
     ),
     GoRoute(
       path: '/withdraw',

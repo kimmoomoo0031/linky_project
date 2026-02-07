@@ -18,8 +18,12 @@ abstract class AuthApiService {
   Future<dynamic> register(@Body() Map<String, dynamic> body);
 
   /// メールアドレス + パスワードでログイン。
-  @POST(ApiEndpoints.authLogin)
+  @POST(ApiEndpoints.authUser)
   Future<dynamic> login(@Body() Map<String, dynamic> body);
+
+  /// ゲストログイン（Access Token のみを想定）。
+  @POST(ApiEndpoints.authGuest)
+  Future<dynamic> guestLogin(@Body() Map<String, dynamic> body);
 
   /// ログアウト（Refresh Token をサーバー側で無効化）。
   @POST(ApiEndpoints.authLogout)
