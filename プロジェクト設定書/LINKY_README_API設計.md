@@ -5,6 +5,18 @@
 
 ---
 
+## 0. 共通方針（命名 / エラー / セキュリティ）
+
+- 命名規約（例）:
+  - リソース一覧: 複数形（例: `/notifications`, `/lounges`, `/posts`）
+  - 設定: 単数形（例: `/notification-settings`）
+- エラーコード（例）:
+  - `400`: validation error（必須不足/形式不正など）
+  - `401`: unauthorized（未ログイン/トークン無効）
+  - `403`: forbidden（権限不足）
+  - `404`: not found
+  - `422`: business logic error（要件上の拒否: temp 期限切れ等）
+
 ## 1. 認証 / アカウント (Auth)
 
 - `POST   /auth/register`  
@@ -21,21 +33,21 @@
     "password": "password1234",
     "nickname": "taro",
 
-    "signUp_Agreement": true,
+    "terms_accepted": true,
     "terms_version": "2025-01-01"
   }
   ```
 
-  - `signUp_Agreement` : 利用規約に同意した場合は `true`。未同意なら `false` またはフィールド自体を送信しない。
+  - `terms_accepted` : 利用規約に同意した場合は `true`。未同意なら `false` またはフィールド自体を送信しない。
   - `terms_version` : 同意時点の利用規約バージョンまたは施行日（例: `"2025-01-01"`）。クライアント側の定数 `currentTermsVersion` と一致させる。
 
   **サーバー側の想定挙動**
 
-  - `signUp_Agreement == true` の場合、ユーザーレコードに以下を保存する:
+  - `terms_accepted == true` の場合、ユーザーレコードに以下を保存する:
     - `terms_accepted` = true
     - `terms_accepted_version` = `terms_version`
     - `terms_accepted_at` = 現在時刻
-  - `signUp_Agreement` が `false` または未指定の場合の扱い（登録エラーにするか、ゲスト扱いにするか）は要件に応じて別途定義する。
+  - `terms_accepted` が `false` または未指定の場合の扱い（登録エラーにするか、ゲスト扱いにするか）は要件に応じて別途定義する。
 
 - `POST   /auth/user`  
   - メールアドレス + パスワードでログイン（会員）
@@ -91,6 +103,8 @@
 - `GET    /lounges/recent`  
   - 最近閲覧したラウンジ一覧（最新 N 件、例: 6〜18 件）  
   - `lounge_recent_views` と `lounges` を JOIN して取得
+  - 認証: **必須（ログインユーザーのみ）**
+    - ゲストは `401`（または空配列を返す等のポリシーは後続で決定）
 
 - `GET    /lounges/{lounge_id}`  
   - 特定ラウンジの詳細情報（名前、説明、サムネイル画像など）
@@ -106,20 +120,78 @@
 
 ## 4. 投稿 (Post)
 
+### 4-0. 本文フォーマット & 本文内画像（HTML + 先行アップロード）
+
+- 本文は **HTML 形式**（`content_html`）で保存/送信する。
+- 本文内の画像は `<img>` タグで表現する（本文の任意位置に挿入できる）。
+- クライアントは画像サイズ変更などの見た目調整を `style` もしくは `width/height` に反映して良い。
+  - サーバーは必要に応じて許可する属性/スタイルをホワイトリストで制御する（後続フェーズで検討）。
+- 本文編集中に画像を即時表示するため、画像は **先行アップロード（temp）** を行い、本文は **参照値（URL/ID）** を保持する。
+
+#### XSS 対策（HTML sanitize）
+
+- サーバーは `content_html` を **sanitize** して保存/配信する（必須）。
+  - 許可タグ例: `p`, `br`, `img`, `strong`, `em`, `ul`, `ol`, `li`
+  - 許可属性例: `src`, `alt`, `width`, `height`, `style`（一部のみ許可）
+  - 禁止: `script`, `iframe`, `object`、および `onClick` 等の `on*` 属性
+
+本文に挿入する `<img>` 例（推奨）:
+
+```html
+<img src="TEMP_URL" data-temp-id="TEMP_IMAGE_ID" style="width:240px;height:auto;" />
+```
+
+- `data-temp-id` を本文に埋め込むことで、登録時にサーバーが temp 画像を確実に特定して finalize できる。
+
 - `GET    /posts/{post_id}`  
   - 投稿詳細を取得
 
+- `POST   /uploads/images/temp`  
+  - 投稿本文に挿入するための **画像を先行アップロード（temp）** する
+  - `multipart/form-data` で送信
+  - サーバーは `temp/` 領域に保存し、必要に応じてサイズ/形式の正規化を行う
+  - レスポンスで `temp_image_id` と `temp_url`（プレビュー用）を返す
+  - 一定時間（例: 24 時間）以内に finalize されない temp 画像は削除される（後述 cleanup）
+  - 制限（例）:
+    - 1 ユーザーあたり同時保有できる temp 画像は最大 `N` 枚（例: 20）
+    - 投稿 1 件あたり本文内画像は最大 10 枚（`POST /posts` と整合）
+  - クライアント都合の削除（登録前）:
+    - ユーザーが本文から画像を削除した場合、クライアントは **即時の削除 API を呼ばない** 方針とする
+    - サーバーは「最終的に `content_html` に残っている `data-temp-id` のみ」を finalize 対象とし、
+      本文から削除された temp 画像は finalize されず、cleanup（TTL）で自動削除される
+
+  **Request 例**
+
+  - `file`: image file
+
+  **Response 例**
+
+  ```json
+  {
+    "temp_image_id": "uuid-...",
+    "temp_url": "https://cdn.example.com/temp/uuid-....jpg",
+    "expires_at": "2026-02-08T00:00:00Z"
+  }
+  ```
+
 - `POST   /posts`  
   - ログインユーザーによる投稿作成  
-  - `multipart/form-data` でタイトル・本文・画像(最大 10 枚)をまとめて送信
-  - 画像制約はサーバー側で適用（最大 5MB / 2048×2048 に正規化）
-  - クライアントはサイズ制限を設けず送信し、超過分はサーバーでリサイズ
+  - **本文内画像は先行アップロード（temp）を前提**とし、この API では画像ファイルを受け取らない
+  - リクエストボディ（`application/json`）例:
+    - `title`
+    - `content_html`（本文内に `<img ... data-temp-id="...">` を含められる）
+  - サーバーは `content_html` から `data-temp-id` を抽出し、該当 `temp_image_id` を **finalize（temp→permanent）** する
+  - finalize 後、本文内の `src` を **正式 URL** に置換して保存する（推奨）
 
 - `POST   /posts/guest`  
   - ゲストによる投稿作成（ニックネーム + パスワード + 画像）  
-  - こちらも `multipart/form-data` で送信
-  - 画像制約はサーバー側で適用（最大 5MB / 2048×2048 に正規化）
-  - クライアントはサイズ制限を設けず送信し、超過分はサーバーでリサイズ
+  - ゲスト投稿の本文内画像も **先行アップロード（temp）** を前提とし、この API では画像ファイルを受け取らない
+  - リクエストボディ（`application/json`）例:
+    - `guest_nickname`
+    - `guest_password`
+    - `title`
+    - `content_html`
+  - finalize の考え方は `POST /posts` と同様（`data-temp-id` を基準に temp 画像を確定）
 
 - `PUT    /posts/{post_id}`  
   - 投稿本文の修正（作成者のみ）
@@ -131,9 +203,14 @@
 - `POST   /posts/{post_id}/like`  
   - いいね（おすすめ）  
   - 初回のみ `like_count` を +1 し、閾値以上になった場合は `best_posts` に登録
+  - 仕様（最低限）:
+    - 1 ユーザーにつき 1 投稿に 1 リアクション（重複押下は no-op もしくは上書き）
+    - `dislike` から `like` への切り替えは上書き（カウント整合はサーバーで担保）
 
 - `POST   /posts/{post_id}/dislike`  
   - よくないね（非推薦）
+  - 仕様（最低限）:
+    - `like` と同様（1 投稿 1 リアクション、切り替えは上書き）
 
 - `GET    /posts/best?limit=N`  
   - ベスト投稿一覧（全ラウンジ共通）  
@@ -143,6 +220,14 @@
 ※ 画像の追加・削除 API（編集時用）は後続フェーズで検討:  
 - `POST   /posts/{post_id}/images`  
 - `DELETE /posts/{post_id}/images/{image_id}`
+
+#### cleanup（未使用 temp 画像の削除）
+
+- 先行アップロードされた temp 画像のうち、一定時間内に投稿登録で参照されず finalize されなかったものは削除する。
+- 本文から削除された temp 画像（`data-temp-id` が最終本文に存在しないもの）も同様に cleanup 対象。
+- 実装例:
+  - S3 の Lifecycle ルールで `temp/` プレフィックス配下を一定期間後に Expiration
+  - もしくは DB 管理 + 定期バッチで削除（後続フェーズで検討）
 
 ---
 
