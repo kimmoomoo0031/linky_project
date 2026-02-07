@@ -37,8 +37,11 @@
     - `terms_accepted_at` = 現在時刻
   - `signUp_Agreement` が `false` または未指定の場合の扱い（登録エラーにするか、ゲスト扱いにするか）は要件に応じて別途定義する。
 
-- `POST   /auth/login`  
-  - メールアドレス + パスワードでログイン
+- `POST   /auth/user`  
+  - メールアドレス + パスワードでログイン（会員）
+
+- `POST   /auth/guest`  
+  - ゲストログイン（Access Token のみ発行）
 
 - `POST   /auth/logout`  
   - ログアウト（Refresh Token を無効化）

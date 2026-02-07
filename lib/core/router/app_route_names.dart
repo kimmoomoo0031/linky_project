@@ -21,6 +21,7 @@ class AppRouteNames {
   static const withdrawCompleted = 'withdrawCompleted';
   static const notificationSettings = 'notificationSettings';
   static const notifications = 'notifications';
+  static const settings = 'settings';
 
   static const postCreate = 'postCreate';
 

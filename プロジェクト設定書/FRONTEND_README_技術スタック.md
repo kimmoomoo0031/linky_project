@@ -83,7 +83,7 @@ Linky アプリのフロントエンド（Flutter）で使用する **技術ス�
 ## 6. この構成での開発の進め方（簡易メモ）
 
 1. `pubspec.yaml` に上記ライブラリを追加  
-2. `dio` + `retrofit` で `AuthApi` をまず定義し、`/auth/login`, `/users/me` を叩けるようにする  
+2. `dio` + `retrofit` で `AuthApi` をまず定義し、`/auth/user`, `/users/me` を叩けるようにする  
 3. `freezed` + `json_serializable` で DTO を定義し、API レスポンスとマッピング  
 4. `auth` feature で
    - `data` / `domain` / `presentation` レイヤを一通り実装  

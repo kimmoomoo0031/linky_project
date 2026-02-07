@@ -45,6 +45,14 @@ class AppAssets {
   /// ライトモード切替アイコン（メニュー内のモード切替で使用）。
   static const lightModeLogoSvg = '$_common/light_mode_logo.svg';
 
+  // ---- 設定 (svg) ----
+  /// 設定アイコン（メニュー内の設定導線で使用）。
+  static const settingsLogoSvg = '$_common/settings_logo.svg';
+
+  /// 設定アイコン（ライト色）（ダークモード時の設定導線で使用）。
+  static const settingsLightLogoSvg = '$_common/settings_light_logo.svg';
+  
+
   // ---- 認証（ログイン/登録）(svg) ----
   /// LINE ログインアイコン（ログイン/登録画面のSNS導線）。
   static const lineLogoSvg = '$_common/line_logo.svg';

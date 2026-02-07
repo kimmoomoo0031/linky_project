@@ -6,10 +6,7 @@ import 'package:flutter/material.dart';
 enum HomeMenuItem {
   myPosts,
   profileEdit,
-  notificationSettings,
   createLounge,
-  logout,
-  withdraw,
 }
 
 extension HomeMenuItemX on HomeMenuItem {
@@ -19,20 +16,33 @@ extension HomeMenuItemX on HomeMenuItem {
         return '自分の投稿';
       case HomeMenuItem.profileEdit:
         return 'プロフィール編集';
-      case HomeMenuItem.notificationSettings:
-        return '通知設定';
       case HomeMenuItem.createLounge:
         return 'ラウンジ作成';
-      case HomeMenuItem.logout:
+    }
+  }
+}
+
+enum SettingsItem {
+  notificationSettings,
+  logout,
+  withdraw,
+}
+
+extension SettingsItemX on SettingsItem {
+  String title() {
+    switch (this) {
+      case SettingsItem.notificationSettings:
+        return '通知設定';
+      case SettingsItem.logout:
         return 'ログアウト';
-      case HomeMenuItem.withdraw:
+      case SettingsItem.withdraw:
         return '退会する';
     }
   }
 
   Color? titleColor(ColorScheme cs) {
     switch (this) {
-      case HomeMenuItem.withdraw:
+      case SettingsItem.withdraw:
         return cs.error;
       default:
         return null;

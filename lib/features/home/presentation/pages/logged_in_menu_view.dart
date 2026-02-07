@@ -10,13 +10,11 @@ class LoggedInMenuView extends StatelessWidget {
     super.key,
     required this.me,
     required this.items,
-    required this.titleColorFor,
     required this.onTapItem,
   });
 
   final HomeUser? me;
   final List<HomeMenuItem> items;
-  final Color? Function(HomeMenuItem item) titleColorFor;
   final Future<void> Function(HomeMenuItem item) onTapItem;
 
   @override
@@ -31,7 +29,6 @@ class LoggedInMenuView extends StatelessWidget {
         Expanded(
           child: _HomeMenuList(
             items: items,
-            titleColorFor: titleColorFor,
             onTapItem: onTapItem,
           ),
         ),
@@ -77,12 +74,10 @@ class _UserHeader extends StatelessWidget {
 class _HomeMenuList extends StatelessWidget {
   const _HomeMenuList({
     required this.items,
-    required this.titleColorFor,
     required this.onTapItem,
   });
 
   final List<HomeMenuItem> items;
-  final Color? Function(HomeMenuItem item) titleColorFor;
   final Future<void> Function(HomeMenuItem item) onTapItem;
 
   @override
@@ -93,7 +88,6 @@ class _HomeMenuList extends StatelessWidget {
         final item = items[index];
         return _MenuTile(
           title: item.title(),
-          titleColor: titleColorFor(item),
           onTap: () => onTapItem(item),
         );
       },
@@ -105,17 +99,15 @@ class _MenuTile extends StatelessWidget {
   const _MenuTile({
     required this.title,
     required this.onTap,
-    this.titleColor,
   });
 
   final String title;
   final VoidCallback onTap;
-  final Color? titleColor;
 
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
-    final textColor = titleColor ?? cs.onSurfaceVariant;
+    final textColor = cs.onSurfaceVariant;
     final chevronColor = cs.onSurfaceVariant;
 
     return Padding(
