@@ -204,13 +204,23 @@
   - いいね（おすすめ）  
   - 初回のみ `like_count` を +1 し、閾値以上になった場合は `best_posts` に登録
   - 仕様（最低限）:
-    - 1 ユーザーにつき 1 投稿に 1 リアクション（重複押下は no-op もしくは上書き）
-    - `dislike` から `like` への切り替えは上書き（カウント整合はサーバーで担保）
+    - 認証: **必須**（user / guest ともに Access Token を送信）
+    - 1 アクター（user: `sub` / guest: `jti`）につき 1 投稿に 1 回のみ投票可能（取消不可）
+    - すでに投票済みの場合は `409 Conflict`（例: `ALREADY_REACTED`）を返す
+    - 本 API は「おすすめ」投票のみ（反対票は `/dislike`）
+  - Response（例）:
+    - `200 OK`: `{ "like_count": 123, "dislike_count": 45 }`
+    - `409 Conflict`: すでに投票済み
 
 - `POST   /posts/{post_id}/dislike`  
   - よくないね（非推薦）
   - 仕様（最低限）:
-    - `like` と同様（1 投稿 1 リアクション、切り替えは上書き）
+    - 認証: **必須**（user / guest ともに Access Token を送信）
+    - 1 アクター（user: `sub` / guest: `jti`）につき 1 投稿に 1 回のみ投票可能（取消不可）
+    - すでに投票済みの場合は `409 Conflict`（例: `ALREADY_REACTED`）を返す
+  - Response（例）:
+    - `200 OK`: `{ "like_count": 123, "dislike_count": 45 }`
+    - `409 Conflict`: すでに投票済み
 
 - `GET    /posts/best?limit=N`  
   - ベスト投稿一覧（全ラウンジ共通）  
