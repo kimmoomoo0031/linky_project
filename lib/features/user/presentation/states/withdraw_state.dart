@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:linky_project_0318/core/enums/withdraw_reason.dart';
+import 'package:linky_project_0318/features/user/enums/withdraw_reason.dart';
 import 'package:linky_project_0318/core/utils/form_gate.dart';
 
 part 'withdraw_state.freezed.dart';

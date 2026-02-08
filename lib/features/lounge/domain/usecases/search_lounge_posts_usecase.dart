@@ -1,4 +1,4 @@
-import 'package:linky_project_0318/core/enums/lounge_post_search_target.dart';
+import 'package:linky_project_0318/features/lounge/enums/lounge_post_search_target.dart';
 import 'package:linky_project_0318/features/lounge/domain/repositories/lounge_repository.dart';
 import 'package:linky_project_0318/features/lounge/domain/usecases/search_lounge_posts_result.dart';
 

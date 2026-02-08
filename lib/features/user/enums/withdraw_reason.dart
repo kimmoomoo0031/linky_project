@@ -1,18 +1,26 @@
-/// 退会理由（UI選択肢）。
-///
-/// NOTE:
-/// - 現時点はモック段階のため、UI表示に必要な文言のみを保持する。
-/// - 文言は後から変更しやすいように、このファイルに集約する。
+/// 退会理由（UI 選択肢）。
 enum WithdrawReason {
+  /// サービスが期待と違った。
   notUseful,
+
+  /// 他のサービスを使うため。
   foundAlternative,
+
+  /// 通知が多すぎる。
   tooManyNotifications,
+
+  /// プライバシーが心配。
   privacyConcern,
+
+  /// 利用頻度が低い。
   rarelyUse,
+
+  /// その他。
   other,
 }
 
 extension WithdrawReasonX on WithdrawReason {
+  /// 表示ラベル。
   String label() {
     switch (this) {
       case WithdrawReason.notUseful:

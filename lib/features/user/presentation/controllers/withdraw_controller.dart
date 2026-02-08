@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:linky_project_0318/core/error/ui_app_messages.dart';
 import 'package:linky_project_0318/core/export/dialog_type_exports.dart';
-import 'package:linky_project_0318/core/enums/withdraw_reason.dart';
+import 'package:linky_project_0318/features/user/enums/withdraw_reason.dart';
 import 'package:linky_project_0318/core/export/widgets_exports.dart';
 import 'package:linky_project_0318/core/utils/validators.dart';
 import 'package:linky_project_0318/features/user/presentation/states/withdraw_state.dart';

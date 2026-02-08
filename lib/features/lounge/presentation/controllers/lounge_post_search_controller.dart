@@ -6,7 +6,7 @@ import 'package:linky_project_0318/core/error/app_error_messages.dart';
 import 'package:linky_project_0318/core/utils/paged_fetch_helper.dart';
 import 'package:linky_project_0318/features/lounge/di/lounge_di.dart';
 import 'package:linky_project_0318/features/lounge/domain/entities/lounge_post_search_item.dart';
-import 'package:linky_project_0318/core/enums/lounge_post_search_target.dart';
+import 'package:linky_project_0318/features/lounge/enums/lounge_post_search_target.dart';
 import 'package:linky_project_0318/features/lounge/domain/repositories/lounge_repository.dart';
 import 'package:linky_project_0318/features/lounge/domain/usecases/search_lounge_posts_result.dart';
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:linky_project_0318/core/enums/home_menu_item.dart';
+import 'package:linky_project_0318/features/user/enums/settings_item.dart';
 
 import 'package:linky_project_0318/core/export/dialog_type_exports.dart';
 import 'package:linky_project_0318/core/export/widgets_exports.dart';

@@ -4,6 +4,6 @@
 export '../../features/home/di/home_di.dart';
 
 export '../../features/home/presentation/providers/home_providers.dart';
-export 'package:linky_project_0318/core/enums/home_menu_item.dart';
+export 'package:linky_project_0318/features/home/enums/home_menu_item.dart';
 
 

@@ -1,6 +1,6 @@
 import 'package:linky_project_0318/features/lounge/domain/entities/lounge_info.dart';
 import 'package:linky_project_0318/features/lounge/domain/entities/lounge_post_search_item.dart';
-import 'package:linky_project_0318/core/enums/lounge_post_search_target.dart';
+import 'package:linky_project_0318/features/lounge/enums/lounge_post_search_target.dart';
 import 'package:linky_project_0318/features/lounge/domain/entities/lounge_search_item.dart';
 import 'package:linky_project_0318/features/post/domain/entities/my_post.dart';
 

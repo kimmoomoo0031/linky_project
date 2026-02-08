@@ -3,10 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:linky_project_0318/core/debug/app_log.dart';
 import 'package:linky_project_0318/core/debug/trace_id.dart';
-import 'package:linky_project_0318/core/enums/lounge_post_search_target.dart';
+import 'package:linky_project_0318/features/lounge/enums/lounge_post_search_target.dart';
 import 'package:linky_project_0318/core/export/widgets_exports.dart';
 import 'package:linky_project_0318/core/error/app_error_messages.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
+import 'package:linky_project_0318/core/router/router_extensions.dart';
 import 'package:linky_project_0318/features/lounge/domain/entities/lounge_post_search_item.dart';
 import 'package:linky_project_0318/features/lounge/presentation/providers/lounge_post_search_providers.dart';
 import 'package:linky_project_0318/features/post/presentation/widgets/post_list_item.dart';
@@ -81,7 +82,11 @@ class LoungePostSearchPage extends ConsumerWidget {
             await controller.setSearchTarget(selected);
           },
           itemBuilder: (context, item) {
-            return PostListItem(post: item.toMyPost(), onTap: () {});
+            final p = item.toMyPost();
+            return PostListItem(
+              post: p,
+              onTap: () => context.pushPostDetail(postId: p.id.toString()),
+            );
           },
         ),
       ),

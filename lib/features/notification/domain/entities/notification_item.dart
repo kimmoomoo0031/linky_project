@@ -1,4 +1,4 @@
-import 'package:linky_project_0318/core/enums/notification_type.dart';
+import 'package:linky_project_0318/features/notification/enums/notification_type.dart';
 
 /// 通知一覧で利用する通知エンティティ。
 ///
