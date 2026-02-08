@@ -89,6 +89,9 @@ class AppAssets {
   /// [Lounge/PostCreate] 動画添付アイコン（投稿画面のツールバー）。
   static const videoLogoSvg = '$_common/video_logo.svg';
 
+  /// [Post/Reaction] よくないね（非推薦）アイコン。
+  static const writePostBadLogoSvg = '$_common/write_post_bad_logo.svg';
+
   // ---- ドロップダウン（フォーム）(svg) ----
   /// ドロップダウン下矢印（閉じている時）。
   static const arrowDownLogoSvg = '$_common/arrow_down_logo.svg';
@@ -102,6 +105,9 @@ class AppAssets {
 
   /// ユーザー確認（チェック）アイコン（投稿カードなどのステータス表示）。
   static const userCheckLogoSvg = '$_common/user_check_logo.svg';
+
+  /// [Comment] コメント操作（more）アイコン（削除メニューなど）。
+  static const commentMoreLogoSvg = '$_common/comment_more_logo.svg';
 
   // ---- プロフィール (svg) ----
   /// プロフィール更新成功アイコン（プロフィール編集成功ダイアログ）。
