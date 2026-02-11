@@ -165,6 +165,11 @@ class _CommonFailureMessages {
     title: '入力エラー',
     message: '新しいパスワードは現在のパスワードと異なるものを入力してください。',
   );
+
+  /// [Post/Reaction] すでに評価済み（重複投票）。
+  final alreadyReacted = const AppMessage(
+    message: 'すでに評価済みです',
+  );
 }
 
 

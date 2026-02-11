@@ -12,7 +12,7 @@ abstract class CommentApiService {
 
   /// コメント一覧取得。
   @GET(ApiEndpoints.postCommentsTemplate)
-  Future<dynamic> getComments( // List<dynamic> → dynamic
+  Future<dynamic> getComments(
     @Path('post_id') String postId, {
     @Queries() Map<String, dynamic>? query, // sort など
   });
@@ -37,4 +37,5 @@ abstract class CommentApiService {
     @Path('comment_id') String commentId,
   );
 }
+
 

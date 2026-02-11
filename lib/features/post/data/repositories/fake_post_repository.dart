@@ -1,4 +1,7 @@
 import 'package:linky_project_0318/features/post/domain/entities/my_post.dart';
+import 'package:linky_project_0318/features/post/domain/entities/post_detail.dart';
+import 'package:linky_project_0318/features/post/domain/entities/reaction_counts.dart';
+import 'package:linky_project_0318/features/post/enums/reaction_type.dart';
 import 'package:linky_project_0318/features/post/domain/repositories/post_repository.dart';
 
 /// バックエンド未接続の段階で利用する、インメモリのダミー実装。
@@ -58,10 +61,58 @@ class FakePostRepository implements PostRepository {
     ];
   }();
 
+  final Map<String, PostDetail> _detailCache = {};
+
   @override
   Future<List<MyPost>> getMyPosts() async {
     await Future<void>.delayed(const Duration(milliseconds: 500));
     return _posts;
+  }
+
+  @override
+  Future<PostDetail> getPostDetail({required String postId}) async {
+    await Future<void>.delayed(const Duration(milliseconds: 250));
+
+    return _detailCache.putIfAbsent(postId, () {
+      final now = DateTime.now();
+      return PostDetail(
+        id: postId,
+        title: 'テストタイトルですテストタイトルです',
+        contentPlain: '内容です内容です内容です内容です内容です内容です',
+        authorNickname: 'リンゴ',
+        authorIsGuest: false,
+        createdAt: now.subtract(const Duration(days: 1)),
+        viewCount: 100,
+        commentCount: 23,
+        likeCount: 999,
+        dislikeCount: 999,
+        myReaction: ReactionType.none,
+      );
+    });
+  }
+
+  @override
+  Future<ReactionCounts> likePost({required String postId}) async {
+    await Future<void>.delayed(const Duration(milliseconds: 250));
+    final cur = await getPostDetail(postId: postId);
+    final next = cur.copyWith(
+      likeCount: cur.likeCount + 1,
+      myReaction: ReactionType.like,
+    );
+    _detailCache[postId] = next;
+    return ReactionCounts(likeCount: next.likeCount, dislikeCount: next.dislikeCount);
+  }
+
+  @override
+  Future<ReactionCounts> dislikePost({required String postId}) async {
+    await Future<void>.delayed(const Duration(milliseconds: 250));
+    final cur = await getPostDetail(postId: postId);
+    final next = cur.copyWith(
+      dislikeCount: cur.dislikeCount + 1,
+      myReaction: ReactionType.dislike,
+    );
+    _detailCache[postId] = next;
+    return ReactionCounts(likeCount: next.likeCount, dislikeCount: next.dislikeCount);
   }
 }
 

@@ -113,6 +113,97 @@ Future<bool> showLinkyConfirmDialog({
   return result ?? false;
 }
 
+/// アプリ共通の「テキスト入力」ダイアログ（キャンセル/実行の2ボタン）。
+Future<String?> showLinkyTextInputDialog({
+  required BuildContext context,
+  required String title,
+  required String message,
+  required String hintText,
+  required String confirmText,
+  String cancelText = 'キャンセル',
+  bool barrierDismissible = false,
+  bool obscureText = false,
+  bool isDestructive = false,
+}) async {
+  final controller = TextEditingController();
+  final result = await showDialog<String?>(
+    context: context,
+    barrierDismissible: barrierDismissible,
+    builder: (ctx) {
+      final cs = Theme.of(ctx).colorScheme;
+      return _LinkyDialogShell(
+        title: title,
+        message: message,
+        messageTextAlign: TextAlign.center,
+        type: LinkyDialogType.confirm,
+        isDestructive: isDestructive,
+        actions: [
+          TextField(
+            controller: controller,
+            obscureText: obscureText,
+            decoration: InputDecoration(
+              hintText: hintText,
+              hintStyle: AppTextStyles.body14.copyWith(
+                color: cs.outlineVariant,
+              ),
+              filled: true,
+              fillColor: Theme.of(ctx).inputDecorationTheme.fillColor,
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 12,
+                vertical: 10,
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(color: cs.outlineVariant),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(color: cs.primary, width: 1),
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton(
+                  onPressed: () => Navigator.of(ctx).pop(null),
+                  child: Text(
+                    cancelText,
+                    style: AppTextStyles.body16Bold.copyWith(
+                      color: Theme.of(ctx).colorScheme.onSurface,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: FilledButton(
+                  onPressed: () {
+                    final v = controller.text.trim();
+                    Navigator.of(ctx).pop(v.isEmpty ? null : v);
+                  },
+                  child: Text(
+                    confirmText,
+                    style: AppTextStyles.body16Bold.copyWith(
+                      color: isDestructive
+                          ? Theme.of(ctx).colorScheme.onError
+                          : Theme.of(ctx).colorScheme.onPrimary,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      );
+    },
+  );
+
+  controller.dispose();
+  return result;
+}
+
 /// Linkyダイアログの共通レイアウト。
 class _LinkyDialogShell extends StatelessWidget {
   const _LinkyDialogShell({

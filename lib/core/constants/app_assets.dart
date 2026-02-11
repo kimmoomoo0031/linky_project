@@ -35,7 +35,7 @@ class AppAssets {
   /// 通知ベル（ホーム AppBar 左側の通知導線）。
   static const bellLogoSvg = '$_common/bell_logo.svg';
 
-  /// メニュー（リスト）アイコン（ホーム AppBar 右側のメニュー導線）。
+  /// メニュー（リスト）アイコン
   static const mainScreenListLogoSvg = '$_common/main_screen_list_logo.svg';
 
   // ---- テーマ切替（ダーク/ライト）(svg) ----
@@ -108,6 +108,9 @@ class AppAssets {
 
   /// [Comment] コメント操作（more）アイコン（削除メニューなど）。
   static const commentMoreLogoSvg = '$_common/comment_more_logo.svg';
+
+  /// [Comment] コメント一覧更新（refresh）アイコン。
+  static const commentRefreshLogoSvg = '$_common/comment_refresh_logo.svg';
 
   // ---- プロフィール (svg) ----
   /// プロフィール更新成功アイコン（プロフィール編集成功ダイアログ）。

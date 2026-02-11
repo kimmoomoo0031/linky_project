@@ -42,6 +42,38 @@ class Validators {
     return null;
   }
 
+  /// ゲスト投稿用ニックネームバリデーション（言語制限なし、2〜12文字のみ）。
+  static String? validateGuestPostNickname(String value) {
+    final trimmed = value.trim();
+    if (trimmed.isEmpty) {
+      return 'ニックネームを入力してください';
+    }
+
+    final len = trimmed.characters.length;
+    if (len < 2 || len > 12) {
+      return 'ニックネームは2~12文字で入力してください';
+    }
+    return null;
+  }
+
+  /// ゲスト投稿用パスワードバリデーション（数字のみ、4〜12文字）。
+  static String? validateGuestPostPassword(String value) {
+    final trimmed = value.trim();
+    if (trimmed.isEmpty) {
+      return 'パスワードを入力してください';
+    }
+
+    if (trimmed.length < 4 || trimmed.length > 12) {
+      return 'パスワードは4〜12文字で入力してください';
+    }
+
+    if (!RegExp(r'^\d+$').hasMatch(trimmed)) {
+      return 'パスワードは数字のみで入力してください';
+    }
+
+    return null;
+  }
+
   /// ラウンジ名バリデーション
   static String? validateLoungeName(String value) {
     final trimmed = value.trim();

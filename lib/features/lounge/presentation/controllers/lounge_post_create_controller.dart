@@ -120,6 +120,10 @@ class LoungePostCreateController extends StateNotifier<LoungePostCreateState> {
       attachedImagePaths: [...state.attachedImagePaths, ...newPaths],
     );
 
+    // TODO(server): 先行アップロード方式に移行する場合は、この段階で /uploads/images/temp を呼び、
+    // temp_url / temp_image_id を取得して返す or state に保持する。
+    // その後、本文(content_html / Delta) に `<img ... data-temp-id="...">` を挿入できるようにする。
+
     return newPaths;
   }
 
@@ -146,10 +150,12 @@ class LoungePostCreateController extends StateNotifier<LoungePostCreateState> {
   }
 
   String? _validateAll() {
-    final guestNicknameError =
-        state.isGuest ? Validators.validateNickname(state.guestNickname) : null;
-    final guestPasswordError =
-        state.isGuest ? Validators.validatePassword(state.guestPassword) : null;
+    final guestNicknameError = state.isGuest
+        ? Validators.validateGuestPostNickname(state.guestNickname)
+        : null;
+    final guestPasswordError = state.isGuest
+        ? Validators.validateGuestPostPassword(state.guestPassword)
+        : null;
     final titleError = _validateTitle(state.title);
     final contentError = _validateContent(state.contentRaw);
 

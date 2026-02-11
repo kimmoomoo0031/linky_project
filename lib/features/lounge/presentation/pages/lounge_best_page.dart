@@ -73,7 +73,7 @@ class _LoungeBestPageState extends ConsumerState<LoungeBestPage> {
           showTopDivider: i == 0,
           showBottomDivider: true,
           onTap: () {
-            // TODO: 投稿詳細へ（未実装）
+            context.pushPostDetail(postId: p.id.toString());
           },
         );
       },

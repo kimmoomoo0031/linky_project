@@ -7,6 +7,7 @@ import 'package:linky_project_0318/core/error/app_error_messages.dart';
 import 'package:linky_project_0318/core/theme/app_typography.dart';
 import 'package:linky_project_0318/core/export/widgets_exports.dart';
 import 'package:linky_project_0318/core/export/post_exports.dart';
+import 'package:linky_project_0318/core/router/router_extensions.dart';
 import 'package:linky_project_0318/features/post/presentation/widgets/post_list_item.dart';
 
 /// 自分の投稿一覧（モック）。
@@ -64,7 +65,7 @@ class MyPostsPage extends ConsumerWidget {
                   showTopDivider: i == 0,
                   showBottomDivider: true,
                   onTap: () {
-                    // TODO: 投稿詳細へ
+                    context.pushPostDetail(postId: p.id.toString());
                   },
                 );
               },

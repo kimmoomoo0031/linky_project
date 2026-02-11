@@ -10,11 +10,11 @@ import 'package:parchment/parchment.dart';
 import 'package:linky_project_0318/core/constants/app_assets.dart';
 import 'package:linky_project_0318/core/enums/linky_dialog_type.dart';
 import 'package:linky_project_0318/core/export/widgets_exports.dart';
-import 'package:linky_project_0318/features/auth/presentation/widgets/auth_labeled_text_field.dart';
 import 'package:linky_project_0318/features/lounge/presentation/controllers/lounge_post_create_controller.dart';
 import 'package:linky_project_0318/features/lounge/presentation/lounge_dialog_event_providers.dart';
 import 'package:linky_project_0318/features/lounge/presentation/providers/lounge_post_create_providers.dart';
 import 'package:linky_project_0318/features/lounge/presentation/states/lounge_post_create_state.dart';
+import 'package:linky_project_0318/features/lounge/presentation/widgets/lounge_guest_post_textfield.dart';
 import 'package:linky_project_0318/features/lounge/presentation/widgets/lounge_post_editor_section.dart';
 
 /// ラウンジ投稿作成画面。
@@ -136,11 +136,10 @@ class _LoungePostCreatePageState extends ConsumerState<LoungePostCreatePage> {
       ),
       body: SafeArea(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             if (state.isGuest) ...[
-              Padding(
-                padding: const EdgeInsets.all(12),
+              Container(
+                padding: EdgeInsets.all(12),
                 child: _GuestFieldsSection(
                   onNicknameChanged: controller.onGuestNicknameChanged,
                   onPasswordChanged: controller.onGuestPasswordChanged,
@@ -167,14 +166,16 @@ class _LoungePostCreatePageState extends ConsumerState<LoungePostCreatePage> {
         editorController: _contentController,
       ),
     );
-  }
-//이미지 본문삽입작업
-  Future<void> _handlePickImage(LoungePostCreateController controller) async {
+  }Future<void> _handlePickImage(LoungePostCreateController controller) async {
     final newPaths = await controller.pickImage(context);
     if (!mounted) return;
 
     if (newPaths.isEmpty) return;
 
+    // TODO(server): 画像を本文に「挿入して見える化」する。
+    // - 先行アップロード方式の場合は、/uploads/images/temp で temp_url/temp_id を取得し、
+    //   Fleather の本文に image embed（例: <img src="TEMP_URL" data-temp-id="TEMP_ID">）として挿入する。
+    // - 現状は添付(state.attachedImagePaths)に積むのみで、本文内への embed 挿入は未対応。
     _contentFocusNode.requestFocus();
   }
 }
@@ -193,8 +194,7 @@ class _GuestFieldsSection extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: AuthLabeledTextField(
-            label: 'ニックネーム',
+          child: LoungeGuestPostTextField(
             hintText: 'ニックネーム',
             onChanged: onNicknameChanged,
             textInputAction: TextInputAction.next,
@@ -202,8 +202,7 @@ class _GuestFieldsSection extends StatelessWidget {
         ),
         const SizedBox(width: 12),
         Expanded(
-          child: AuthLabeledTextField(
-            label: 'パスワード',
+          child: LoungeGuestPostTextField(
             hintText: 'パスワード',
             onChanged: onPasswordChanged,
             obscureText: true,

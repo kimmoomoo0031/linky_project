@@ -24,6 +24,7 @@ class AppRouteNames {
   static const settings = 'settings';
 
   static const postCreate = 'postCreate';
+  static const postDetail = 'postDetail';
 
   static const terms = 'terms';
   static const privacy = 'privacy';

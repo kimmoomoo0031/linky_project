@@ -22,13 +22,16 @@ class AuthInputDecorations {
     final cs = Theme.of(context).colorScheme;
     final hasError = errorText != null && errorText.trim().isNotEmpty;
     return InputDecoration(
+      // フィールドの縦サイズを少しコンパクトにする（AuthLabeledTextField 共通）。
+      isDense: true,
       hintText: hintText,
       hintStyle: AppTextStyles.body12.copyWith(
         color: cs.outlineVariant,
       ),
       filled: true,
       fillColor: Theme.of(context).inputDecorationTheme.fillColor,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+      // vertical を明示しないとデフォルトが大きめになり、見た目が間延びしやすい。
+      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
         borderSide: BorderSide(color: cs.outlineVariant),
@@ -68,12 +71,13 @@ class AuthInputDecorations {
   }) {
     final cs = Theme.of(context).colorScheme;
     return InputDecoration(
+      isDense: true,
       hintText: hintText,
       hintStyle: AppTextStyles.body12.copyWith(
         color: cs.outlineVariant,
       ),
       filled: false,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       enabledBorder: UnderlineInputBorder(
         borderSide: BorderSide(color: cs.outlineVariant),
       ),
@@ -94,12 +98,13 @@ class AuthInputDecorations {
   }) {
     final cs = Theme.of(context).colorScheme;
     return InputDecoration(
+      isDense: false,
       hintText: hintText,
       hintStyle: AppTextStyles.body12.copyWith(
         color: cs.outlineVariant,
       ),
       filled: false,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       border: InputBorder.none,
       enabledBorder: InputBorder.none,
       focusedBorder: InputBorder.none,

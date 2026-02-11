@@ -27,6 +27,7 @@ import 'package:linky_project_0318/features/lounge/presentation/pages/lounge_pos
 import 'package:linky_project_0318/features/notification/presentation/pages/notification_settings_page.dart';
 import 'package:linky_project_0318/features/notification/presentation/pages/notification_list_page.dart';
 import 'package:linky_project_0318/features/user/presentation/pages/settings_page.dart';
+import 'package:linky_project_0318/features/post/presentation/pages/post_detail_page.dart';
 
 import 'package:linky_project_0318/features/auth/presentation/pages/terms_of_service_page.dart';
 import 'package:linky_project_0318/features/auth/presentation/pages/privacy_policy_page.dart';
@@ -58,6 +59,15 @@ final GoRouter appRouter = GoRouter(
       name: AppRouteNames.home,
       builder: (BuildContext context, GoRouterState state) =>
           const HomeMainPage(),
+    ),
+
+    GoRoute(
+      path: '/posts/:postId',
+      name: AppRouteNames.postDetail,
+      builder: (context, state) {
+        final postId = state.pathParameters['postId'] ?? '';
+        return PostDetailPage(postId: postId);
+      },
     ),
 
     // ボトムナビ表示領域（ラウンジ/ベスト）。

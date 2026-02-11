@@ -16,5 +16,6 @@ export '../widgets/layout/bottom_nav_bar.dart';
 export '../widgets/layout/search_page_shell.dart';
 
 export '../widgets/overlays/linky_selection_bottom_sheet.dart';
+export '../widgets/overlays/linky_popup_menu_entries.dart';
 
 
